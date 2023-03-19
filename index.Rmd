@@ -16,7 +16,7 @@ Before joining Northwestern, I was a student at [William & Mary](https://www.wm.
 
 ## Research
 
-I am broadly interested in topics that lie at the intersection between theory and information visualization. I have also been working on questions that involve more economics and fairness concerns.
+I am broadly interested in building tools and theory for robust information visualization. I have also been working on questions that involve more economics and fairness concerns.
 
 My CV (last updated Mar 2023) is [here](https://mika-long.github.io/grad_cv.pdf).
 ```{marginfigure}
