@@ -1,6 +1,8 @@
-# mika-long.github.io
-personal website 
+# Personal website 
 
-Relied on this website (https://www.andreashandel.com/posts/2021-01-11-simple-github-website/index.html) for building things with R-markdown ...
+Helpful sources: 
+- https://resources.github.com/github-and-rstudio/
+- https://www.andreashandel.com/posts/2021-01-11-simple-github-website/index.html
+- https://bookdown.org/yihui/blogdown/github-pages.html
 
-Implementing Jekyll was too hard for me lol 
+
