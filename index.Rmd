@@ -13,15 +13,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Hello! 👋
 
-I[^1] am a third-year PhD student at [Northwestern University](https://www.northwestern.edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) and Professor [Jason Hartline](https://sites.northwestern.edu/hartline/). Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
-
-[^1]: <img src="https://mika-long.github.io/profile.jpg"/> Photo taken by Saha Vishwanath at <a href="https://borderless.teamlab.art/shanghai/">teamLab Borderless Shanghai.</a> <br>I am reachable at [fullname] [at] u.northwestern.edu
+I^[Photo taken by Saha Vishwanath at <a href="https://borderless.teamlab.art/shanghai/">teamLab Borderless Shanghai.</a> <br>I am reachable at [fullname] [at] u.northwestern.edu] am a third-year PhD student at [Northwestern University](https://www.northwestern.edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) and Professor [Jason Hartline](https://sites.northwestern.edu/hartline/). Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
 
 ## Research
 
 I am broadly interested in topics that lie at the intersection between theory and information visualization. Previously, I was also interested in solving questions that involve more economics and fairness concerns.
 
-My CV (last updated Mar 2023) is [here]().
+My CV (last updated Mar 2023) is [here](grad_cv.pdf).
 ```{marginfigure}
 Mudd Hall, Room 3018
 
