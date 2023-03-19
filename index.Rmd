@@ -1,0 +1,49 @@
+---
+title: Sheng Long · <span style="font-family:SimSun">龙晟</span>
+author: "Sheng Long"
+date: "2023-03-19"
+output:
+  tufte::tufte_html: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<br><br>
+
+Hello! 👋
+
+I[^1] am a third-year PhD student at [Northwestern University](https://www.northwestern.edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) and Professor [Jason Hartline](https://sites.northwestern.edu/hartline/). Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
+
+[^1]: <img src="https://mika-long.github.io/profile.jpg"/> Photo taken by Saha Vishwanath at <a href="https://borderless.teamlab.art/shanghai/">teamLab Borderless Shanghai.</a> <br>I am reachable at [fullname] [at] u.northwestern.edu
+
+## Research
+
+I am broadly interested in topics that lie at the intersection between theory and information visualization. Previously, I was also interested in solving questions that involve more economics and fairness concerns.
+
+My CV (last updated Mar 2023) is [here]().
+```{marginfigure}
+Mudd Hall, Room 3018
+
+2233 Tech Drive.
+
+Electrical Engineering and Computer Science
+
+McCormick School of Engineering
+
+Northwestern University
+
+Evanston, IL 60208
+```
+
+## Teaching
+
+- [CS 212 -- Mathematical Foundations of Computer Science](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/212.html)
+  - <span> (TA) 2021 Fall, 2022 Winter, 2023 Winter </span> 
+- [CS 332 -- Online Markets](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/332.html)
+  - (TA) 2022 Spring 
+
+
+
+<br> 
+<br> 
