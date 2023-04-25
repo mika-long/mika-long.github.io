@@ -33,6 +33,10 @@ Northwestern University
 Evanston, IL 60208
 ```
 
+## Publications 
+
+- *Screening with Disadvantaged Agents*, with Hedyeh Beyhaghi, Modibo Camara, Jason Hartline, and Aleck Johnsen, FORC 2023.
+
 ## Teaching
 
 - [CS 212 -- Mathematical Foundations of Computer Science](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/212.html)
