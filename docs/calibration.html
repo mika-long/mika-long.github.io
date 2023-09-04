@@ -89,7 +89,7 @@ div.csl-indent {
 <p>Under Jacob Abernathy’s notes, I realized that perhaps searching for “calibrated forecasting” will turn out more fruitful results.</p>
 <div id="foster-and-vohar-1997" class="section level1">
 <h1>Foster and Vohar 1997</h1>
-<p><span class="citation">(<label for="tufte-mn-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle">Foster and Vohra 1997<span class="marginnote">Foster, Dean P, and Rakesh V Vohra. 1997. <span>“Calibrated <span>Learning</span> and <span>Correlated Equilibrium</span>.”</span> <em>Games and Economic Behavior</em> 21 (1): 40–55. <a href="https://doi.org/10.1006/game.1997.0595">https://doi.org/10.1006/game.1997.0595</a>.</span>)</span> is the first paper that talks about this idea. They referred to Dawid 1982 for this <em>intuitive definition</em><label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> that I didn’t find intuitive at all</span> but it’s worth following up for details.</p>
+<p><span class="citation">(<label for="tufte-mn-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle">Dean P. Foster and Vohra 1997<span class="marginnote">Foster, Dean P, and Rakesh V Vohra. 1997. <span>“Calibrated <span>Learning</span> and <span>Correlated Equilibrium</span>.”</span> <em>Games and Economic Behavior</em> 21 (1): 40–55. <a href="https://doi.org/10.1006/game.1997.0595">https://doi.org/10.1006/game.1997.0595</a>.</span>)</span> is the first paper that talks about this idea. They referred to Dawid 1982 for this <em>intuitive definition</em><label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> that I didn’t find intuitive at all</span> but it’s worth following up for details.</p>
 <p>Formally, suppose player 1 is using a forecasting scheme<label for="tufte-sn-2" class="margin-toggle sidenote-number">2</label><input type="checkbox" id="tufte-sn-2" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">2</span> or prediction scheme, whatever suits your taste</span> <span class="math inline">\(f\)</span>. The output of <span class="math inline">\(f\)</span> in round <span class="math inline">\(t\)</span> of play is an <span class="math inline">\(n\)</span>-tuple: <span class="math inline">\(f(t) = (p_1(t), ..., p_n(t))\)</span> where <span class="math inline">\(p_j(t), j \in [n]\)</span> is the forecasted probability that player 2 will play strategy <span class="math inline">\(j \in S(2)\)</span><label for="tufte-sn-3" class="margin-toggle sidenote-number">3</label><input type="checkbox" id="tufte-sn-3" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">3</span> where <span class="math inline">\(S(2)\)</span> is the set of pure strategies of player 2</span> at time <span class="math inline">\(t\)</span>.</p>
 <p>Let <span class="math inline">\(\chi(j, t) = 1\)</span> if player 2 players their <span class="math inline">\(j\)</span>-th strategy in round <span class="math inline">\(t\)</span> and equal 0 otherwise.</p>
 <p>Denote by <span class="math inline">\(N(p,t)\)</span> the number of rounds up to the <span class="math inline">\(t\)</span>-th round that <span class="math inline">\(f\)</span> generated a vector of forecasts equal to <span class="math inline">\(p\)</span><label for="tufte-sn-4" class="margin-toggle sidenote-number">4</label><input type="checkbox" id="tufte-sn-4" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">4</span> I assume that <span class="math inline">\(p\)</span> here is a vector</span>. Let <span class="math inline">\(\rho(p, j, t)\)</span> be the fraction of these rounds for which player 2 plays <span class="math inline">\(j\)</span>, i.e.,
@@ -104,6 +104,7 @@ div.csl-indent {
 \lim_{t \to \infty} \sum_p |\rho(p, j, t) - p_j|  \frac{N(p, t)}{t} = 0
 \]</span></p>
 <p>“Roughly, calibration says that the empirical frequencies <em>conditioned on the assessments</em> converge to the assessments”.</p>
+<hr />
 </div>
 <div id="note-from-robert-kleinberg" class="section level1">
 <h1>Note from Robert Kleinberg</h1>
@@ -122,9 +123,19 @@ N_T (p) &amp;= |\tau_T(p)| \\
 <p>One drawback of this definition is that it is very unstable under perturbations of the forecasts. The reason is that <span class="math inline">\(\rho_T(p)\)</span> is defined to be the distribution of outcomes observed when the forecast <em>is exactly equal to</em> <span class="math inline">\(p\)</span>.</p>
 <p>Therefore, they offer their own version of definition for calibration:
 …</p>
+<hr />
 </div>
-<div id="foster-and-vohra-1998" class="section level1 unnumbered">
-<h1 class="unnumbered">Foster and Vohra 1998</h1>
+<div id="foster-and-vohra-1998" class="section level1">
+<h1>Foster and Vohra 1998</h1>
+<p><span class="citation">(<label for="tufte-mn-2" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle">Dean P. Foster and Vohra 1998<span class="marginnote">Foster, Dean P., and Rakesh V. Vohra. 1998. <span>“Asymptotic <span>Calibration</span>.”</span> <em>Biometrika</em> 85 (2): 379–90. <a href="https://www.jstor.org/stable/2337364">https://www.jstor.org/stable/2337364</a>.</span>)</span> is the follow-up paper to their original paper. To conclude: this paper has better notation, and probably Kleinberg also follows up on this paper instead of the previous one published in 1997…</p>
+<ul>
+<li>Forecasting method <span class="math inline">\(F\)</span>: mapping from any binary sequence to a unique number in the interval <span class="math inline">\([0, 1]\)</span>
+<ul>
+<li>randomized forecasting method: mapping from binary sequence to probability distribution over <span class="math inline">\([0, 1]\)</span></li>
+</ul></li>
+<li>state of nature: <span class="math inline">\(X_t= 1\)</span> if wet and <span class="math inline">\(X_t = 0\)</span> if dry<label for="tufte-sn-7" class="margin-toggle sidenote-number">7</label><input type="checkbox" id="tufte-sn-7" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">7</span> yes we are predicting the weather here</span></li>
+<li><span class="math inline">\(X^T\)</span>: state of nature up to and include period <span class="math inline">\(T\)</span></li>
+</ul>
 </div>
 
 

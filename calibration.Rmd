@@ -32,6 +32,8 @@ $$
 
 "Roughly, calibration says that the empirical frequencies *conditioned on the assessments* converge to the assessments". 
 
+---
+
 # Note from Robert Kleinberg  
 
 In his [notes](https://www.cs.cornell.edu/courses/cs683/2007sp/lecnotes/week5.pdf), Robert Kleinberg defines this to be "FV-calibrated"^[where "FV" stands for "Foster-Vohra"]. 
@@ -56,12 +58,14 @@ One drawback of this definition is that it is very unstable under perturbations 
 Therefore, they offer their own version of definition for calibration: 
 ... 
 
-
-
-
-
-
-
-
+---
 
 # Foster and Vohra 1998 
+
+[@fosterAsymptoticCalibration1998a] is the follow-up paper to their original paper. To conclude: this paper has better notation, and probably Kleinberg also follows up on this paper instead of the previous one published in 1997... 
+
+- Forecasting method $F$: mapping from any binary sequence to a unique number in the interval $[0, 1]$ 
+  - randomized forecasting method: mapping from binary sequence to probability distribution over $[0, 1]$ 
+- state of nature: $X_t= 1$ if wet and $X_t = 0$ if dry^[yes we are predicting the weather here] 
+- $X^T$: state of nature up to and include period $T$ 
+
