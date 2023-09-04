@@ -1,0 +1,18 @@
+---
+title: "Calibration"
+author: "Sheng Long"
+output: 
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+bibliography: "cal.bib" 
+link-citations: yes 
+---
+
+Also  testing the `citer` package ...
+
+test to see citation:[@abernethyBlackwellApproachabilityLowRegret2010] 
+
+Hopefully things should be working from now on! 
+
+
