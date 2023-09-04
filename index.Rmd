@@ -49,7 +49,5 @@ Evanston, IL 60208
 Mostly here for my own purpose. 
 
 - Calibration 
-- Blackwell approachability 
+- Blackwell Approachability 
 
-<br> 
-<br> 

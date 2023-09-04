@@ -2,17 +2,66 @@
 title: "Calibration"
 author: "Sheng Long"
 output: 
-  tufte::tufte_handout:
-    citation_package: natbib
-    latex_engine: xelatex
-bibliography: "cal.bib" 
-link-citations: yes 
+  tufte::tufte_html: default
+bibliography: cal.bib
+link-citations: true 
 ---
 
-Also  testing the `citer` package ...
+Under Jacob Abernathy's notes, I realized that perhaps searching for "calibrated forecasting" will turn out more fruitful results. 
 
-test to see citation:[@abernethyBlackwellApproachabilityLowRegret2010] 
+# Foster and Vohar 1997 
 
-Hopefully things should be working from now on! 
+[@fosterCalibratedLearningCorrelated1997] is the first paper that talks about this idea. They referred to Dawid 1982 for this *intuitive definition*^[that I didn't find intuitive at all] but it's worth following up for details. 
+
+Formally, suppose player 1 is using a forecasting scheme^[or prediction  scheme, whatever suits your taste] $f$. The output of $f$ in round $t$ of play is an $n$-tuple: $f(t) = (p_1(t), ..., p_n(t))$ where $p_j(t), j \in [n]$ is the forecasted probability that player 2 will play strategy $j \in S(2)$^[where $S(2)$ is the set of pure strategies of player 2] at time $t$. 
+
+Let $\chi(j, t) = 1$ if player 2 players their $j$-th strategy in round $t$ and equal 0 otherwise. 
+
+Denote by $N(p,t)$ the number of rounds up to the $t$-th round that $f$ generated a vector of forecasts equal to $p$^[I assume that $p$ here is a vector]. Let $\rho(p, j, t)$ be the fraction of these rounds for which player 2 plays $j$, i.e., 
+$$
+\rho(p, j, t) = \begin{cases}
+0 & \text{ if } N(p, t) = 0\\ 
+\sum_{s=1}^t \frac{\mathbf{1}_{f(s) = p} \chi(j, s)}{N(p, t)} & \text{otherwise}
+\end{cases}
+$$
+
+The forecast $f$ is said to be *calibrated with respect to the sequences of plays made by player 2* if for all $j\in S(2)$, 
+$$
+\lim_{t \to \infty} \sum_p |\rho(p, j, t) - p_j|  \frac{N(p, t)}{t} = 0
+$$ 
+
+"Roughly, calibration says that the empirical frequencies *conditioned on the assessments* converge to the assessments". 
+
+# Note from Robert Kleinberg  
+
+In his [notes](https://www.cs.cornell.edu/courses/cs683/2007sp/lecnotes/week5.pdf), Robert Kleinberg defines this to be "FV-calibrated"^[where "FV" stands for "Foster-Vohra"]. 
+
+A forecasts is *calibrated* if for every distribution $p$, if one restricts attention to the subsequence of outcomes observed when the forecast is near $p$, the distribution of outcomes actually observed is also near $p$. 
+
+Let $A$ be a finite set, $p_1, p_2, ... \in \Delta(A)$  a sequence of probability distributions^[i.e., "forecasts"] and $a_1, a_2, ... \in A$ a sequence of elements of $A$. 
+
+For $p \in \Delta[A]$ we define 
+$$
+\begin{align}
+\tau_T (p) &= \{t: 1 \leq t \leq T \text{ and } p_t = p\}\\
+N_T (p) &= |\tau_T(p)| \\
+\rho_T(p) &= \frac{1}{N_T(p)} \sum_{t \in \tau_T} \delta[a_t]
+\end{align}
+$$
+
+where $\delta[a] \in \Delta(A)$ denotes the probability distribution which assigns probability 1 to $a$ and probability 0 to all other elements. 
+
+One drawback of this definition is that it is very unstable under perturbations of the forecasts. The reason is that $\rho_T(p)$ is defined to be the distribution of outcomes observed when the forecast *is exactly equal to* $p$. 
+
+Therefore, they offer their own version of definition for calibration: 
+... 
 
 
+
+
+
+
+
+
+
+# Foster and Vohra 1998 
