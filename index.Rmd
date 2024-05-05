@@ -34,8 +34,8 @@ Evanston, IL 60208
 ## Publications 
 
 - *Screening with Disadvantaged Agents*, with Hedyeh Beyhaghi, Modibo Camara, Jason Hartline, and Aleck Johnsen, FORC 2023.
-- *Regulation of Algorithmic Collusion*, with Jason Hartline and Chenhao Zhang, CSLAW '24 
-- *To Cut or Not To Cut: A Systematic Exploration of Y-Axis Truncation*, with Matthew Kay, SIGCHI '24 
+- *Regulation of Algorithmic Collusion*, with Jason Hartline and Chenhao Zhang, CSLAW '24.  
+- *To Cut or Not To Cut: A Systematic Exploration of Y-Axis Truncation*, with Matthew Kay, SIGCHI '24. 
 
 ## Teaching
 
