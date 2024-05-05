@@ -8,7 +8,7 @@ output:
 
 Hello! 👋
 
-I^[![profile](profile.jpg)Photo taken by Saha Vishwanath at [teamLab Borderless Shanghai](https://borderless.teamlab.art/shanghai/).] am a Ph.D. candidate at [Northwestern University](https://www.northwestern.edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/). 
+I^[![profile](profile_2.jpg)Photo taken by Wei Sun.] am a Ph.D. candidate at [Northwestern University](https://www.northwestern.edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/). 
 
 Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
 
