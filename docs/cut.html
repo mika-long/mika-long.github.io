@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
+
 <title>To Cut or Not To Cut – Try for yourself!</title>
 <style>
 code{white-space: pre-wrap;}
@@ -21,6 +22,11 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 </style>
+
+<!-- Include Vega-Lite and Vega script tags -->
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
 
 <script src="cut_files/libs/clipboard/clipboard.min.js"></script>
@@ -67,6 +73,50 @@ ul.task-list li input[type="checkbox"] {
 <p>This is just to test and see how this renders</p>
 <p>This is where I would be inserting new stuff lol</p>
 </section>
+
+
+    <div id="vis"></div>
+
+    <script>
+        // Function to generate random data
+        function generateRandomData(numPoints) {
+            var data = [];
+            for (var i = 0; i < numPoints; i++) {
+                var x = Math.random() * 100;
+                var y = Math.random() * 100;
+                data.push({x: x, y: y});
+            }
+            return data;
+        }
+
+        // Generate random data
+        var randomData = generateRandomData(10); // Generate 10 data points
+
+        // Vega-lite specification
+        var spec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {"values": randomData},
+            "params": [
+            {
+                "name": "👉 cut", 
+                "value": 0, 
+                "bind":{"input": "range", "min":0, "max":200, "step": 1}
+            }, 
+            {
+                "name": "👉 finished draggin?", 
+                "bind": {"input": "checkbox"}
+            }
+            ],
+            "mark": "point",
+            "encoding": {
+                "x": {"field": "x", "type": "quantitative"},
+                "y": {"field": "y", "type": "quantitative"}
+            }
+        };
+
+        // Render the visualization
+        vegaEmbed('#vis', spec);
+    </script>
 
 </main>
 <!-- /main column -->
