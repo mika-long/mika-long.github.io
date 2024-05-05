@@ -10,15 +10,15 @@ Hello! 👋
 
 <!-- I^[<img src="https://mika-long.github.io/profile.jpg"/> Photo taken by Saha Vishwanath at <a href="https://borderless.teamlab.art/shanghai/">teamLab Borderless Shanghai.</a> I am reachable at [fullname] [at] u.northwestern.edu] am a third-year PhD student at [Northwestern University](https://www.northwestern.edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) and Professor [Jason Hartline](https://sites.northwestern.edu/hartline/). Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics. -->
 
-I^[![profile](profile.jpg)Photo taken by Saha Vishwanath at [teamLab Borderless Shanghai](https://borderless.teamlab.art/shanghai/).] am a third-year PhD student at [Northwestern University](https://www.northwestern.edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) and Professor [Jason Hartline](https://sites.northwestern.edu/hartline/). 
+I^[![profile](profile.jpg)Photo taken by Saha Vishwanath at [teamLab Borderless Shanghai](https://borderless.teamlab.art/shanghai/).] am a PhD candidate at [Northwestern University](https://www.northwestern.edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/). 
 
 Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
 
 ## Research
 
-I am broadly interested in building tools and theory for robust information visualization. I have also been working on questions that involve more economics and fairness concerns.
+I am interested in developing both theoretical frameworks and practical tools for the robust evaluation of information visualization. Previsouly, I had worked on questions that involve more economics and fairness concerns.
 
-My CV (last updated Mar 2023) is [here](https://mika-long.github.io/grad_cv.pdf).
+My CV (last updated Mar 2024) is [here](https://mika-long.github.io/grad_cv.pdf).
 ```{marginfigure}
 Mudd Hall, Room 3018
 
