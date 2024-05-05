@@ -44,10 +44,10 @@ Evanston, IL 60208
 - [CS 332 -- Online Markets](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/332.html)
   - (TA) 2022 Spring 
 
-## Notes
+<!-- ## Notes -->
 
-Mostly here for my own purpose. 
+<!-- Mostly here for my own purpose.  -->
 
-- [Calibration](calibration.Rmd)
-- Blackwell Approachability 
+<!-- - [Calibration](calibration.Rmd) -->
+<!-- - Blackwell Approachability  -->
 
