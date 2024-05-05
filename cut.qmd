@@ -1,0 +1,12 @@
+---
+title: "To Cut or Not To Cut -- Try for yourself!"
+format: html
+navbar: 
+  title: false 
+---
+
+# Test 
+
+This is just to test and see how this renders 
+
+This is where I would be inserting new stuff lol 
