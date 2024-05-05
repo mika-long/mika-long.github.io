@@ -1,0 +1,80 @@
+---
+title: Blackwell approachability and calibration 
+author: Sheng Long
+outut:
+  tufte:: tufte_handout
+---
+
+source:
+- https://web.eecs.umich.edu/~jabernet/eecs598course/fall2013/web/notes/lec21_111813.pdf
+- https://web.eecs.umich.edu/~jabernet/eecs598course/fall2013/web/notes/lec22_112013.pdf
+-
+
+
+# Blackwell Approachability Theorem (B.A.T)
+
+One can think of the B.A.T as a modified version of the mini-max theorem^[applied to scalar-valued normal-form games].
+
+Given a payoff function $r: \Delta_n \times \Delta_m \to \mathbb{R}^d$. This function is biaffine, which is required to preserve the expectation of mixed strategies, i.e., that $$r(p, q) = \mathbb{E}_{i \sim p, j \sim q} r(i, j)$$
+
+Rather than maximizing, the goal in this setting is to direct the payoff vector to some convex set $S \subset \mathbb{R}^d$. We are iterested in some duality result like the following: $$\forall q \quad \exists p \quad \text{s.t. } \quad r(p, q) \in S \implies \exists p \quad \text{s.t.} \quad r(p, q) \in S$$
+which is a direct translation of the classical minimax result for scalar-valued payoff functions.
+
+# Calibrated forecasting
+
+Consider a forecaster that is repeated predicting $p_t \in [0, 1]$ for $t = 1, 2, ...$. Nature reveals in each round $y_t \in [0, 1]$. Ideally, we would want the forecast to be "close" to nature, and one way to define this closeness is $$\left |\frac{1}{T} \sum_t p_t - \frac{1}{T}\sum_t y_t \right | \to 0 $$
+
+The above might be too easy to achieve^[Why though? Not explained in the notes].
+
+We say a forecaster is $\epsilon$-calibrated if $\forall p \in [0, 1]$ and for a large enough $T$, for some $c > 0$,
+$$
+\left | \frac{\sum_t^T y_t \mathbf{1}[|p_t - p| \leq \epsilon]}{\sum_t^T \mathbf{1}[|p_t - p| \leq \epsilon]} - p\right | < c \epsilon
+$$
+
+## $L_1$-calibration score
+
+Assume $[q_1, ..., q_n]$ is an $\epsilon$-discretization of $[0, 1]$. Then, $$
+L1CS_T^{\epsilon} = \sum_{i=1}^N \left | \frac{1}{T} \sum_{t=1}^T (q_i - p_t) \mathbf{1} [|q_i - p_t| \leq \epsilon]  \right |
+$$
+
+## Calibration against an adversary
+
+It is difficult to calibrate against an adversary.
+
+# Generalized calibration
+
+Before we made predictions in $[0, 1]$. The $[0, 1]$ interval can be generalized to convex set. As before^[when we divided $[0, 1]$ into small sections], now we divide the convex set into $n$ small pieces and pick one point $q_i$ in each piece. This generalizes our calibration setting to: forr $t= 1, ..., T$:
+
+1. Forecaster "guesses" $\hat{y}_t$ with $q_{i_t}$
+2. Outcome is $y_t$
+
+The kind of guarantee we seek is: $\exists T_0$ such that $\forall T > T_0$,
+$$
+\lVert\frac{\sum_{t=1}^T y_t \mathbb{1}[q_{i_t} = q_i] }{ \sum_{t=1}^T \mathbb{1}[q_{i_t} =  q_i]} - q_i \rVert < c \epsilon
+$$
+
+With generalized calibration, one can:
+
+1. Get lower regret
+2. Get minimax duality
+3. Show Approachability Theorem
+
+## Two-player zero-sum game
+
+Consider a repeated zero-sum game between two players. Given game matrix $M$, two players choose $(x, y) \in \Delta_m \times \Delta_n$ to get value $x^T M y$. Player 1 chooses $x \in \Delta_m$ and wants to minimize $x^T M y$ while player 2 chooses $y \in \Delta_n$ and wants to maximize $x^T M y$. For $t = 1, ..., T$, let $x_t$ denote strategy chosen by player 1 at time $t$ and let $y_t$ denote strategy chosen by player 2 at time $t$. Define $V^* := \min_x \max_y x^T M y$
+
+Given any $\epsilon$, we want to find an algorithm such that in the end, $\frac{1}{T} \sum_{t=1}^T x_t^T M y_t \leq V^* + O(\epsilon)$. The idea is to reduce this problem to *generalize calibration* and use the $\epsilon$-calibration algorithm.
+
+...
+
+## Correlated equilibrium
+
+Consider a $k$-player game. For all $i$, player $i$ has $M_i$ strategies. Let $[M_i]$ denote the set of the $M_i$ strategies player $i$ can use. Each time $k$ players play $(j_1, \ldots, j_k) \in [M_1] \times [M_2] \times ... \times [M_k]$, player $i$ would get loss $C_i(j_1, ..., j_k)$.
+
+We assign a joint distribution $\mu \in \Delta([M_1] \times [M_2] \times \ldots \times [M_k])$ to the actions of $k$ players.Then, the **expected loss** to player $i$ with distribution $\mu$ would be $$
+C_i(\mu) = \sum_{(j_1, \ldots, j_k)} \mu(j_1, \ldots, j_k) C_i(j_1, \ldots, j_k)
+$$
+
+A __strategy modification__ is a function $\phi[M_i] \to [M_i]$ such that $\phi(j) = j$ for all $j$ but one $j_o$. $\phi(j_o)$ is arbitrary. After this modificatio, the expected loss would become $$
+C_i^\phi(\mu) = \sum_{(j_1, \ldots, j_k)} \mu(j_1, \ldots, j_k) C_i(j_1, \ldots, j_{i-1}, \phi(j_i), j_{i+1}, \ldots,  j_k)
+$$
