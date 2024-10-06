@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+
+body {
+    font-family: 'Noto Sans', 'Source Sans Pro', Arial, sans-serif;
+/*    'Crimson Text', 'Afacad Flux', */
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+/*    background-color: #f4f4f4;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    width: 100%;
+    background-color: white;
+    padding: 0px 30px;
+    border-radius: 5px;
+/*    box-shadow: 0 0 10px rgba(0,0,0,0.1);*/
+    box-sizing: border-box;
+}
+
+h1, h2 {
+    font-weight: 600;
+}
+
+/* Reduce spacing between paragraphs */
+p {
+    margin-top: 0em;
+    margin-bottom: 0em;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+/* New class for inline paragraphs */
+.inline-p {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+/* New styles for links */
+a {
+    color: black;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+/*a:visited {
+    color: #006666; /* A darker teal for visited links
+}*/
+
+a:hover, a:focus {
+    color: #00b3b3; /* A lighter teal for hover and focus states */
+    text-decoration: underline;
+}
+
+a:active {
+    color: #004d4d; /* A darker teal for the active state */
+}
+
+/* Updated paper-link class for pill-box style */
+.paper-link {
+    text-decoration: none;
+    display: inline-block;
+    padding: 0em 0.2em 0em 0.1em;
+    background-color: #00b3b3;
+    border: 2px solid gray;
+    border-radius: 10px;
+/*    box-shadow: 0 0 10px rgba(0,0,0,0.1);*/
+    border-color: #00b3b3;
+    color: whitesmoke;
+    font-weight: 600;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/*.paper-link::before {
+    content: '📄';
+    position: relative;
+/*    left: -0.2em;*/
+/*    top: 50%;*/
+/*    transform: translateY(-50%);*/
+/*}*/
+
+.paper-link:hover, .paper-link:focus {
+    background-color: #004d4d;
+    border-color: #004d4d;
+    color: white;
+    text-decoration: none;
+}
+
+/*.paper-link:active {
+    background-color: #004d4d;
+    border-color: #004d4d;
+}
+*/
+
+#introduction {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+}
+
+#text-cotent {
+    flex-basis: 60%;
+}
+
+#image-content {
+    display: flex;
+    flex-basis: 40%;
+    justify-content: center;
+}
+
+img {
+    max-width: 90%;
+    height: auto;
+    border-radius: 8px;
+}
