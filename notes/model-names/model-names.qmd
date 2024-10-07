@@ -1,0 +1,75 @@
+---
+title: "A model by many names"
+author: "Sheng Long"
+date: "2024-07-11"
+categories: [thoughts]
+format: 
+  html: 
+    self-contained: true 
+    grid: 
+      margin-width: 350px 
+    toc: true 
+execute: 
+  echo: fenced
+reference-location: margin
+citation-location: margin
+bibliography: ref.bib
+---
+
+I have been confused by the many names of "multi-level models" for a long time. Here I attempt to summarize some of the sources that discuss the many different ways of referring to "multi-level" models. 
+
+# The confusing names 
+
+[This page](https://m-clark.github.io/mixed-models-with-R/random_intercepts.html) provides a nice overview of some of the existing terminologies. 
+
+---
+
+In _Statistical Rethinking_ [@mcelreath2018statistical]: 
+
+> Multileve models go by many different names, and some statisticians use the same names for different specialized variants, while others use them all inter-changeably. The most common synonyms for "multilevel" are HIERARCHICAL and MIXED EFFECTS. The type of parameters that appear in multilevel models are most commonly known as RANDOM EFFECTS, which itself can mean very different things to different analysts and in different contexts. And even the innocent term "level" can mean different thigns to different people. There's really no cure for this swamp of vocabulary aside from demanding a mathematical or algorithmic definition of the model. Otherwise, there will always be ambiguity. 
+
+Digging deeper into the footnotes: 
+
+> 188. I adopt the terminology of Gelman (2005), who argues that the common term _random effects_ hardly aids with understanding for most people. Indeed, it seems to encourage misunderstanding, partly because the terms _fixed_ and _random_ mean different things to different statisticians. See pages 20 - 21 of Gelman's paper. I fully realize, however, that by trying to spread Gelman's alternative jargon, I am essentially spitting into a very strong wind. 
+
+---
+
+What exactly did [@gelman2005analysis] say? 
+
+> 1. Fixed effects are constant across individuals, and random effets vary. For example, in growth study, a model with random intercepts $\alpha_i$ and fixed slope $\beta$ corresponds to parallel lines for different individuals $i$, or the model $y_{it} = \alpha_i + \beta t$. Kreft and de Leeuw [(1998), page 12] thus distinguish between fixed and random coefficients. 
+> 2. Effects are fixed if they are interesting in themselves or random if there is interest in the underlying population. ... 
+> 3. "When a sample exhausts the population, the corresponing varibale is _fixed_; when the sample is small (i.e., negligible) part of the population the corresponding variable is _random_" [Green and Tukey (1960)]
+> 4. "If an effect is assumed to be a realized value of a random variable, it is called a random effect" [LaMotte (1983)]
+> 5. Fixed effects are estimated using least squared (or more generally, maximum likelihood) and random effects are estimaed with shrinkage ["linear unbiased prediction" in the terminology of Robinson (1991)]. This definition is standard in the multilevel modeling literature ... and in econometrics. 
+> 
+> In the Bayesian framework, this definition implies that the fixed effects $\beta_j^{(m)}$ are estimated conditional on $\sigma_m = \infty$ and random effects $\beta_j^{(m)}$ are estimated conditional on $\sigma_m$ from the posterior distribution. 
+
+Gelman suggests the following: 
+
+> ... sidestope the overloaded terms "fixed" and "random" with a cleaner distinction by simply renaming the terms in definition 1 above. We define effects (or coefficients) in a multilevel model as a _constant_ if they are identical for all groups in a population and _varying_ if they are allowed to differ from group to group. For example, the model $y_{ij} = \alpha_j + \beta x_{ij}$ (of units $i$ in groups $j$) has a constant slope and varying intercepts, and $y_{ij} = \alpha_j + \beta_j x_{ij}$ has varying slopes and intercepts. In this terminology, varying effects occur in batches, whether or not the effects are interesting in themselves (definition 2), and whether or not they are a sample from a larger set (definition 3). Definitions 4 and 5 do not arise for us since we estimate all batches of effects hierarchically, with the variance components $\sigma_m$ estimated from data. 
+
+# The confusing math notations 
+
+One would think that writing things in math would make it better. This is not necessarily true, because there are also different ways of writing math. 
+
+There are many ways to write the same model^[For example, see [this website](https://m-clark.github.io/docs/mixedModels/mixedModels.html#many_ways_to_write_the_same_model). See also [this](https://stefvanbuuren.name/fimd/sec-threeformulations.html) -- they introduce three different notation systems: level notation, composite notation, and matrix notation. ]. What does this imply for implementation? 
+
+todo ... 
+
+# Nested or crossed? Structure of hierarchy 
+
+**What is the structure of this hierarchy**, and **does it matter**? 
+
+Probably doesn't matter for the software implementation? 
+
+In _Statistical Rethinking_ [@mcelreath2018statistical]: 
+
+> ... 
+
+# Table from math to `R` 
+
+Bates et al [@bates2014fitting] provided a nice table for illustrating the model formulas (specified in `lmer` syntax) and their meaning. 
+
+Barr et al [@barr2013random] had a table where the left hand side is the model in math form, and the right hand side is the model in `R` syntax. 
+
+
