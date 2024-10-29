@@ -10,6 +10,8 @@ search: false
 
 :::{.column-margin}
 ![Photo taken by Wei Sun.](profile_2.jpg)
+
+[ {{< fa graduation-cap >}} ](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link} [ []{.mdi--linkedin}](https://www.linkedin.com/in/sheng-long/){.paper-link}
 :::
 
 I am a Ph.D. candidate at [Northwestern University](https://www.northwestern/edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/).

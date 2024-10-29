@@ -16,7 +16,7 @@ website:
   page-footer: 
     background: light 
     left: © 2024 Sheng Long 
-    right: This website is built with {{< fa brands r-project title="R Project" >}}, {{< fa brands github title="Github" >}}, [Quarto](https://quarto.org/), and [faviconer](http://faviconer.com/icon/latest).
+    right: This website is built with {{< fa brands r-project title="R Project" >}}, {{< fa brands github title="Github" >}}, [Quarto](https://quarto.org/), [fontawesome](https://github.com/quarto-ext/fontawesome), and [faviconer](http://faviconer.com/icon/latest).
 
 format:
   html:
