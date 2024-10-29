@@ -4,7 +4,7 @@ project:
 
 website:
   title: "Sheng Long"
-  favicon: favicon.ico
+  favicon: favicon.png
   navbar:
     title: false
     right:
