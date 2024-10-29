@@ -1,0 +1,29 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Sheng Long"
+  favicon: favicon.ico
+  navbar:
+    title: false
+    right:
+      - href: index.qmd
+        text: Home 
+      - text: CV
+        href: grad_cv.pdf
+    
+  page-footer: 
+    background: light 
+    left: © 2024 Sheng Long 
+    right: This website is built with {{< fa brands r-project title="R Project" >}}, {{< fa brands github title="Github" >}}, [Quarto](https://quarto.org/), and [faviconer](http://faviconer.com/icon/latest).
+
+format:
+  html:
+    css: styles.css
+    toc: false
+    mainfont: Source Sans Pro
+    page-layout: full
+
+
+

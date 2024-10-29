@@ -1,0 +1,58 @@
+---
+html:
+  toc: false
+search: false 
+---
+
+# Sheng Long 🍊 龙晟
+
+### Hello! 👋
+
+:::{.column-margin}
+![Photo taken by Wei Sun.](profile_2.jpg)
+:::
+
+I am a Ph.D. candidate at [Northwestern University](https://www.northwestern/edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/).
+
+Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
+
+## Research 
+
+I am interested in developing both theoretical frameworks and practical tools for the robust evaluation of information visualization. I had also worked on questions that involve more economics and fairness concerns previously.
+
+My CV (last updated Oct 2024) is [here](grad_cv.pdf).
+
+## Publications 
+
+[\* indicates equal contribution]{.aside style="color: #D3D3D3"}
+
+- **Old Wine in a New Bottle? Analyzing Visual Lineups with Signal Detection Theory** \
+_Sheng Long_, Matthew Kay \
+[BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization (To appear)]{style="color: #D3D3D3"} \
+[ {{< fa wine-bottle>}} Paper](https://osf.io/preprints/osf/ghru8){ .paper-link } [ []{.simple-icons--osf} OSF](https://osf.io/xd5cj/){.paper-link}
+- **Tasks and Telephones: Threats to Experimental Validity due to Misunderstandings of Visualisation Tasks and Strategies (Position Paper)** \
+Abhraneel Sarma, _Sheng Long_, Michael Correll, Matthew Kay \
+[BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization (To appear)]{style="color: #D3D3D3"} \
+[ {{<fa phone>}} Paper](https://osf.io/preprints/osf/d849a){.paper-link}
+- **To Cut or Not To Cut: A Systematic Exploration of Y-Axis Truncation** \
+_Sheng Long_, Matthew Kay \
+[CHI ‘24: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems]{style="color: #D3D3D3"} \
+[ {{< fa scissors >}} Paper](https://dl.acm.org/doi/10.1145/3613904.3642102){.paper-link} [ []{.simple-icons--osf} OSF](){.paper-link}
+- **Regulation of Algorithmic Collusion** \
+Jason Hartline\*, _Sheng Long_\*, Chenhao Zhang\* \
+[CSLAW ‘24: Proceedings of the Symposium on Computer Science and Law]{style="color: #D3D3D3"} \
+[ []{.mdi--paper-outline} Paper](https://dl.acm.org/doi/10.1145/3614407.3643706){.paper-link}
+- **Screening with Disadvantaged Agents** \
+Hedyeh Beyhaghi\*, Modibo K. Camara\*, Jason Hartline\*, Aleck Johnson\*, _Sheng Long_\* \
+[FORC ‘23: Proceedings of the 4th Symposium on Foundations of Responsible Computing]{style="color: #D3D3D3"} \
+[[]{.mdi--paper-outline} Paper](https://arxiv.org/abs/2305.18068){.paper-link} [ {{< fa brands youtube>}} EC'22 Workshop Talk](https://www.youtube.com/watch?v=7OwSoTD9BtQ&t=88s){.paper-link}
+
+## Teaching 
+- [CS 212 --- Mathematical Foundations of Computer Science](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/212.html)
+  - (TA) 2021 Fall, 2022 Winter, 2023 Winter 
+- [CS 332 --- Online Markets](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/332.html)
+  - (TA) 2022 Fall
+- [CS 333 --- Interactive Information Visualization](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/333.html)
+  - (TA) 2024 Winter 
+- [CS 330 --- Human Computer Interaction](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/330-1.html)
+  - (TA)  2024 Fall 
