@@ -34,12 +34,21 @@ a:hover, a:focus {
     text-decoration: none;
 }
 
+.author-link {
+  color: #212529;
+  text-decoration: none;
+  transition: color 0.1s ease;
+}
+
+.author-link:hover, .author-link:focus {
+  color: teal;
+  text-decoration: underline;
+}
+
 .navbar {
     background-color: teal;
     color: #fdfefe;
 }
-
-
 
 /* custom icons from iconify.design */
 

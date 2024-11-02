@@ -1,0 +1,39 @@
+---
+title: "Just Noticeable Difference"
+author:
+  - name: Sheng Long 
+date: 10-29-2024
+categories: [Psychophysics]
+draft: false 
+bibliography: jnd.bib
+reference-location: margin
+citation: true
+---
+
+# Definition 
+
+Formally, Just Noticeable Difference (JND) can be defined as the _magnitude of change in a stimulus_ necessary for it to be perceived as different from another stimulus, or as the smallest detectable difference between two stimuli [@sternJustNoticeableDifference2010]. 
+
+
+# History 
+
+To talk about the history of JND we need to talk about the history of Signal Detection Theory [@wixtedForgottenHistorySignal2020], and for that, we need to talk about a certain German scientist --- Gustave Fechner. 
+
+Fechner was most famous for purporting two laws: Weber's law and Fechner's law, which state as follows: 
+
+**Weber's law**: As stimulus intensity is gradually increased, the difference is at first imperceptible, but as the stimulus intensity increases still further, the change finally becomes detectable. This change is what we now call "just noticeable difference". 
+
+- Weber's law holds that $\Delta I / I = k$, where $k$ is the constant. [Here $I$ stands for stimulus **intensity**]{.aside} 
+
+**Fechner's law**: 
+
+## Absolute vs. Difference Threshold 
+
+
+
+
+# Related works in visualization 
+
+There are some papers in visualization studying the perception of correlation that explicitly use "just noticeable difference" to explain things, such as 
+
+- 
