@@ -1,0 +1,17 @@
+{
+  "hash": "05d91483a052b523bd0fe2137655d8e3",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"SDT, ROC and Calibration\" \nauthor: \n  name: Sheng Long\ncategories: [Statistics]\nbibliography: roc.bib\ndate: last-modified\nreference-location: margin\ndraft: false\n---\n\n::: {.cell}\n\n:::\n\n\n\n\n# Model \n\nSuppose we want to perform binary classification on some data. \n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nd1 <- rnorm(100, mean = 5, sd = 1)\nd2 <- rnorm(100, mean = 4.5, sd = 1)\ndf <- tibble(d1, d2) %>% pivot_longer(cols = d1:d2)\ndf %>% head(5)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 5 × 2\n  name  value\n  <chr> <dbl>\n1 d1     4.68\n2 d2     5.08\n3 d1     3.17\n4 d2     4.76\n5 d1     3.14\n```\n\n\n:::\n:::\n\n\n\nLet's try a simple linear model: \n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsimple_linear_regression <- lm(value ~ name, df)\nsummary(simple_linear_regression)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n\nCall:\nlm(formula = value ~ name, data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-2.8692 -0.7429 -0.0209  0.6527  3.1788 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)   4.9791     0.1039   47.93   <2e-16 ***\nnamed2       -0.3334     0.1469   -2.27   0.0243 *  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 1.039 on 198 degrees of freedom\nMultiple R-squared:  0.02536,\tAdjusted R-squared:  0.02043 \nF-statistic: 5.151 on 1 and 198 DF,  p-value: 0.02431\n```\n\n\n:::\n:::\n\n\n\nLet's plot this! \n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndf %>% ggplot(aes(y = value, x= name)) +\n  geom_point(alpha = .4) +\n  geom_smooth(method = \"lm\") +\n  labs(y = \"Default (1 = yes, 0 = no)\",\n       title = \"Default outcome by balance\") +\n  theme_minimal()\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n`geom_smooth()` using formula = 'y ~ x'\n```\n\n\n:::\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
