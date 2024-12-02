@@ -31,11 +31,11 @@ My CV (last updated Oct 2024) is [here](grad_cv.pdf).
 - **Old Wine in a New Bottle? Analyzing Visual Lineups with Signal Detection Theory** \
 _Sheng Long_, [Matthew Kay](https://www.mjskay.com/){.author-link} \
 [BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization (To appear)]{style="color: #D3D3D3"} \
-[ {{< fa wine-bottle>}} Paper](https://osf.io/preprints/osf/ghru8){ .paper-link } [ []{.simple-icons--osf} OSF](https://osf.io/xd5cj/){.paper-link}
+[ {{< fa wine-bottle>}} Paper](https://www.computer.org/csdl/proceedings-article/beliv/2024/284600a025/22a0EZbagkE){ .paper-link } [ []{.simple-icons--osf} OSF](https://osf.io/xd5cj/){.paper-link}
 - **Tasks and Telephones: Threats to Experimental Validity due to Misunderstandings of Visualisation Tasks and Strategies (Position Paper)** \
 [Abhraneel Sarma](https://abhsarma.github.io/){.author-link}, _Sheng Long_, [Michael Correll](https://correll.io/index.php){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link} \
 [BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization (To appear)]{style="color: #D3D3D3"} \
-[ {{<fa phone>}} Paper](https://osf.io/preprints/osf/d849a){.paper-link}
+[ {{<fa phone>}} Paper](https://www.computer.org/csdl/proceedings-article/beliv/2024/284600a033/22a0GAI7K7e){.paper-link}
 - **To Cut or Not To Cut: A Systematic Exploration of Y-Axis Truncation** \
 _Sheng Long_, [Matthew Kay](https://www.mjskay.com/){.author-link} \
 [CHI ‘24: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems]{style="color: #D3D3D3"} \
