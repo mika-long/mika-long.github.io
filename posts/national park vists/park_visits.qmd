@@ -1,0 +1,87 @@
+---
+title: "National Park Visit"
+format: 
+  html: 
+    code-fold: true
+    reference-location: margin
+    citation-location: margin
+    theme: default
+---
+
+```{r}
+#| echo: false 
+#| warning: false 
+#| message: false
+
+library(tidyverse)
+library(ggplot2)
+library(glue)
+library(gganimate)
+```
+
+```{r}
+# custom theme 
+theme_custom <- function() {
+  theme_minimal() + 
+  theme(
+    text = element_text(family = "Avenir"), 
+    plot.title = element_text(family = "Avenir"), 
+    axis.text = element_text(family="Avenir")
+  )
+}
+
+theme_set(theme_custom())
+```
+
+
+
+First we load the data^[which was obtained from https://www.responsible-datasets-in-context.com/posts/np-data/?tab=explore-the-data]. The file is not quite ready to be merged with other ones, so we make changes to it.  
+
+```{r}
+df <- read.csv(file = "US-National-Parks_Use_1979-2023_By-Month.csv") %>% 
+  tibble(.) %>% 
+  mutate(ParkName = str_remove(ParkName, "NP.*$")) |>
+  mutate(ParkName = trimws(ParkName)) %>% 
+  mutate(Region = trimws(Region))
+
+head(df)
+```
+
+---
+# Let's animate things! 
+
+The following is a static graph: 
+
+```{r}
+#| column: page 
+
+df %>% 
+  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + 
+  geom_line() + 
+  facet_wrap(~UnitCode) + 
+  scale_x_continuous(breaks = 1:12, labels = 1:12) + 
+  scale_color_viridis_c()
+```
+
+Let's try animating this! 
+
+```{r}
+df %>% filter(ParkName == "Acadia") %>% 
+  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + 
+  geom_line() + 
+  scale_color_viridis_c()+ 
+  scale_x_continuous(breaks = 1:12, labels = 1:12) + 
+  scale_y_continuous(labels = function(x) paste0(x/1000, "K"))
+```
+
+```{r}
+df %>% filter(ParkName == "Acadia") %>% 
+  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + 
+  geom_line(linewidth=1.5) + 
+  scale_color_viridis_c()+ 
+  scale_x_continuous(breaks = 1:12, labels = 1:12) +
+  scale_y_continuous(labels = function(x) paste0(x/1000, "K")) + 
+  labs(title = 'Year: {frame_time}') + 
+  transition_time(Year) + 
+  shadow_mark(past = T, future = F, alpha = 0.1)
+```

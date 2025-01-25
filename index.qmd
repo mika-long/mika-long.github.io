@@ -20,21 +20,25 @@ Before joining Northwestern, I was a student at [William & Mary](https://www.wm.
 
 ## Research 
 
-I am interested in developing both theoretical frameworks and practical tools for the robust evaluation of information visualization. I had also worked on questions that involve more economics and fairness concerns previously.
+My research focuses on developing theoretical frameworks and empirical tools to better understand how people process and interact with abstract visual information. I had also worked on questions that involve more economics and fairness concerns previously.
 
-My CV (last updated Oct 2024) is [here](grad_cv.pdf).
+My CV (last updated Jan 2025) is [here](grad_cv.pdf).
 
 ## Publications 
 
 [\* indicates equal contribution]{.aside style="color: #D3D3D3"}
 
+- **Seeing Eye to AI? Applying Deep-Feature-Based Similarity Metrics to Information Visualization** \
+_Sheng Long_, [Angelos Chatzimparmpas](https://www.angeloschatzimparmpas.com/){.author-link}, [Emma Alexamder](https://www.alexander.vision/emma){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, [Jessica Hullman](http://users.eecs.northwestern.edu/~jhullman/){.author-link} \
+[CHI'25: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems (To appear)]{style="color: #D3D3D3"} \
+[ []{.simple-icons--osf} OSF](https://osf.io/dj2ms/){.paper-link}
 - **Old Wine in a New Bottle? Analyzing Visual Lineups with Signal Detection Theory** \
 _Sheng Long_, [Matthew Kay](https://www.mjskay.com/){.author-link} \
-[BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization (To appear)]{style="color: #D3D3D3"} \
+[BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization]{style="color: #D3D3D3"} \
 [ {{< fa wine-bottle>}} Paper](https://osf.io/preprints/osf/ghru8){ .paper-link } [ []{.simple-icons--osf} OSF](https://osf.io/xd5cj/){.paper-link}
 - **Tasks and Telephones: Threats to Experimental Validity due to Misunderstandings of Visualisation Tasks and Strategies (Position Paper)** \
 [Abhraneel Sarma](https://abhsarma.github.io/){.author-link}, _Sheng Long_, [Michael Correll](https://correll.io/index.php){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link} \
-[BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization (To appear)]{style="color: #D3D3D3"} \
+[BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization]{style="color: #D3D3D3"} \
 [ {{<fa phone>}} Paper](https://osf.io/preprints/osf/d849a){.paper-link}
 - **To Cut or Not To Cut: A Systematic Exploration of Y-Axis Truncation** \
 _Sheng Long_, [Matthew Kay](https://www.mjskay.com/){.author-link} \
@@ -58,3 +62,5 @@ _Sheng Long_, [Matthew Kay](https://www.mjskay.com/){.author-link} \
   - (TA) 2024 Winter 
 - [CS 330 --- Human Computer Interaction](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/330-1.html)
   - (TA)  2024 Fall 
+- [CS 310 --- Scalable Software Architectures](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/310.html)
+  - (TA) 2025 Winter 
