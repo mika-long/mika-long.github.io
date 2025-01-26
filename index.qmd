@@ -6,7 +6,7 @@ search: false
 
 # Sheng Long 🍊 龙晟
 
-### Hello! 👋
+### Hello! [👋]{.wave-emoji}
 
 :::{.column-margin}
 ![Photo taken by Wei Sun.](profile_2.jpg)
