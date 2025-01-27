@@ -106,3 +106,17 @@ df %>%
   shadow_mark(past = T, future = F, alpha = 0.1)
 ```
 
+--- 
+
+We can also plot things that are more high-level summary: 
+
+```{r}
+df %>% group_by(UnitCode, Month) %>% 
+  summarise(AvgMonth = round(sum(RecreationVisits) / n())) %>% 
+  ggplot(aes(x = Month, y = AvgMonth)) +
+  geom_line() + 
+  facet_wrap(~UnitCode) + 
+  scale_x_continuous(breaks = 1:12, labels = 1:12) + 
+  scale_y_continuous(labels = function(x) paste0(x/1000, "K")) -> p 
+```
+
