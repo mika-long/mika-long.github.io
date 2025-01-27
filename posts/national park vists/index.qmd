@@ -5,7 +5,6 @@ format:
     code-fold: true
     reference-location: margin
     citation-location: margin
-    theme: default
 ---
 
 ```{r}
@@ -33,7 +32,7 @@ theme_custom <- function() {
 theme_set(theme_custom())
 ```
 
-
+For a more interactive view of the visitor data one can also check out [this one](https://mika-long.github.io/national_park/). 
 
 First we load the data^[which was obtained from https://www.responsible-datasets-in-context.com/posts/np-data/?tab=explore-the-data]. The file is not quite ready to be merged with other ones, so we make changes to it.  
 

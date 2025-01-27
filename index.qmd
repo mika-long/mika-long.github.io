@@ -14,7 +14,7 @@ search: false
 [ {{< fa graduation-cap >}} ](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link} [ []{.mdi--linkedin}](https://www.linkedin.com/in/sheng-long/){.paper-link}
 :::
 
-I am a Ph.D. candidate at [Northwestern University](https://www.northwestern/edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/).
+I am a Ph.D. candidate at [Northwestern University](https://www.northwestern/edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) at [Mu Collective](https://mucollective.northwestern.edu/).
 
 Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
 
