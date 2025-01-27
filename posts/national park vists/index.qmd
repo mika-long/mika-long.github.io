@@ -43,7 +43,7 @@ df <- read.csv(file = "US-National-Parks_Use_1979-2023_By-Month.csv") %>%
   mutate(ParkName = trimws(ParkName)) %>% 
   mutate(Region = trimws(Region))
 
-head(df)
+knitr::kable(head(df))
 ```
 
 ---
@@ -61,8 +61,12 @@ df %>%
   scale_x_continuous(breaks = 1:12, labels = 1:12) + 
   scale_color_viridis_c()
 ```
+---
+
 
 Let's try animating this! 
+
+First, let's see what the static one looks like: 
 
 ```{r}
 df %>% filter(ParkName == "Acadia") %>% 
@@ -72,6 +76,8 @@ df %>% filter(ParkName == "Acadia") %>%
   scale_x_continuous(breaks = 1:12, labels = 1:12) + 
   scale_y_continuous(labels = function(x) paste0(x/1000, "K"))
 ```
+
+This is the animated version: 
 
 ```{r}
 df %>% filter(ParkName == "Acadia") %>% 
@@ -84,3 +90,19 @@ df %>% filter(ParkName == "Acadia") %>%
   transition_time(Year) + 
   shadow_mark(past = T, future = F, alpha = 0.1)
 ```
+
+We can also do it for the entire United States: 
+
+```{r}
+df %>% 
+  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + 
+  geom_line() + 
+  facet_wrap(~UnitCode) + 
+  scale_x_continuous(breaks = 1:12, labels = 1:12) + 
+  scale_color_viridis_c() + 
+  scale_y_continuous(labels = function(x) paste0(x/1000, "K")) + 
+  labs(title = 'Year: {frame_time}') + 
+  transition_time(Year) + 
+  shadow_mark(past = T, future = F, alpha = 0.1)
+```
+
