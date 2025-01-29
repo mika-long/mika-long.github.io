@@ -36,6 +36,8 @@ For a more interactive view of the visitor data one can also check out [this one
 
 First we load the data^[which was obtained from https://www.responsible-datasets-in-context.com/posts/np-data/?tab=explore-the-data]. The file is not quite ready to be merged with other ones, so we make changes to it.  
 
+Ok then there is the `geojson` file obtained from [here](https://catalog.data.gov/dataset/national-parks-c0904/resource/3ddcf942-ddf1-4e3d-9d70-0432b6029f45). The national park service apparently also have their own javascript [here](https://home1.nps.gov/maps/tools/npmap.js/examples/basic/). 
+
 ```{r}
 df <- read.csv(file = "US-National-Parks_Use_1979-2023_By-Month.csv") %>% 
   tibble(.) %>% 
