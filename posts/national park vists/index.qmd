@@ -1,5 +1,10 @@
 ---
-title: "National Park Visit"
+title: "US National Park Visits"
+author: 
+  - name: "Sheng Long"
+  - orcid: 0000-0000-0000-0000
+license: "CC BY" 
+date: 02/09/2025
 format: 
   html: 
     code-fold: true
@@ -48,77 +53,77 @@ df <- read.csv(file = "US-National-Parks_Use_1979-2023_By-Month.csv") %>%
 knitr::kable(head(df))
 ```
 
----
-# Let's animate things! 
+<!-- --- -->
+<!-- # Let's animate things!  -->
 
-The following is a static graph: 
+<!-- The following is a static graph:  -->
 
-```{r}
-#| column: page 
+<!-- ```{r} -->
+<!-- #| column: page  -->
 
-df %>% 
-  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + 
-  geom_line() + 
-  facet_wrap(~UnitCode) + 
-  scale_x_continuous(breaks = 1:12, labels = 1:12) + 
-  scale_color_viridis_c()
-```
----
+<!-- df %>%  -->
+<!--   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +  -->
+<!--   geom_line() +  -->
+<!--   facet_wrap(~UnitCode) +  -->
+<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) +  -->
+<!--   scale_color_viridis_c() -->
+<!-- ``` -->
+<!-- --- -->
 
 
-Let's try animating this! 
+<!-- Let's try animating this!  -->
 
-First, let's see what the static one looks like: 
+<!-- First, let's see what the static one looks like:  -->
 
-```{r}
-df %>% filter(ParkName == "Acadia") %>% 
-  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + 
-  geom_line() + 
-  scale_color_viridis_c()+ 
-  scale_x_continuous(breaks = 1:12, labels = 1:12) + 
-  scale_y_continuous(labels = function(x) paste0(x/1000, "K"))
-```
+<!-- ```{r} -->
+<!-- df %>% filter(ParkName == "Acadia") %>%  -->
+<!--   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +  -->
+<!--   geom_line() +  -->
+<!--   scale_color_viridis_c()+  -->
+<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) +  -->
+<!--   scale_y_continuous(labels = function(x) paste0(x/1000, "K")) -->
+<!-- ``` -->
 
-This is the animated version: 
+<!-- This is the animated version:  -->
 
-```{r}
-df %>% filter(ParkName == "Acadia") %>% 
-  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + 
-  geom_line(linewidth=1.5) + 
-  scale_color_viridis_c()+ 
-  scale_x_continuous(breaks = 1:12, labels = 1:12) +
-  scale_y_continuous(labels = function(x) paste0(x/1000, "K")) + 
-  labs(title = 'Year: {frame_time}') + 
-  transition_time(Year) + 
-  shadow_mark(past = T, future = F, alpha = 0.1)
-```
+<!-- ```{r} -->
+<!-- df %>% filter(ParkName == "Acadia") %>%  -->
+<!--   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +  -->
+<!--   geom_line(linewidth=1.5) +  -->
+<!--   scale_color_viridis_c()+  -->
+<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) + -->
+<!--   scale_y_continuous(labels = function(x) paste0(x/1000, "K")) +  -->
+<!--   labs(title = 'Year: {frame_time}') +  -->
+<!--   transition_time(Year) +  -->
+<!--   shadow_mark(past = T, future = F, alpha = 0.1) -->
+<!-- ``` -->
 
-We can also do it for the entire United States: 
+<!-- We can also do it for the entire United States:  -->
 
-```{r}
-df %>% 
-  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + 
-  geom_line() + 
-  facet_wrap(~UnitCode) + 
-  scale_x_continuous(breaks = 1:12, labels = 1:12) + 
-  scale_color_viridis_c() + 
-  scale_y_continuous(labels = function(x) paste0(x/1000, "K")) + 
-  labs(title = 'Year: {frame_time}') + 
-  transition_time(Year) + 
-  shadow_mark(past = T, future = F, alpha = 0.1)
-```
+<!-- ```{r} -->
+<!-- df %>%  -->
+<!--   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +  -->
+<!--   geom_line() +  -->
+<!--   facet_wrap(~UnitCode) +  -->
+<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) +  -->
+<!--   scale_color_viridis_c() +  -->
+<!--   scale_y_continuous(labels = function(x) paste0(x/1000, "K")) +  -->
+<!--   labs(title = 'Year: {frame_time}') +  -->
+<!--   transition_time(Year) +  -->
+<!--   shadow_mark(past = T, future = F, alpha = 0.1) -->
+<!-- ``` -->
 
---- 
+<!-- ---  -->
 
-We can also plot things that are more high-level summary: 
+<!-- We can also plot things that are more high-level summary:  -->
 
-```{r}
-df %>% group_by(UnitCode, Month) %>% 
-  summarise(AvgMonth = round(sum(RecreationVisits) / n())) %>% 
-  ggplot(aes(x = Month, y = AvgMonth)) +
-  geom_line() + 
-  facet_wrap(~UnitCode) + 
-  scale_x_continuous(breaks = 1:12, labels = 1:12) + 
-  scale_y_continuous(labels = function(x) paste0(x/1000, "K")) -> p 
-```
+<!-- ```{r} -->
+<!-- df %>% group_by(UnitCode, Month) %>%  -->
+<!--   summarise(AvgMonth = round(sum(RecreationVisits) / n())) %>%  -->
+<!--   ggplot(aes(x = Month, y = AvgMonth)) + -->
+<!--   geom_line() +  -->
+<!--   facet_wrap(~UnitCode) +  -->
+<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) +  -->
+<!--   scale_y_continuous(labels = function(x) paste0(x/1000, "K")) -> p  -->
+<!-- ``` -->
 
