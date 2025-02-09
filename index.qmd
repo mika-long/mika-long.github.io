@@ -20,7 +20,7 @@ Before joining Northwestern, I was a student at [William & Mary](https://www.wm.
 
 ## Research 
 
-My research focuses on developing theoretical frameworks and empirical tools to better understand how people process and interact with abstract visual information. I had also worked on questions that involve more economics and fairness concerns previously.
+My research focuses on developing theoretical frameworks and empirical tools to better understand how people reason about and interact with abstract visual information. I had also worked on questions that involve more economics and fairness concerns previously.
 
 My CV (last updated Jan 2025) is [here](grad_cv.pdf).
 
@@ -31,7 +31,7 @@ My CV (last updated Jan 2025) is [here](grad_cv.pdf).
 - **Seeing Eye to AI? Applying Deep-Feature-Based Similarity Metrics to Information Visualization** \
 _Sheng Long_, [Angelos Chatzimparmpas](https://www.angeloschatzimparmpas.com/){.author-link}, [Emma Alexamder](https://www.alexander.vision/emma){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, [Jessica Hullman](http://users.eecs.northwestern.edu/~jhullman/){.author-link} \
 [CHI'25: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems (To appear)]{style="color: #D3D3D3"} \
-[ []{.simple-icons--osf} OSF](https://osf.io/dj2ms/){.paper-link}
+[ []{.simple-icons--osf} OSF](https://osf.io/preprints/osf/z6s59){.paper-link}
 - **Old Wine in a New Bottle? Analyzing Visual Lineups with Signal Detection Theory** \
 _Sheng Long_, [Matthew Kay](https://www.mjskay.com/){.author-link} \
 [BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization]{style="color: #D3D3D3"} \
