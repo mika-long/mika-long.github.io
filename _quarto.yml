@@ -12,6 +12,8 @@ website:
         text: Home 
       - text: CV
         href: grad_cv.pdf
+      - href: posts.qmd
+        text: Notes
     
   page-footer: 
     background: light 
