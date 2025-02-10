@@ -155,21 +155,11 @@ df %>%
 ```
 
 :::{.column-margin}
-There are a lot of things happening at the same time ... What if I want to identify outliers? 
+There are a lot of things happening at the same time ... What if I want to identify outliers? What if I want to know whether geographically close national parks are going to have similar visitation patterns? This is why I built the [interactive](https://mika-long.github.io/national_park/) version. 
 :::
 
+# Conclusions 
 
-<!-- ---  -->
+The national park services provide a rich set of publicly available data and interesting APIs. One could stay in the relam of `R` and use packages like [`leaflet`](https://rstudio.github.io/leaflet/) to plot things like locations of national parks. The National Park Service also has its official [API](https://www.nps.gov/subjects/developer/guides.htm) as well as tools that allow for map making ([NPMap.js](https://home1.nps.gov/maps/tools/npmap.js/)) and even icons designed specifically for NPS^[https://github.com/nationalparkservice/symbol-library]? I am very pleasantly surprised to have found all this information.  
 
-<!-- We can also plot things that are more high-level summary:  -->
-
-<!-- ```{r} -->
-<!-- df %>% group_by(UnitCode, Month) %>%  -->
-<!--   summarise(AvgMonth = round(sum(RecreationVisits) / n())) %>%  -->
-<!--   ggplot(aes(x = Month, y = AvgMonth)) + -->
-<!--   geom_line() +  -->
-<!--   facet_wrap(~UnitCode) +  -->
-<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) +  -->
-<!--   scale_y_continuous(labels = function(x) paste0(x/1000, "K")) -> p  -->
-<!-- ``` -->
 
