@@ -14,6 +14,8 @@ format:
     code-fold: true
     reference-location: margin
     citation-location: margin
+execute: 
+  cache: true 
 ---
 
 ```{r}
@@ -140,16 +142,8 @@ We can make it animated by using the [`gganimate`](https://gganimate.com/) packa
 
 
 ```{r}
-#| layout-ncol: 2
 #| warning: false 
-
-
-df %>% filter(ParkName == "Acadia") %>%
-  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +
-  geom_line() +
-  scale_color_viridis_c()+
-  scale_x_continuous(breaks = 1:12, labels = 1:12) +
-  scale_y_continuous(labels = function(x) paste0(x/1000, "K"))
+#| cache: true 
 
 df %>% filter(ParkName == "Acadia") %>%
   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +
@@ -170,6 +164,9 @@ We can also do this for the entire set of national parks:
 
 ```{r}
 #| warning: false 
+#| cache: true 
+
+
 df %>%
   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +
   geom_line() +
