@@ -29,8 +29,7 @@ Fechner was most famous for purporting two laws: Weber's law and Fechner's law, 
 
 ## Absolute vs. Difference Threshold 
 
-
-
+... 
 
 # Related works in visualization 
 
