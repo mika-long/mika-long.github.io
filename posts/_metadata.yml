@@ -6,4 +6,4 @@ freeze: auto
 # enable banner style title blocks 
 # title-block-style: manuscript
 
-draft-mode: gone
+draft-mode: visible

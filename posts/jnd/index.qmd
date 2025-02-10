@@ -2,9 +2,9 @@
 title: "Just Noticeable Difference"
 author:
   - name: Sheng Long 
-date: 10-29-2024
+date: last-modified
 categories: [Psychophysics]
-draft: false 
+draft: true 
 bibliography: jnd.bib
 reference-location: margin
 citation: true

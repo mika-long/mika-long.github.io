@@ -2,9 +2,13 @@
 title: "US National Park Visits"
 author: 
   - name: "Sheng Long"
-  - orcid: 0000-0000-0000-0000
+    orcid: 0009-0000-9752-5898
+citation: 
+  url: https://mika-long.com/posts/national%20park%20vists/
 license: "CC BY" 
-date: 02/09/2025
+date: last-modified
+categories: [fun]
+draft: true 
 format: 
   html: 
     code-fold: true
@@ -23,25 +27,29 @@ library(glue)
 library(gganimate)
 ```
 
+As part of [International Love Data Week](https://www.icpsr.umich.edu/web/about/cms/3799), I participated in the [Northwestern Visualization Contest](https://www.northwestern.edu/provost/about/ir/love-data/2025/data-viz-championship.html)^[sadly didn't get placed QwQ]. I was not quite satisfied with the submission I produced, so I worked on it some more (creaing both an `R` package for the NPS API wrapper and a more [interactive view](https://mika-long.github.io/national_park/) of the data.)
+
 ```{r}
-# custom theme 
+# set custom theme 
 theme_custom <- function() {
   theme_minimal() + 
   theme(
-    text = element_text(family = "Avenir"), 
-    plot.title = element_text(family = "Avenir"), 
-    axis.text = element_text(family="Avenir")
+    text = element_text(family = "Arial"), 
+    plot.title = element_text(family = "Arial"), 
+    axis.text = element_text(family="Arial")
   )
 }
 
-theme_set(theme_custom())
+  theme_set(theme_custom())
 ```
 
-For a more interactive view of the visitor data one can also check out [this one](https://mika-long.github.io/national_park/). 
+# When(-ish) do people visit national parks? 
 
-First we load the data^[which was obtained from https://www.responsible-datasets-in-context.com/posts/np-data/?tab=explore-the-data]. The file is not quite ready to be merged with other ones, so we make changes to it.  
+We first load the data obtained from https://www.responsible-datasets-in-context.com/posts/np-data. 
 
-Ok then there is the `geojson` file obtained from [here](https://catalog.data.gov/dataset/national-parks-c0904/resource/3ddcf942-ddf1-4e3d-9d70-0432b6029f45). The national park service apparently also have their own javascript [here](https://home1.nps.gov/maps/tools/npmap.js/examples/basic/). 
+<!-- First we load the data^[which was obtained from /?tab=explore-the-data]. The file is not quite ready to be merged with other ones, so we make changes to it.   -->
+
+<!-- Ok then there is the `geojson` file obtained from [here](https://catalog.data.gov/dataset/national-parks-c0904/resource/3ddcf942-ddf1-4e3d-9d70-0432b6029f45). The national park service apparently also have their own javascript [here](https://home1.nps.gov/maps/tools/npmap.js/examples/basic/).  -->
 
 ```{r}
 df <- read.csv(file = "US-National-Parks_Use_1979-2023_By-Month.csv") %>% 
@@ -53,65 +61,103 @@ df <- read.csv(file = "US-National-Parks_Use_1979-2023_By-Month.csv") %>%
 knitr::kable(head(df))
 ```
 
-<!-- --- -->
-<!-- # Let's animate things!  -->
+My first attempt was to plot a small multiples plot of the monthly average `RecreationVisits` to see what the general trend looks like: 
 
-<!-- The following is a static graph:  -->
+```{r}
+#| warning: false 
+df %>% select(UnitCode, Year, Month, RecreationVisits) %>%
+  group_by(UnitCode, Month) %>% 
+  summarise(avg_rec_visits = round(mean(RecreationVisits))) %>% 
+  ggplot(aes(x = Month, y = avg_rec_visits)) + 
+  geom_line() + 
+  facet_wrap(~UnitCode) + 
+  scale_x_continuous(breaks = 1:12, labels = 1:12) + 
+  scale_y_continuous(labels = function(x) paste0(x/1000, "K"))
+```
 
-<!-- ```{r} -->
-<!-- #| column: page  -->
+Clearly some of the really popular national parks (such as Yellow Stone `YELL`, Yosemite `YOSE`) have average monthly visits on a entirely different scale than some of the other national parks. To plot seasonal patterns better, we could first calculate the average monthly visits, then "scale" the monthly visits to be percentage of the maximum average monthly visit. 
 
-<!-- df %>%  -->
-<!--   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +  -->
-<!--   geom_line() +  -->
-<!--   facet_wrap(~UnitCode) +  -->
-<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) +  -->
-<!--   scale_color_viridis_c() -->
-<!-- ``` -->
-<!-- --- -->
+```{r}
+#| warning: false 
+
+df %>% select(UnitCode, Year, Month, RecreationVisits) %>%
+  group_by(UnitCode, Month) %>% 
+  summarise(avg_rec_visits = round(mean(RecreationVisits))) %>% 
+  group_by(UnitCode) %>% 
+  mutate(pct_of_max = avg_rec_visits / max(avg_rec_visits)) %>% 
+  ggplot(aes(x = Month, y = pct_of_max)) + 
+  geom_line() + 
+  facet_wrap(~UnitCode) + 
+   scale_x_continuous(breaks = 1:12, labels = 1:12)
+```
+
+:::{.column-margin}
+A part of me wants to create a [joy plot/ridge line](https://observablehq.com/@d3/ridgeline-plot) version of this graph but that's a challenge for later after I figure out how to use `OJS` with `Quarto`...  
+:::
+
+This graph gives a better sense of what are the seasonal variations in visit patterns across national parks. But it also glosses over a lot of details happening over the years. That's when I thought maybe an animated version of the monthly visit data across the years could be something cool to try out. 
+
+## Animating things 
+
+First, if we were to plot everything out all at once, what would it look like? 
+
+```{r}
+#| column: page
+#| warning: false 
+
+df %>%
+  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +
+  geom_line() +
+  facet_wrap(~UnitCode) +
+  scale_x_continuous(breaks = 1:12, labels = 1:12) +
+  scale_color_viridis_c()
+```
+
+We can make it animated by using the [`gganimate`](https://gganimate.com/) package. Let's first start with a single national park, say Acadia `ACAD`: 
+
+```{r}
+#| layout-ncol: 2
+#| warning: false 
 
 
-<!-- Let's try animating this!  -->
+df %>% filter(ParkName == "Acadia") %>%
+  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +
+  geom_line() +
+  scale_color_viridis_c()+
+  scale_x_continuous(breaks = 1:12, labels = 1:12) +
+  scale_y_continuous(labels = function(x) paste0(x/1000, "K"))
 
-<!-- First, let's see what the static one looks like:  -->
+df %>% filter(ParkName == "Acadia") %>%
+  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +
+  geom_line(linewidth=1.5) +
+  scale_color_viridis_c()+
+  scale_x_continuous(breaks = 1:12, labels = 1:12) +
+  scale_y_continuous(labels = function(x) paste0(x/1000, "K")) +
+  labs(title = 'Year: {frame_time}') +
+  transition_time(Year) +
+  shadow_mark(past = T, future = F, alpha = 0.1)
+```
 
-<!-- ```{r} -->
-<!-- df %>% filter(ParkName == "Acadia") %>%  -->
-<!--   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +  -->
-<!--   geom_line() +  -->
-<!--   scale_color_viridis_c()+  -->
-<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) +  -->
-<!--   scale_y_continuous(labels = function(x) paste0(x/1000, "K")) -->
-<!-- ``` -->
+We can also do this for the entire set of national parks: 
 
-<!-- This is the animated version:  -->
+```{r}
+#| warning: false 
+df %>%
+  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +
+  geom_line() +
+  facet_wrap(~UnitCode) +
+  scale_x_continuous(breaks = 1:12, labels = 1:12) +
+  scale_color_viridis_c() +
+  scale_y_continuous(labels = function(x) paste0(x/1000, "K")) +
+  labs(title = 'Year: {frame_time}') +
+  transition_time(Year) +
+  shadow_mark(past = T, future = F, alpha = 0.1)
+```
 
-<!-- ```{r} -->
-<!-- df %>% filter(ParkName == "Acadia") %>%  -->
-<!--   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +  -->
-<!--   geom_line(linewidth=1.5) +  -->
-<!--   scale_color_viridis_c()+  -->
-<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) + -->
-<!--   scale_y_continuous(labels = function(x) paste0(x/1000, "K")) +  -->
-<!--   labs(title = 'Year: {frame_time}') +  -->
-<!--   transition_time(Year) +  -->
-<!--   shadow_mark(past = T, future = F, alpha = 0.1) -->
-<!-- ``` -->
+:::{.column-margin}
+There are a lot of things happening at the same time ... What if I want to identify outliers? 
+:::
 
-<!-- We can also do it for the entire United States:  -->
-
-<!-- ```{r} -->
-<!-- df %>%  -->
-<!--   ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) +  -->
-<!--   geom_line() +  -->
-<!--   facet_wrap(~UnitCode) +  -->
-<!--   scale_x_continuous(breaks = 1:12, labels = 1:12) +  -->
-<!--   scale_color_viridis_c() +  -->
-<!--   scale_y_continuous(labels = function(x) paste0(x/1000, "K")) +  -->
-<!--   labs(title = 'Year: {frame_time}') +  -->
-<!--   transition_time(Year) +  -->
-<!--   shadow_mark(past = T, future = F, alpha = 0.1) -->
-<!-- ``` -->
 
 <!-- ---  -->
 
