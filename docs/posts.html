@@ -81,9 +81,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -170,7 +170,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(0)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3RhdGlzdGljcw==">Statistics <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -200,7 +200,39 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-
+<div class="quarto-post image-right" data-index="0" data-categories="U3RhdGlzdGljcw==" data-listing-date-sort="1740691364000" data-listing-file-modified-sort="1740691364736" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="978">
+<div class="thumbnail">
+<p><a href="./posts/sgt and st/index.html" class="no-external"></a></p><a href="./posts/sgt and st/index.html" class="no-external">
+<p class="card-img-top"><img src="posts/sgt and st/index_files/figure-html/unnamed-chunk-3-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/sgt and st/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/sgt and st/index.html" class="no-external">Skewed Generalized T Distribution and Skewed T Distribution</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/sgt and st/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('U3RhdGlzdGljcw=='); return false;">
+Statistics
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/sgt and st/index.html" class="no-external">To avoid doing duplicated work, here are my notes on the skewed <span class="math inline">\(t\)</span> distribution, skewed generalized <span class="math inline">\(t\)</span> distribution, <code>R</code> packages that implement them, and their…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/sgt and st/index.html" class="no-external">
+<div class="listing-date">
+Feb 27, 2025
+</div>
+<div class="listing-author">
+Sheng Long
+</div>
+</a>
+</div>
+</div>
 </div>
 <div class="listing-no-matching d-none">
 No matching items
