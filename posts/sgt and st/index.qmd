@@ -73,6 +73,7 @@ I then implemented random data generation using `javascript` and the [`jstat` li
 ---
 
 To conclude, the way that the parameters map to each other is as follows: 
+
 - mean: $\mu$ (`sgt` vignette)
 - scale: $\phi$ [@theodossiouFinancialDataSkewed1998], $\sigma$ (`sgt` vignette), $\omega$ [@azzaliniDistributionsGeneratedPerturbation2003]
 - skewness: $\lambda$, $alpha$  
