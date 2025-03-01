@@ -20,12 +20,11 @@ website:
     left: © 2024 Sheng Long 
     right: This website is built with {{< fa brands r-project title="R Project" >}}, {{< fa brands github title="Github" >}}, [Quarto](https://quarto.org/), [fontawesome](https://github.com/quarto-ext/fontawesome), [iconify.design](https://iconify.design/), and [faviconer](http://faviconer.com/icon/latest).
 
+  search: false
+
 format:
   html:
     css: styles.css
     toc: false
-    mainfont: Source Sans Pro
+    mainfont: Noto Sans SC
     page-layout: full
-
-
-
