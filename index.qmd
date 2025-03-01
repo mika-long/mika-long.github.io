@@ -11,7 +11,7 @@ search: false
 ::: column-margin
 ![Photo taken by Wei Sun.](profile_2.jpg)
 
-[{{< fa graduation-cap >}}](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link}
+[{{< fa graduation-cap >}}](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link} [ []{.mdi--linkedin}](https://www.linkedin.com/in/sheng-long/){.paper-link}
 
 ### News
 
@@ -37,11 +37,11 @@ My CV (last updated Jan 2025) is [here](grad_cv.pdf).
 -   **Seeing Eye to AI? Applying Deep-Feature-Based Similarity Metrics to Information Visualization**\
     *Sheng Long*, [Angelos Chatzimparmpas](https://www.angeloschatzimparmpas.com/){.author-link}, [Emma Alexamder](https://www.alexander.vision/emma){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, [Jessica Hullman](http://users.eecs.northwestern.edu/~jhullman/){.author-link}\
     [CHI'25: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems (To appear)]{style="color: #D3D3D3"}\
-    [OSF Preprint](https://osf.io/preprints/osf/z6s59_v1){.paper-link}
+    [ []{.simple-icons--osf} OSF Preprint](https://osf.io/preprints/osf/z6s59_v1){.paper-link}
 -   **Old Wine in a New Bottle? Analyzing Visual Lineups with Signal Detection Theory**\
     *Sheng Long*, [Matthew Kay](https://www.mjskay.com/){.author-link}\
     [BELIV '24: Evaluation and Beyond --- Methodological Approaches for Visualization]{style="color: #D3D3D3"}\
-    [{{< fa wine-bottle>}} Paper](https://www.computer.org/csdl/proceedings-article/beliv/2024/284600a025/22a0EZbagkE){.paper-link} [OSF](https://osf.io/xd5cj/){.paper-link}
+    [{{< fa wine-bottle>}} Paper](https://www.computer.org/csdl/proceedings-article/beliv/2024/284600a025/22a0EZbagkE){.paper-link} [ []{.simple-icons--osf} OSF](https://osf.io/xd5cj/){.paper-link}
 -   **Tasks and Telephones: Threats to Experimental Validity due to Misunderstandings of Visualisation Tasks and Strategies (Position Paper)**\
     [Abhraneel Sarma](https://abhsarma.github.io/){.author-link}, *Sheng Long*, [Michael Correll](https://correll.io/index.php){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}\
     [BELIV '24: Evaluation and Beyond --- Methodological Approaches for Visualization]{style="color: #D3D3D3"}\
@@ -49,15 +49,15 @@ My CV (last updated Jan 2025) is [here](grad_cv.pdf).
 -   **To Cut or Not To Cut: A Systematic Exploration of Y-Axis Truncation**\
     *Sheng Long*, [Matthew Kay](https://www.mjskay.com/){.author-link}\
     [CHI '24: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems]{style="color: #D3D3D3"}\
-    [{{< fa scissors >}} Paper](https://dl.acm.org/doi/10.1145/3613904.3642102){.paper-link} [OSF](){.paper-link}
+    [{{< fa scissors >}} Paper](https://dl.acm.org/doi/10.1145/3613904.3642102){.paper-link} [ []{.simple-icons--osf} OSF](){.paper-link}
 -   **Regulation of Algorithmic Collusion**\
     [Jason Hartline](https://sites.northwestern.edu/hartline/){.author-link}\*, *Sheng Long*\*, [Chenhao Zhang](https://eecs.northwestern.edu/~czu2221/){.author-link}\*\
     [CSLAW '24: Proceedings of the Symposium on Computer Science and Law]{style="color: #D3D3D3"}\
-    [Paper](https://dl.acm.org/doi/10.1145/3614407.3643706){.paper-link}
+    [{{<fa scroll>}} Paper](https://dl.acm.org/doi/10.1145/3614407.3643706){.paper-link}
 -   **Screening with Disadvantaged Agents**\
     [Hedyeh Beyhaghi](https://hedyehbeyhaghi.github.io/){.author-link}\*, [Modibo K. Camara](https://mkcamara.github.io/){.author-link}\*, [Jason Hartline](https://sites.northwestern.edu/hartline/){.author-link}\*, [Aleck Johnsen](http://users.eecs.northwestern.edu/~acj861/){.author-link}\*, *Sheng Long*\*\
     [FORC '23: Proceedings of the 4th Symposium on Foundations of Responsible Computing]{style="color: #D3D3D3"}\
-    [Paper](https://arxiv.org/abs/2305.18068){.paper-link} [{{< fa brands youtube>}} EC'22 Workshop Talk](https://www.youtube.com/watch?v=7OwSoTD9BtQ&t=88s){.paper-link}
+    [{{<fa scroll>}} Paper](https://arxiv.org/abs/2305.18068){.paper-link} [{{< fa brands youtube>}} EC'22 Workshop Talk](https://www.youtube.com/watch?v=7OwSoTD9BtQ&t=88s){.paper-link}
 
 ## Teaching
 
