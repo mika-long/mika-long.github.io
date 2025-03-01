@@ -8,59 +8,66 @@ search: false
 
 ### Hello! [👋]{.wave-emoji}
 
-:::{.column-margin}
+::: column-margin
 ![Photo taken by Wei Sun.](profile_2.jpg)
 
-[ {{< fa graduation-cap >}} ](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link} [ []{.mdi--linkedin}](https://www.linkedin.com/in/sheng-long/){.paper-link}
+[{{< fa graduation-cap >}}](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link}
+
+### News
+
+**02/14/25**     I got an summer internship offer from Sony Japan! Super excited to be learning and working in 🗼 this summer
+
+**01/20/25**     Our paper, *Seeing Eye to AI ?*, is accepted to CHI 2025 at 🎡!
 :::
 
 I am a Ph.D. candidate at [Northwestern University](https://www.northwestern/edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) at [Mu Collective](https://mucollective.northwestern.edu/).
 
 Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
 
-## Research 
+## Research
 
 My research focuses on developing theoretical frameworks and empirical tools to better understand how people reason about and interact with abstract visual information. I had also worked on questions that involve more economics and fairness concerns previously.
 
 My CV (last updated Jan 2025) is [here](grad_cv.pdf).
 
-## Publications 
+## Publications
 
 [\* indicates equal contribution]{.aside style="color: #D3D3D3"}
 
-- **Seeing Eye to AI? Applying Deep-Feature-Based Similarity Metrics to Information Visualization** \
-_Sheng Long_, [Angelos Chatzimparmpas](https://www.angeloschatzimparmpas.com/){.author-link}, [Emma Alexamder](https://www.alexander.vision/emma){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, [Jessica Hullman](http://users.eecs.northwestern.edu/~jhullman/){.author-link} \
-[CHI'25: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems (To appear)]{style="color: #D3D3D3"} \
-[ []{.simple-icons--osf} OSF Preprint](https://osf.io/preprints/osf/z6s59_v1){.paper-link} 
-- **Old Wine in a New Bottle? Analyzing Visual Lineups with Signal Detection Theory** \
-_Sheng Long_, [Matthew Kay](https://www.mjskay.com/){.author-link} \
-[BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization]{style="color: #D3D3D3"} \
-[ {{< fa wine-bottle>}} Paper](https://www.computer.org/csdl/proceedings-article/beliv/2024/284600a025/22a0EZbagkE){ .paper-link } [ []{.simple-icons--osf} OSF](https://osf.io/xd5cj/){.paper-link}
-- **Tasks and Telephones: Threats to Experimental Validity due to Misunderstandings of Visualisation Tasks and Strategies (Position Paper)** \
-[Abhraneel Sarma](https://abhsarma.github.io/){.author-link}, _Sheng Long_, [Michael Correll](https://correll.io/index.php){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link} \
-[BELIV ‘24: Evaluation and Beyond — Methodological Approaches for Visualization]{style="color: #D3D3D3"} \
-[ {{<fa phone>}} Paper](https://www.computer.org/csdl/proceedings-article/beliv/2024/284600a033/22a0GAI7K7e){.paper-link}
-- **To Cut or Not To Cut: A Systematic Exploration of Y-Axis Truncation** \
-_Sheng Long_, [Matthew Kay](https://www.mjskay.com/){.author-link} \
-[CHI ‘24: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems]{style="color: #D3D3D3"} \
-[ {{< fa scissors >}} Paper](https://dl.acm.org/doi/10.1145/3613904.3642102){.paper-link} [ []{.simple-icons--osf} OSF](){.paper-link}
-- **Regulation of Algorithmic Collusion** \
-[Jason Hartline](https://sites.northwestern.edu/hartline/){.author-link}\*, _Sheng Long_\*, [Chenhao Zhang](https://eecs.northwestern.edu/~czu2221/){.author-link}\* \
-[CSLAW ‘24: Proceedings of the Symposium on Computer Science and Law]{style="color: #D3D3D3"} \
-[ []{.mdi--paper-outline} Paper](https://dl.acm.org/doi/10.1145/3614407.3643706){.paper-link}
-- **Screening with Disadvantaged Agents** \
-[Hedyeh Beyhaghi](https://hedyehbeyhaghi.github.io/){.author-link}\*, [Modibo K. Camara](https://mkcamara.github.io/){.author-link}\*, [Jason Hartline](https://sites.northwestern.edu/hartline/){.author-link}\*, [Aleck Johnsen](http://users.eecs.northwestern.edu/~acj861/){.author-link}\*, _Sheng Long_\* \
-[FORC ‘23: Proceedings of the 4th Symposium on Foundations of Responsible Computing]{style="color: #D3D3D3"} \
-[[]{.mdi--paper-outline} Paper](https://arxiv.org/abs/2305.18068){.paper-link} [ {{< fa brands youtube>}} EC'22 Workshop Talk](https://www.youtube.com/watch?v=7OwSoTD9BtQ&t=88s){.paper-link}
+-   **Seeing Eye to AI? Applying Deep-Feature-Based Similarity Metrics to Information Visualization**\
+    *Sheng Long*, [Angelos Chatzimparmpas](https://www.angeloschatzimparmpas.com/){.author-link}, [Emma Alexamder](https://www.alexander.vision/emma){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, [Jessica Hullman](http://users.eecs.northwestern.edu/~jhullman/){.author-link}\
+    [CHI'25: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems (To appear)]{style="color: #D3D3D3"}\
+    [OSF Preprint](https://osf.io/preprints/osf/z6s59_v1){.paper-link}
+-   **Old Wine in a New Bottle? Analyzing Visual Lineups with Signal Detection Theory**\
+    *Sheng Long*, [Matthew Kay](https://www.mjskay.com/){.author-link}\
+    [BELIV '24: Evaluation and Beyond --- Methodological Approaches for Visualization]{style="color: #D3D3D3"}\
+    [{{< fa wine-bottle>}} Paper](https://www.computer.org/csdl/proceedings-article/beliv/2024/284600a025/22a0EZbagkE){.paper-link} [OSF](https://osf.io/xd5cj/){.paper-link}
+-   **Tasks and Telephones: Threats to Experimental Validity due to Misunderstandings of Visualisation Tasks and Strategies (Position Paper)**\
+    [Abhraneel Sarma](https://abhsarma.github.io/){.author-link}, *Sheng Long*, [Michael Correll](https://correll.io/index.php){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}\
+    [BELIV '24: Evaluation and Beyond --- Methodological Approaches for Visualization]{style="color: #D3D3D3"}\
+    [{{<fa phone>}} Paper](https://www.computer.org/csdl/proceedings-article/beliv/2024/284600a033/22a0GAI7K7e){.paper-link}
+-   **To Cut or Not To Cut: A Systematic Exploration of Y-Axis Truncation**\
+    *Sheng Long*, [Matthew Kay](https://www.mjskay.com/){.author-link}\
+    [CHI '24: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems]{style="color: #D3D3D3"}\
+    [{{< fa scissors >}} Paper](https://dl.acm.org/doi/10.1145/3613904.3642102){.paper-link} [OSF](){.paper-link}
+-   **Regulation of Algorithmic Collusion**\
+    [Jason Hartline](https://sites.northwestern.edu/hartline/){.author-link}\*, *Sheng Long*\*, [Chenhao Zhang](https://eecs.northwestern.edu/~czu2221/){.author-link}\*\
+    [CSLAW '24: Proceedings of the Symposium on Computer Science and Law]{style="color: #D3D3D3"}\
+    [Paper](https://dl.acm.org/doi/10.1145/3614407.3643706){.paper-link}
+-   **Screening with Disadvantaged Agents**\
+    [Hedyeh Beyhaghi](https://hedyehbeyhaghi.github.io/){.author-link}\*, [Modibo K. Camara](https://mkcamara.github.io/){.author-link}\*, [Jason Hartline](https://sites.northwestern.edu/hartline/){.author-link}\*, [Aleck Johnsen](http://users.eecs.northwestern.edu/~acj861/){.author-link}\*, *Sheng Long*\*\
+    [FORC '23: Proceedings of the 4th Symposium on Foundations of Responsible Computing]{style="color: #D3D3D3"}\
+    [Paper](https://arxiv.org/abs/2305.18068){.paper-link} [{{< fa brands youtube>}} EC'22 Workshop Talk](https://www.youtube.com/watch?v=7OwSoTD9BtQ&t=88s){.paper-link}
 
-## Teaching 
-- [CS 212 --- Mathematical Foundations of Computer Science](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/212.html)
-  - (TA) 2021 Fall, 2022 Winter, 2023 Winter 
-- [CS 332 --- Online Markets](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/332.html)
-  - (TA) 2022 Fall
-- [CS 333 --- Interactive Information Visualization](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/333.html)
-  - (TA) 2024 Winter 
-- [CS 330 --- Human Computer Interaction](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/330-1.html)
-  - (TA)  2024 Fall 
-- [CS 310 --- Scalable Software Architectures](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/310.html)
-  - (TA) 2025 Winter 
+## Teaching
+
+-   [CS 212 --- Mathematical Foundations of Computer Science](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/212.html)
+    -   (TA) 2021 Fall, 2022 Winter, 2023 Winter
+-   [CS 332 --- Online Markets](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/332.html)
+    -   (TA) 2022 Fall
+-   [CS 333 --- Interactive Information Visualization](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/333.html)
+    -   (TA) 2024 Winter
+-   [CS 330 --- Human Computer Interaction](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/330-1.html)
+    -   (TA) 2024 Fall
+-   [CS 310 --- Scalable Software Architectures](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/310.html)
+    -   (TA) 2025 Winter
