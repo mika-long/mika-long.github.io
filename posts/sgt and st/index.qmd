@@ -7,6 +7,9 @@ bibliography: ref.bib
 date: last-modified
 reference-location: margin
 draft: false
+language:
+  title-block-published: "Updated"
+code-overflow: wrap
 ---
 
 ```{r}
@@ -24,7 +27,7 @@ To avoid doing duplicated work, here are my notes on the skewed $t$ distribution
 
 # What is a "skewed generalization t distribution"? 
 
-According to [@hansenInstrumentalVariablesEstimation2010], the skewed generalized t distribution (**SGT**) is a flexible distribution that involve a _small number of distributional parameters_ and permit modling a _wider range of data characteristics_.^[... than Gaussian, Laplace, student t and many other common distributions]
+According to [@hansenInstrumentalVariablesEstimation2010], the skewed generalized t distribution (**SGT**) is a flexible distribution that involve a _small number of distributional parameters_ and permit modeling a _wider range of data characteristics_.^[... than Gaussian, Laplace, student t and many other common distributions]
 
 SGT was obtained by [@theodossiouFinancialDataSkewed1998] and can be defined by 
 $$
@@ -36,6 +39,8 @@ where $B(\cdot, \cdot)$ is the beta function, $m$ is the mode of $y$, and the pa
 - Setting $p = 2$ yields the **skewed t** (ST) distribution. 
   - Setting $\lambda = 0$ yields **student t** distribution
   - Setting $pq = 1$ yields the **skewed Cauchy** distribution 
+  
+Note that the above function was obtained from [@hansenInstrumentalVariablesEstimation2010], which had unbalanced parentheses ...So I had to modify it based on the function definition provided in the `sgt` package vignette. 
 
 ---
 
@@ -50,6 +55,23 @@ where $$m = \frac{2v\sigma \lambda q^{1/p} B(2/p, q - 1/p)}{ B(1/p, q) }$$ and $
 
 The $\lambda$ parameter controls the _skewness_ of the distribution. $p$ and $q$ control the _kurtosis_ of the distribution ($p$ controls the height and $q$ controls the tails). As $p$ and $q$ get smaller, the kurtosis increases. 
 
+---
+
+The actual probability density function, `dsgt`, looks like this: 
+
+```{r}
+#| eval: false
+
+
+dsgt(x, mu = 0, sigma = 1, lambda = 0, p = 2, q = Inf, mean.cent = TRUE, var.adj = TRUE, log = FALSE)
+```
+
+It is worth explaining what the two flags, `mean.cent` and `var.adj`, control. If `mean.cent` is `FALSE`, then $\mu$ is the **mode** of the distribution, and $m = 0$. All the $x - \mu + m$ in the pdf would thus just become $x - \mu$. Otherwise, if `mean.cent` is `TRUE`, which is the default case, then $m$ is essentially a centering adjustment. 
+
+If `var.adj` is `TRUE`, which is the default case, then $\sigma$ is scaled such that $\sigma^2$ is the variance of the distribution. This is achieved by using $v$. 
+
+For my own purpose, I should specify `mean.cent = FALSE`, which would make `mu` the mode, and the area under the curve would be calculated as `(1 - lambda)/2`. 
+
 ## Skewed t distribution
 
 When I was first experimenting with the project, I found this other package, `sn`.^[... source [here](https://cran.r-project.org/web/packages/sn/index.html). This was published in 2023, which is later than `sgt` (published in ~2013).] The main focus of this package was on the **skewed normal** distribution, but they nevertheless included calculations for **skewed t** as well. 
@@ -58,7 +80,9 @@ It was only later that I realized that skewed t **is NOT** equivalent to skewed 
 
 ::: {.callout-note collapse="true"}
 ## Some multi-variate skewed t  
-I found this paper referneced in the manual of `sn` --- [@azzaliniDistributionsGeneratedPerturbation2003].^[... the focus here is more on the multi-variate version of skewed $t$] The authors provided mathematical notations that has a cleaner mapping to the `R` functions in `sn`. The skewed $t$ distribution is defined as the one corresponding to the transformation $$Y = \xi + V^{-1/2} Z$$ where $Z$ has density function ... with $\xi = 0$ and $V \sim \chi_\nu^2 / \nu$, independent of $Z$. The density of $Y$ is thus defined as $$f_Y(y) = 2 t_d(y; \nu) T_1\left( \alpha^T \omega^{-1} (y - \xi) \left(\frac{\nu + d}{Q_y + \nu}\right)^{1/2}; \nu + d  \right)$$
+I found this paper referenced in the manual of `sn` --- [@azzaliniDistributionsGeneratedPerturbation2003].^[... the focus here is more on the multi-variate version of skewed $t$] The authors provided mathematical notations that has a cleaner mapping to the `R` functions in `sn`. The skewed $t$ distribution is defined as the one corresponding to the transformation $$Y = \xi + V^{-1/2} Z$$ where $Z$ has density function ... with $\xi = 0$ and $V \sim \chi_\nu^2 / \nu$, independent of $Z$. The density of $Y$ is thus defined as $$f_Y(y) = 2 t_d(y; \nu) T_1\left( \alpha^T \omega^{-1} (y - \xi) \left(\frac{\nu + d}{Q_y + \nu}\right)^{1/2}; \nu + d  \right)$$
+
+Maybe this way of paramterizing is related to the Fernandez and Steel [1998] approach? See [this StackExchange answer](https://stats.stackexchange.com/questions/276327/whats-the-skewed-t-distribution).
 :::
 
 Without delving too much into the multi-variate distribution, I arrived at the conclusion that this is the pdf I need for my own purpose: 
@@ -92,11 +116,13 @@ $$
 
 library(sgt)
 x_values <- seq(-5, 5, by = 0.01)
-pdf_values <- dsgt(x_values)
+
 cdf_values <- psgt(x_values)
 ```
 
 ```{r}
+pdf_values <- dsgt(x_values, mu = 1, sigma = 1, lambda = -0.3, p = 3, q = 100, mean.cent = FALSE)
+
 # Create a data frame for plotting
 plot_data <- data.frame(x = x_values, density = pdf_values)
 
