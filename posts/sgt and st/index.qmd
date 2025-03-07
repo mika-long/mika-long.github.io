@@ -29,7 +29,34 @@ To avoid doing duplicated work, here are my notes on the skewed $t$ distribution
 
 According to [@hansenInstrumentalVariablesEstimation2010], the skewed generalized t distribution (**SGT**) is a flexible distribution that involve a _small number of distributional parameters_ and permit modeling a _wider range of data characteristics_.^[... than Gaussian, Laplace, student t and many other common distributions]
 
-SGT was obtained by [@theodossiouFinancialDataSkewed1998] and can be defined by 
+SGT was first obtained by [@theodossiouFinancialDataSkewed1998]. Theodossious defined the PDF as follows: 
+
+$$
+f(x| k, n, \lambda, \sigma^2) = \begin{cases}
+f_1 = C(1+(k/(n-2))\theta^{-k} \times (1-\lambda)^{-k} | x / \sigma|^k)^{-(n+1)/k} \text{ for } x < 0 \\ 
+f_2 = C(1+(k/(n-2))\theta^{-k} \times (1+\lambda)^{-k} | x / \sigma|^k)^{-(n+1)/k} \text{ for } x \geq 0
+\end{cases}
+$$
+
+where $k, n, \lambda, \sigma^2$ are scaling parameters and $C$ and $\theta$ are normalizing constants ensure that $f(\cdot)$ is a proper p.d.f. and $\sigma^2$ is the variance of the random variable $x$. Note that $k > 0, n > 2$ and $-1 < \lambda < 1$. The parameters $k$ and $n$ control the height and tails of the density. The skewness parameter $\lambda$ controls the rate of descent of the density around $x = 0$. 
+
+The normalizing constants, $C$ and $\theta$, are defined as follows: 
+
+$$
+C = 0.5 k B(\frac{1}{k}, \frac{n}{k})^{-3/2} \times B(\frac{3}{k}, \frac{n-2}{k})^{1/2} \, S(\lambda) \, \sigma^{-1}
+$$
+$$
+\theta = (\frac{k}{n-2})^{1/k} B(\frac{1}{k}, \frac{n}{k})^{1/2} \times B(\frac{3}{k}, \frac{n-2}{k})^{-1/2} S(\lambda)^{-1}
+$$
+$$
+S(\lambda) = (1 + 3 \lambda^2 - 4 \lambda^2 B(\frac{2}{k}, \frac{n-1}{k})^2 \times B(\frac{1}{k}, \frac{n}{k})^{-1} B(\frac{3}{k}, \frac{n-2}{k})^{-1})^{1/2}
+$$
+
+where $B(\cdot)$ is the Beta function. 
+
+---
+
+[@hansenInstrumentalVariablesEstimation2010] simplified the above formula and defined the pdf of SGT as follows:^[The authors had a typo in their papers; I counted an odd number of parentheses ...] 
 $$
 f_{\text{SGT}}(y; m, \lambda, \phi, p, q) = \frac{p}{2\phi q^{1/p}B(1/p, q) \times \left(1 + \frac{|y-m|^p}{(1 + \lambda \text{sign}(y-m))^pq\phi^p}\right)^{q+1/p}}
 $$
@@ -39,8 +66,6 @@ where $B(\cdot, \cdot)$ is the beta function, $m$ is the mode of $y$, and the pa
 - Setting $p = 2$ yields the **skewed t** (ST) distribution. 
   - Setting $\lambda = 0$ yields **student t** distribution
   - Setting $pq = 1$ yields the **skewed Cauchy** distribution 
-  
-Note that the above function was obtained from [@hansenInstrumentalVariablesEstimation2010], which had unbalanced parentheses ...So I had to modify it based on the function definition provided in the `sgt` package vignette. 
 
 ---
 

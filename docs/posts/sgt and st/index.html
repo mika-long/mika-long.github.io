@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-03-02">
+<meta name="dcterms.date" content="2025-03-07">
 
 <title>Skewed Generalized T Distribution and Skewed T Distribution – Sheng Long</title>
 <style>
@@ -88,10 +88,10 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-9686c515b9a52a6aba937e3e32f2b857.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-994357a7f72326d902c64fa94eb32c3e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -204,7 +204,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 2, 2025</p>
+      <p class="date">March 7, 2025</p>
     </div>
   </div>
   
@@ -232,10 +232,28 @@ TLDR
 <section id="what-is-a-skewed-generalization-t-distribution" class="level1 page-columns page-full">
 <h1>What is a “skewed generalization t distribution”?</h1>
 <p>According to <span class="citation" data-cites="hansenInstrumentalVariablesEstimation2010">(<a href="#ref-hansenInstrumentalVariablesEstimation2010" role="doc-biblioref">Hansen, McDonald, and Newey 2010</a>)</span>, the skewed generalized t distribution (<strong>SGT</strong>) is a flexible distribution that involve a <em>small number of distributional parameters</em> and permit modeling a <em>wider range of data characteristics</em>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;… than Gaussian, Laplace, student t and many other common distributions</p></div></div><p>SGT was obtained by <span class="citation" data-cites="theodossiouFinancialDataSkewed1998">(<a href="#ref-theodossiouFinancialDataSkewed1998" role="doc-biblioref">Theodossiou 1998</a>)</span> and can be defined by <span class="math display">\[
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;… than Gaussian, Laplace, student t and many other common distributions</p></div></div><p>SGT was first obtained by <span class="citation" data-cites="theodossiouFinancialDataSkewed1998">(<a href="#ref-theodossiouFinancialDataSkewed1998" role="doc-biblioref">Theodossiou 1998</a>)</span>. Theodossious defined the PDF as follows:</p>
+<p><span class="math display">\[
+f(x| k, n, \lambda, \sigma^2) = \begin{cases}
+f_1 = C(1+(k/(n-2))\theta^{-k} \times (1-\lambda)^{-k} | x / \sigma|^k)^{-(n+1)/k} \text{ for } x &lt; 0 \\
+f_2 = C(1+(k/(n-2))\theta^{-k} \times (1+\lambda)^{-k} | x / \sigma|^k)^{-(n+1)/k} \text{ for } x \geq 0
+\end{cases}
+\]</span></p>
+<p>where <span class="math inline">\(k, n, \lambda, \sigma^2\)</span> are scaling parameters and <span class="math inline">\(C\)</span> and <span class="math inline">\(\theta\)</span> are normalizing constants ensure that <span class="math inline">\(f(\cdot)\)</span> is a proper p.d.f. and <span class="math inline">\(\sigma^2\)</span> is the variance of the random variable <span class="math inline">\(x\)</span>. Note that <span class="math inline">\(k &gt; 0, n &gt; 2\)</span> and <span class="math inline">\(-1 &lt; \lambda &lt; 1\)</span>. The parameters <span class="math inline">\(k\)</span> and <span class="math inline">\(n\)</span> control the height and tails of the density. The skewness parameter <span class="math inline">\(\lambda\)</span> controls the rate of descent of the density around <span class="math inline">\(x = 0\)</span>.</p>
+<p>The normalizing constants, <span class="math inline">\(C\)</span> and <span class="math inline">\(\theta\)</span>, are defined as follows:</p>
+<p><span class="math display">\[
+C = 0.5 k B(\frac{1}{k}, \frac{n}{k})^{-3/2} \times B(\frac{3}{k}, \frac{n-2}{k})^{1/2} \, S(\lambda) \, \sigma^{-1}
+\]</span> <span class="math display">\[
+\theta = (\frac{k}{n-2})^{1/k} B(\frac{1}{k}, \frac{n}{k})^{1/2} \times B(\frac{3}{k}, \frac{n-2}{k})^{-1/2} S(\lambda)^{-1}
+\]</span> <span class="math display">\[
+S(\lambda) = (1 + 3 \lambda^2 - 4 \lambda^2 B(\frac{2}{k}, \frac{n-1}{k})^2 \times B(\frac{1}{k}, \frac{n}{k})^{-1} B(\frac{3}{k}, \frac{n-2}{k})^{-1})^{1/2}
+\]</span></p>
+<p>where <span class="math inline">\(B(\cdot)\)</span> is the Beta function.</p>
+<hr>
+<p><span class="citation" data-cites="hansenInstrumentalVariablesEstimation2010">(<a href="#ref-hansenInstrumentalVariablesEstimation2010" role="doc-biblioref">Hansen, McDonald, and Newey 2010</a>)</span> simplified the above formula and defined the pdf of SGT as follows:<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math display">\[
 f_{\text{SGT}}(y; m, \lambda, \phi, p, q) = \frac{p}{2\phi q^{1/p}B(1/p, q) \times \left(1 + \frac{|y-m|^p}{(1 + \lambda \text{sign}(y-m))^pq\phi^p}\right)^{q+1/p}}
 \]</span> where <span class="math inline">\(B(\cdot, \cdot)\)</span> is the beta function, <span class="math inline">\(m\)</span> is the mode of <span class="math inline">\(y\)</span>, and the parameters <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> control the <em>height</em> and <em>tails</em> of the density. The parameter <span class="math inline">\(\phi\)</span> is a <em>scale</em> parameter and <span class="math inline">\(\lambda\)</span> determines the degree of <em>skewness</em> with the area to the left of the mode equal to <span class="math inline">\(\frac{1 - \lambda}{2}\)</span>.</p>
-<ul>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The authors had a typo in their papers; I counted an odd number of parentheses …</p></div></div><ul>
 <li>Setting <span class="math inline">\(\lambda = 0\)</span> in the SGT yields the <strong>generalized t</strong> (GT) distribution.</li>
 <li>Setting <span class="math inline">\(p = 2\)</span> yields the <strong>skewed t</strong> (ST) distribution.
 <ul>
@@ -243,10 +261,9 @@ f_{\text{SGT}}(y; m, \lambda, \phi, p, q) = \frac{p}{2\phi q^{1/p}B(1/p, q) \tim
 <li>Setting <span class="math inline">\(pq = 1\)</span> yields the <strong>skewed Cauchy</strong> distribution</li>
 </ul></li>
 </ul>
-<p>Note that the above function was obtained from <span class="citation" data-cites="hansenInstrumentalVariablesEstimation2010">(<a href="#ref-hansenInstrumentalVariablesEstimation2010" role="doc-biblioref">Hansen, McDonald, and Newey 2010</a>)</span>, which had unbalanced parentheses …So I had to modify it based on the function definition provided in the <code>sgt</code> package vignette.</p>
 <hr>
-<p>The above paper didn’t do any <code>R</code> packages. However, there is a <code>sgt</code> package on CRAN.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;… with source <a href="https://cran.r-project.org/web/packages/sgt/index.html">here</a> As to why it’s called “skewed generalized t distribution tree”, I have no idea. Why 🌳??? I’m guessing that this is a reference to Figure 1 in <span class="citation" data-cites="hansenInstrumentalVariablesEstimation2010">(<a href="#ref-hansenInstrumentalVariablesEstimation2010" role="doc-biblioref">Hansen, McDonald, and Newey 2010</a>)</span>, but the “tree” term in the title threw me off … </p></div></div><p>In the corresponding <a href="https://cran.r-project.org/web/packages/sgt/vignettes/sgt.pdf">vignette</a>, the authors provided the following definition of the SGT pdf:</p>
+<p>The above paper didn’t do any <code>R</code> packages. However, there is a <code>sgt</code> package on CRAN.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;… with source <a href="https://cran.r-project.org/web/packages/sgt/index.html">here</a> As to why it’s called “skewed generalized t distribution tree”, I have no idea. Why 🌳??? I’m guessing that this is a reference to Figure 1 in <span class="citation" data-cites="hansenInstrumentalVariablesEstimation2010">(<a href="#ref-hansenInstrumentalVariablesEstimation2010" role="doc-biblioref">Hansen, McDonald, and Newey 2010</a>)</span>, but the “tree” term in the title threw me off … </p></div></div><p>In the corresponding <a href="https://cran.r-project.org/web/packages/sgt/vignettes/sgt.pdf">vignette</a>, the authors provided the following definition of the SGT pdf:</p>
 <p><span class="math display">\[
 f_{\text{SGT}}(x; \mu, \sigma, \lambda, p, q) = \frac{p}{2v\sigma q^{1/p}B(\frac{1}{p}, q) \left( \frac{|x - \mu + m|^p}{ q(v\sigma)^p(\lambda \text{sign}(x-\mu+m) + 1)^p + 1} \right)^{1/p + q}}
 \]</span> where <span class="math display">\[m = \frac{2v\sigma \lambda q^{1/p} B(2/p, q - 1/p)}{ B(1/p, q) }\]</span> and <span class="math display">\[v = q^{-1/p} \left[(3\lambda^2 + 1)\left(\frac{B(3/p, q -2 / p)}{B(1/p, q)}\right) - 4\lambda^2\left(\frac{B(2/p, q-1/p)}{B(1/p, q)}\right)^2 \right]^{-1/2}\]</span></p>
@@ -256,12 +273,13 @@ f_{\text{SGT}}(x; \mu, \sigma, \lambda, p, q) = \frac{p}{2v\sigma q^{1/p}B(\frac
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dsgt</span>(x, <span class="at">mu =</span> <span class="dv">0</span>, <span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">lambda =</span> <span class="dv">0</span>, <span class="at">p =</span> <span class="dv">2</span>, <span class="at">q =</span> <span class="cn">Inf</span>, <span class="at">mean.cent =</span> <span class="cn">TRUE</span>, <span class="at">var.adj =</span> <span class="cn">TRUE</span>, <span class="at">log =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>It is worth explaining what the two flags, <code>mean.cent</code> and <code>var.adj</code> control. If <code>mean.cent</code> is <code>FALSE</code>, then <span class="math inline">\(\mu\)</span> is the <strong>mode</strong> of the distribution, and <span class="math inline">\(m = 0\)</span>. All the <span class="math inline">\(x - \mu + m\)</span> in the pdf would thus just become <span class="math inline">\(x - \mu\)</span>. Otherwise, if <code>mean.cent</code> is <code>TRUE</code>, which is the default case, then <span class="math inline">\(m\)</span> is essentially a centering adjustment.</p>
+<p>It is worth explaining what the two flags, <code>mean.cent</code> and <code>var.adj</code>, control. If <code>mean.cent</code> is <code>FALSE</code>, then <span class="math inline">\(\mu\)</span> is the <strong>mode</strong> of the distribution, and <span class="math inline">\(m = 0\)</span>. All the <span class="math inline">\(x - \mu + m\)</span> in the pdf would thus just become <span class="math inline">\(x - \mu\)</span>. Otherwise, if <code>mean.cent</code> is <code>TRUE</code>, which is the default case, then <span class="math inline">\(m\)</span> is essentially a centering adjustment.</p>
 <p>If <code>var.adj</code> is <code>TRUE</code>, which is the default case, then <span class="math inline">\(\sigma\)</span> is scaled such that <span class="math inline">\(\sigma^2\)</span> is the variance of the distribution. This is achieved by using <span class="math inline">\(v\)</span>.</p>
+<p>For my own purpose, I should specify <code>mean.cent = FALSE</code>, which would make <code>mu</code> the mode, and the area under the curve would be calculated as <code>(1 - lambda)/2</code>.</p>
 <section id="skewed-t-distribution" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="skewed-t-distribution">Skewed t distribution</h2>
-<p>When I was first experimenting with the project, I found this other package, <code>sn</code>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The main focus of this package was on the <strong>skewed normal</strong> distribution, but they nevertheless included calculations for <strong>skewed t</strong> as well.</p>
-<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;… source <a href="https://cran.r-project.org/web/packages/sn/index.html">here</a>. This was published in 2023, which is later than <code>sgt</code> (published in ~2013).</p></div></div><p>It was only later that I realized that skewed t <strong>is NOT</strong> equivalent to skewed generalized t. I tried to understand better what the function parameters meant by reading some of the papers referenced in the manuals.</p>
+<p>When I was first experimenting with the project, I found this other package, <code>sn</code>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The main focus of this package was on the <strong>skewed normal</strong> distribution, but they nevertheless included calculations for <strong>skewed t</strong> as well.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;… source <a href="https://cran.r-project.org/web/packages/sn/index.html">here</a>. This was published in 2023, which is later than <code>sgt</code> (published in ~2013).</p></div></div><p>It was only later that I realized that skewed t <strong>is NOT</strong> equivalent to skewed generalized t. I tried to understand better what the function parameters meant by reading some of the papers referenced in the manuals.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -274,12 +292,12 @@ Some multi-variate skewed t
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>I found this paper referenced in the manual of <code>sn</code> — <span class="citation" data-cites="azzaliniDistributionsGeneratedPerturbation2003">(<a href="#ref-azzaliniDistributionsGeneratedPerturbation2003" role="doc-biblioref">Azzalini and Capitanio 2003</a>)</span>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The authors provided mathematical notations that has a cleaner mapping to the <code>R</code> functions in <code>sn</code>. The skewed <span class="math inline">\(t\)</span> distribution is defined as the one corresponding to the transformation <span class="math display">\[Y = \xi + V^{-1/2} Z\]</span> where <span class="math inline">\(Z\)</span> has density function … with <span class="math inline">\(\xi = 0\)</span> and <span class="math inline">\(V \sim \chi_\nu^2 / \nu\)</span>, independent of <span class="math inline">\(Z\)</span>. The density of <span class="math inline">\(Y\)</span> is thus defined as <span class="math display">\[f_Y(y) = 2 t_d(y; \nu) T_1\left( \alpha^T \omega^{-1} (y - \xi) \left(\frac{\nu + d}{Q_y + \nu}\right)^{1/2}; \nu + d  \right)\]</span></p>
+<p>I found this paper referenced in the manual of <code>sn</code> — <span class="citation" data-cites="azzaliniDistributionsGeneratedPerturbation2003">(<a href="#ref-azzaliniDistributionsGeneratedPerturbation2003" role="doc-biblioref">Azzalini and Capitanio 2003</a>)</span>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> The authors provided mathematical notations that has a cleaner mapping to the <code>R</code> functions in <code>sn</code>. The skewed <span class="math inline">\(t\)</span> distribution is defined as the one corresponding to the transformation <span class="math display">\[Y = \xi + V^{-1/2} Z\]</span> where <span class="math inline">\(Z\)</span> has density function … with <span class="math inline">\(\xi = 0\)</span> and <span class="math inline">\(V \sim \chi_\nu^2 / \nu\)</span>, independent of <span class="math inline">\(Z\)</span>. The density of <span class="math inline">\(Y\)</span> is thus defined as <span class="math display">\[f_Y(y) = 2 t_d(y; \nu) T_1\left( \alpha^T \omega^{-1} (y - \xi) \left(\frac{\nu + d}{Q_y + \nu}\right)^{1/2}; \nu + d  \right)\]</span></p>
 <p>Maybe this way of paramterizing is related to the Fernandez and Steel [1998] approach? See <a href="https://stats.stackexchange.com/questions/276327/whats-the-skewed-t-distribution">this StackExchange answer</a>.</p>
 </div>
 </div>
 </div>
-<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;… the focus here is more on the multi-variate version of skewed <span class="math inline">\(t\)</span></p></div></div><p>Without delving too much into the multi-variate distribution, I arrived at the conclusion that this is the pdf I need for my own purpose:</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;… the focus here is more on the multi-variate version of skewed <span class="math inline">\(t\)</span></p></div></div><p>Without delving too much into the multi-variate distribution, I arrived at the conclusion that this is the pdf I need for my own purpose:</p>
 <p><span class="math display">\[
 f_{\text{SGT}}(x; \phi, \omega, \alpha, \nu) = \frac{2}{\omega} \cdot f_t\left( z , \nu \right) \cdot F_t\left(\alpha \cdot z \cdot \sqrt{\frac{\nu + 1}{\nu + z^2}}, \nu+1\right)
 \]</span> where <span class="math inline">\(\displaystyle z \equiv \frac{x-\xi}{\omega}\)</span>, <span class="math inline">\(f_t(\cdot, \nu)\)</span> is the probability density function of the student <span class="math inline">\(t\)</span> distribution with degree of freedom <span class="math inline">\(\nu\)</span>, <span class="math inline">\(F_t(\cdot, \nu+1)\)</span> is the cumulative density function of the student <span class="math inline">\(t\)</span> distribution with degree of freedom <span class="math inline">\(\nu + 1\)</span>, and <span class="math inline">\(\phi, \omega, \alpha, \nu\)</span> are parameters for location, scale, skewness and skedasticity (i.e., heavy-tailed-ness) respectively.</p>
@@ -291,9 +309,9 @@ f_{\text{SGT}}(x; \phi, \omega, \alpha, \nu) = \frac{2}{\omega} \cdot f_t\left( 
 <li>scale: <span class="math inline">\(\phi\)</span> <span class="citation" data-cites="theodossiouFinancialDataSkewed1998">(<a href="#ref-theodossiouFinancialDataSkewed1998" role="doc-biblioref">Theodossiou 1998</a>)</span>, <span class="math inline">\(\sigma\)</span> (<code>sgt</code> vignette), <span class="math inline">\(\omega\)</span> <span class="citation" data-cites="azzaliniDistributionsGeneratedPerturbation2003">(<a href="#ref-azzaliniDistributionsGeneratedPerturbation2003" role="doc-biblioref">Azzalini and Capitanio 2003</a>)</span></li>
 <li>skewness: <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(alpha\)</span><br>
 </li>
-<li>skedasticity<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>: <span class="math inline">\(p, q\)</span>, <span class="math inline">\(\nu\)</span></li>
+<li>skedasticity<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>: <span class="math inline">\(p, q\)</span>, <span class="math inline">\(\nu\)</span></li>
 </ul>
-<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;i.e., heavy-tailedness</p></div></div></section>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;i.e., heavy-tailedness</p></div></div></section>
 <section id="plotting-sgt" class="level2">
 <h2 class="anchored" data-anchor-id="plotting-sgt">Plotting SGT</h2>
 <p>For the <code>sgt</code> package, when we don’t provide any values, the default paramter values are <code>mu = 0, sigma = 1, lambda = 0, p = 2, q = Inf</code>. These parameters in general need to have the following restrictions (to prevent generating <code>NaN</code> data):</p>
@@ -303,21 +321,23 @@ f_{\text{SGT}}(x; \phi, \omega, \alpha, \nu) = \frac{2}{\omega} \cdot f_t\left( 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sgt)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x_values <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="ot">&lt;-</span> <span class="fu">dsgt</span>(x_values)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>cdf_values <span class="ot">&lt;-</span> <span class="fu">psgt</span>(x_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame for plotting</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x_values, <span class="at">density =</span> pdf_values)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> density)) <span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Generalized Skewed t-Distribution PDF"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"x"</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="ot">&lt;-</span> <span class="fu">dsgt</span>(x_values, <span class="at">mu =</span> <span class="dv">1</span>, <span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">lambda =</span> <span class="sc">-</span><span class="fl">0.3</span>, <span class="at">p =</span> <span class="dv">3</span>, <span class="at">q =</span> <span class="dv">100</span>, <span class="at">mean.cent =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame for plotting</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x_values, <span class="at">density =</span> pdf_values)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> density)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Generalized Skewed t-Distribution PDF"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"x"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
