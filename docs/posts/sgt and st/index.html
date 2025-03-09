@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-03-07">
+<meta name="dcterms.date" content="2025-03-09">
 
 <title>Skewed Generalized T Distribution and Skewed T Distribution – Sheng Long</title>
 <style>
@@ -177,7 +177,19 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-a-skewed-generalization-t-distribution" id="toc-what-is-a-skewed-generalization-t-distribution" class="nav-link active" data-scroll-target="#what-is-a-skewed-generalization-t-distribution">What is a “skewed generalization t distribution”?</a>
+  <ul class="collapse">
+  <li><a href="#skewed-t-distribution" id="toc-skewed-t-distribution" class="nav-link" data-scroll-target="#skewed-t-distribution">Skewed t distribution</a></li>
+  </ul></li>
+  <li><a href="#plotting-sgt" id="toc-plotting-sgt" class="nav-link" data-scroll-target="#plotting-sgt">Plotting SGT</a></li>
+  <li><a href="#implementing-things-in-javascript" id="toc-implementing-things-in-javascript" class="nav-link" data-scroll-target="#implementing-things-in-javascript">Implementing things in javascript</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full column-page-left" id="quarto-document-content">
@@ -204,7 +216,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 7, 2025</p>
+      <p class="date">March 9, 2025</p>
     </div>
   </div>
   
@@ -312,8 +324,9 @@ f_{\text{SGT}}(x; \phi, \omega, \alpha, \nu) = \frac{2}{\omega} \cdot f_t\left( 
 <li>skedasticity<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>: <span class="math inline">\(p, q\)</span>, <span class="math inline">\(\nu\)</span></li>
 </ul>
 <div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;i.e., heavy-tailedness</p></div></div></section>
-<section id="plotting-sgt" class="level2">
-<h2 class="anchored" data-anchor-id="plotting-sgt">Plotting SGT</h2>
+</section>
+<section id="plotting-sgt" class="level1">
+<h1>Plotting SGT</h1>
 <p>For the <code>sgt</code> package, when we don’t provide any values, the default paramter values are <code>mu = 0, sigma = 1, lambda = 0, p = 2, q = Inf</code>. These parameters in general need to have the following restrictions (to prevent generating <code>NaN</code> data):</p>
 <p><span class="math display">\[
 \{(\sigma, \lambda, p, q): \sigma &gt; 0, -1 &lt; \lambda &lt; 1, p &gt; 0, q &gt; 0 \}
@@ -365,10 +378,22 @@ f_{\text{SGT}}(x; \phi, \omega, \alpha, \nu) = \frac{2}{\omega} \cdot f_t\left( 
 </div>
 </div>
 </div>
-
-
-
 </section>
+<section id="implementing-things-in-javascript" class="level1">
+<h1>Implementing things in javascript</h1>
+<p>There are several libraries related to implementing things in javascript. The minimum requirement is to have 1) a Beta function and 2) an incomplete beta function.</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/lib-r-math.js/v/1.0.36">lib-r-math.js</a></li>
+<li><a href="https://github.com/jstat/jstat">jStat</a></li>
+<li><a href="https://mathjs.org/">math.js</a></li>
+<li><a href="https://github.com/stdlib-js/stdlib">stdlib-js</a> — this is the best one
+<ul>
+<li>Specifically, they have <a href="https://github.com/stdlib-js/stdlib/tree/develop/lib/node_modules/%40stdlib/math/base/special/beta">beta</a> and <a href="https://github.com/stdlib-js/stdlib/tree/develop/lib/node_modules/%40stdlib/math/base/special/betainc">betainc</a></li>
+</ul></li>
+</ul>
+
+
+
 </section>
 
 

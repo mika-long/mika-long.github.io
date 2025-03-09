@@ -10,6 +10,7 @@ draft: false
 language:
   title-block-published: "Updated"
 code-overflow: wrap
+toc: true
 ---
 
 ```{r}
@@ -128,7 +129,7 @@ To conclude, the way that the parameters map to each other is as follows:
 - skewness: $\lambda$, $alpha$  
 - skedasticity^[i.e., heavy-tailedness]: $p, q$, $\nu$
 
-## Plotting SGT 
+# Plotting SGT 
 
 For the `sgt` package, when we don't provide any values, the default paramter values are `mu = 0, sigma = 1, lambda = 0, p = 2, q = Inf`. These parameters in general need to have the following restrictions (to prevent generating `NaN` data): 
 
@@ -173,4 +174,15 @@ ggplot(plot_data, aes(x = x, y = density)) +
        y = "Density") +
   theme_minimal()
 ```
+
+# Implementing things in javascript 
+
+There are several libraries related to implementing things in javascript. The minimum requirement is to have 1) a Beta function and 2) an incomplete beta function.  
+
+- [lib-r-math.js](https://www.npmjs.com/package/lib-r-math.js/v/1.0.36)
+- [jStat](https://github.com/jstat/jstat)
+- [math.js](https://mathjs.org/)
+- [stdlib-js](https://github.com/stdlib-js/stdlib) --- this is the best one 
+  - Specifically, they have [beta](https://github.com/stdlib-js/stdlib/tree/develop/lib/node_modules/%40stdlib/math/base/special/beta) and [betainc](https://github.com/stdlib-js/stdlib/tree/develop/lib/node_modules/%40stdlib/math/base/special/betainc)
+
 
