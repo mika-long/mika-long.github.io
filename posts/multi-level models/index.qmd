@@ -9,17 +9,19 @@ reference-location: margin
 draft: true
 ---
 
-One of the earlier hurdles for me to understand Bayesian statistics was the many names people used to refer to "multi-level models"^[They also go by other names, such as generalized linear mixed models (GLMMs), mixed effects model, ]. 
+One of the earlier hurdles for me to understand Bayesian statistics was the many names people use to refer to "multi-level models"^[They also go by other names, such as generalized linear mixed models (GLMMs), mixed effects model, ]. 
 
-In my favorite Bayesian textbook^[@mcelreath2020statistical], this is what the author says on page 415: 
+In @mcelreath2020statistical, on page 415: 
 
-> Multilevel models go by many different names, and some statisticians use the smae names for different specialized variants, while other use them all interchangeably. The most common synonymns for "multilevel" are HIERARCHICAL and MIXED EFFECTS. The type of parameters that appear in multilevel models are most commonly known as RANDOM EFFECTS, which itself can mean very different things to different analysts and in different contexts. And even the innocent term "level" can mean differeng things to different people. There's really no cure for this swamp of vocabulary aside from demanding a mathematical or algorithmic definition of the model. Otherwise, there will always be ambiguity. 
+> Multilevel models go by many different names, and some statisticians use the same names for different specialized variants, while other use them all interchangeably. The most common synonymns for "multilevel" are HIERARCHICAL and MIXED EFFECTS. The type of parameters that appear in multilevel models are most commonly known as RANDOM EFFECTS, which itself can mean very different things to different analysts and in different contexts. And even the innocent term "level" can mean differeng things to different people. There's really no cure for this swamp of vocabulary aside from demanding a mathematical or algorithmic definition of the model. Otherwise, there will always be ambiguity. 
 
+:::{.callout}
 Here McElreath points to footnote 186, in which he further points us to section 6, page 20 of [@gelman2005analysis] for an entertaining list of wildly different definitions of "random effects". 
+:::
 
-Further in footnote 188, McElreath says 
+Further in footnote 188, @mcelreath2020statistical says 
 
-> I adopt the terminology of [@gelman2005analysis], who argues that the common term _random effects_ hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly becasue the terms _fixed_ and _random_ mean different things to different statisticians. See pages 20 -- 21 of Gelman's paper. I fully realize, however, that by trying to spread Gelman's alternative jargon, I am essentially spitting into a very strong wind. 
+> I adopt the terminology of @gelman2005analysis, who argues that the common term _random effects_ hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly becasue the terms _fixed_ and _random_ mean different things to different statisticians. See pages 20 -- 21 of Gelman's paper. I fully realize, however, that by trying to spread Gelman's alternative jargon, I am essentially spitting into a very strong wind. 
 
 # But first, what are multi-level models? 
 
@@ -40,12 +42,14 @@ Generally speaking, there are at least two schools of notations:
   - In Ch1 of Gelman's textbook, we see the following notation system: "We use the notation $i$ for individual students and $j[i]$ for the school $j$ containing student $i$": 
   $$y_i = \alpha_{j[i]} + \beta x_i + \epsilon_i$$
   $$\alpha_j = a + b u_j + \eta_j$$ 
+  
+---
 
 Let's start by considering what the notations are, using the empirical example provided in [@scott2013multilevel]. 
 
 The data set can be found at [this website](https://nces.ed.gov/surveys/nels88/). 
 
-The current analysis uses information about gender (`SEX`) as well as whether each school had more than 20% of their population receiving free school lunch (`FSL`[This variable is used as a proxy for whether teh school was serving an economically disadvantaged student population]{.aside}). 
+The current analysis uses information about gender (`SEX`) as well as whether each school had more than 20% of their population receiving free school lunch (`FSL`[This variable is used as a proxy for whether the s school was serving an economically disadvantaged student population]{.aside}). 
 
 ### Unconditional means model 
 

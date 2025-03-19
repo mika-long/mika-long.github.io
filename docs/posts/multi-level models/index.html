@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-01-26">
+<meta name="dcterms.date" content="2025-03-19">
 
 <title>A Model by Many Names – Sheng Long</title>
 <style>
@@ -54,10 +54,10 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-89d753771ee14a9a59b3b1cc4dcf02c0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-6fb955d054a45bdadb67e6b333771c0e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -75,7 +75,6 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-<meta name="quarto:status" content="draft">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -113,7 +112,7 @@ window.Quarto = {
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -171,7 +170,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 26, 2025</p>
+      <p class="date">March 19, 2025</p>
     </div>
   </div>
   
@@ -183,15 +182,24 @@ window.Quarto = {
 </header>
 
 
-<p>One of the earlier hurdles for me to understand Bayesian statistics was the many names people used to refer to “multi-level models”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;They also go by other names, such as generalized linear mixed models (GLMMs), mixed effects model, </p></div><div id="fn2"><p><sup>2</sup>&nbsp;<span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span></p></div></div><p>In my favorite Bayesian textbook<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, this is what the author says on page 415:</p>
+<p>One of the earlier hurdles for me to understand Bayesian statistics was the many names people use to refer to “multi-level models”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;They also go by other names, such as generalized linear mixed models (GLMMs), mixed effects model, </p></div></div><p>In <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span>, on page 415:</p>
 <blockquote class="blockquote">
-<p>Multilevel models go by many different names, and some statisticians use the smae names for different specialized variants, while other use them all interchangeably. The most common synonymns for “multilevel” are HIERARCHICAL and MIXED EFFECTS. The type of parameters that appear in multilevel models are most commonly known as RANDOM EFFECTS, which itself can mean very different things to different analysts and in different contexts. And even the innocent term “level” can mean differeng things to different people. There’s really no cure for this swamp of vocabulary aside from demanding a mathematical or algorithmic definition of the model. Otherwise, there will always be ambiguity.</p>
+<p>Multilevel models go by many different names, and some statisticians use the same names for different specialized variants, while other use them all interchangeably. The most common synonymns for “multilevel” are HIERARCHICAL and MIXED EFFECTS. The type of parameters that appear in multilevel models are most commonly known as RANDOM EFFECTS, which itself can mean very different things to different analysts and in different contexts. And even the innocent term “level” can mean differeng things to different people. There’s really no cure for this swamp of vocabulary aside from demanding a mathematical or algorithmic definition of the model. Otherwise, there will always be ambiguity.</p>
 </blockquote>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
 <p>Here McElreath points to footnote 186, in which he further points us to section 6, page 20 of <span class="citation" data-cites="gelman2005analysis">(<a href="#ref-gelman2005analysis" role="doc-biblioref">Gelman 2005</a>)</span> for an entertaining list of wildly different definitions of “random effects”.</p>
-<p>Further in footnote 188, McElreath says</p>
+</div>
+</div>
+</div>
+<p>Further in footnote 188, <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span> says</p>
 <blockquote class="blockquote">
-<p>I adopt the terminology of <span class="citation" data-cites="gelman2005analysis">(<a href="#ref-gelman2005analysis" role="doc-biblioref">Gelman 2005</a>)</span>, who argues that the common term <em>random effects</em> hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly becasue the terms <em>fixed</em> and <em>random</em> mean different things to different statisticians. See pages 20 – 21 of Gelman’s paper. I fully realize, however, that by trying to spread Gelman’s alternative jargon, I am essentially spitting into a very strong wind.</p>
+<p>I adopt the terminology of <span class="citation" data-cites="gelman2005analysis">Gelman (<a href="#ref-gelman2005analysis" role="doc-biblioref">2005</a>)</span>, who argues that the common term <em>random effects</em> hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly becasue the terms <em>fixed</em> and <em>random</em> mean different things to different statisticians. See pages 20 – 21 of Gelman’s paper. I fully realize, however, that by trying to spread Gelman’s alternative jargon, I am essentially spitting into a very strong wind.</p>
 </blockquote>
 <section id="but-first-what-are-multi-level-models" class="level1 page-columns page-full">
 <h1>But first, what are multi-level models?</h1>
