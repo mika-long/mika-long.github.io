@@ -15,7 +15,7 @@ search: false
 
 ### News
 
-**02/14/25**     I got an summer internship offer from Sony Japan! Super excited to be learning and working in 🗼 this summer
+**02/14/25**     I got a summer internship offer from Sony Japan! Super excited to be learning and working in 🗼 this summer
 
 **01/20/25**     Our paper, *Seeing Eye to AI ?*, is accepted to CHI 2025 at 🎡!
 :::
@@ -37,7 +37,7 @@ My CV (last updated Jan 2025) is [here](grad_cv.pdf).
 -   **Seeing Eye to AI? Applying Deep-Feature-Based Similarity Metrics to Information Visualization**\
     *Sheng Long*, [Angelos Chatzimparmpas](https://www.angeloschatzimparmpas.com/){.author-link}, [Emma Alexamder](https://www.alexander.vision/emma){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, [Jessica Hullman](http://users.eecs.northwestern.edu/~jhullman/){.author-link}\
     [CHI'25: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems (To appear)]{style="color: #D3D3D3"}\
-    [ []{.simple-icons--osf} OSF Preprint](https://osf.io/preprints/osf/z6s59_v1){.paper-link}
+    [ []{.simple-icons--osf} OSF Preprint](https://osf.io/preprints/osf/z6s59_v1){.paper-link} [poster](GC-poster.pdf){.paper-link}
 -   **Old Wine in a New Bottle? Analyzing Visual Lineups with Signal Detection Theory**\
     *Sheng Long*, [Matthew Kay](https://www.mjskay.com/){.author-link}\
     [BELIV '24: Evaluation and Beyond --- Methodological Approaches for Visualization]{style="color: #D3D3D3"}\
