@@ -9,11 +9,12 @@ format:
   html: 
     reference-location: margin
     toc: true 
+    code-overflow: wrap 
 ---
 
 ```{r}
 #| output: false 
-#| echo: false 
+
 
 library(datasets)
 library(rstan)
@@ -27,7 +28,7 @@ theme_set(theme_minimal())
 
 # Overview 
 
-In an attempt to learn how to fix mixture models in `stan` and `brms`, I found a [blogpost](https://jeremy9959.net/Blog/StanMixture/) on fitting a mixturem model using the eruption data of old faithful. The original post implemented things in `python`, so I thought it would be a good exercise to try to implement it in R, using both `brms` and `rstan`.  
+In an attempt to learn how to fit mixture models in `stan` and `brms`, I found a [blogpost](https://jeremy9959.net/Blog/StanMixture/) on fitting a mixture model using the eruption data of old faithful. The original post implemented things in `python`, so I thought it would be a good exercise to try to implement it in R, using both `brms` and `rstan`.  
 
 Here's what the dataset looks like: 
 
