@@ -55,10 +55,11 @@ The data looks bimodal. We can come up with a simple mixture model:
 
 $$
 \begin{align}
-y_i &\sim \theta \cdot \mathcal{N}(\mu_1, \sigma_1) + (1 - \theta) \cdot \mathcal{N}(\mu_2, \sigma_2) \\ 
+z_i | \theta &\sim \text{Categorical}(\theta, 1 - \theta) \\ 
+y_i &\sim \mathcal{N}(\mu_{z_i}, \sigma_{z_i}) \\ 
 \mu_1, \mu_2 &\sim \mathcal{N}(0, 2), \mu_1 < \mu_2 \\ 
 \sigma_1, \sigma_2 &\sim \mathcal{N}^+(0, 2) \\ 
-\theta &\sim \text{Beta}(5, 5) 
+\theta &\sim \text{Beta}(5, 5) \,\,\, (*) 
 \end{align}
 $$
 

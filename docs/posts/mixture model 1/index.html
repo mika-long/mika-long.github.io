@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-03-24">
+<meta name="dcterms.date" content="2025-03-25">
 
 <title>Simple Mixture Models with brms and stan – Sheng Long</title>
 <style>
@@ -193,7 +193,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 24, 2025</p>
+      <p class="date">March 25, 2025</p>
     </div>
   </div>
   
@@ -257,10 +257,11 @@ window.Quarto = {
 <p>The data looks bimodal. We can come up with a simple mixture model:</p>
 <p><span class="math display">\[
 \begin{align}
-y_i &amp;\sim \theta \cdot \mathcal{N}(\mu_1, \sigma_1) + (1 - \theta) \cdot \mathcal{N}(\mu_2, \sigma_2) \\
+z_i | \theta &amp;\sim \text{Categorical}(\theta, 1 - \theta) \\
+y_i &amp;\sim \mathcal{N}(\mu_{z_i}, \sigma_{z_i}) \\
 \mu_1, \mu_2 &amp;\sim \mathcal{N}(0, 2), \mu_1 &lt; \mu_2 \\
 \sigma_1, \sigma_2 &amp;\sim \mathcal{N}^+(0, 2) \\
-\theta &amp;\sim \text{Beta}(5, 5)
+\theta &amp;\sim \text{Beta}(5, 5) \,\,\, (*)
 \end{align}
 \]</span></p>
 </section>
