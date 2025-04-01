@@ -63,11 +63,14 @@ My CV (last updated Jan 2025) is [here](grad_cv.pdf).
 
 -   [CS 212 --- Mathematical Foundations of Computer Science](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/212.html)
     -   (TA) 2021 Fall, 2022 Winter, 2023 Winter
--   [CS 332 --- Online Markets](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/332.html)
-    -   (TA) 2022 Fall
--   [CS 333 --- Interactive Information Visualization](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/333.html)
-    -   (TA) 2024 Winter
 -   [CS 330 --- Human Computer Interaction](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/330-1.html)
     -   (TA) 2024 Fall
 -   [CS 310 --- Scalable Software Architectures](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/310.html)
     -   (TA) 2025 Winter
+-   [CS 329 ---  HCI Sutdio](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/329.html)
+    -   (TA) 2025 Spring 
+-   [CS 332 --- Online Markets](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/332.html)
+    -   (TA) 2022 Fall
+-   [CS 333 --- Interactive Information Visualization](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/333.html)
+    -   (TA) 2024 Winter
+
