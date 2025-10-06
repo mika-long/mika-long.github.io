@@ -5,6 +5,7 @@ listing:
   type: default
   sort: "date desc" 
   categories: true
+  fields: [title, subtitle, date, description, reading-time, categories]
 ---
 
-🚧 Under construction 🚧
+🚧 (Mostly) Under construction 🚧

@@ -11,6 +11,7 @@ language:
   title-block-published: "Updated"
 code-overflow: wrap
 toc: true
+description: "Some notes on the skewed (generalized) T distribution." 
 ---
 
 ```{r}

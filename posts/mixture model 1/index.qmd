@@ -10,6 +10,7 @@ format:
     reference-location: margin
     toc: true 
     code-overflow: wrap 
+description: "Fitting mixture models using brms and stan, using the old faithful eruptaion data as an example."
 ---
 
 ```{r}
