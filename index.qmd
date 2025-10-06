@@ -11,8 +11,6 @@ search: false
 ::: column-margin
 ![Photo taken by Wei Sun.](profile_2.jpg)
 
-[{{< fa graduation-cap >}}](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link} [ []{.mdi--linkedin}](https://www.linkedin.com/in/sheng-long/){.paper-link}
-
 ### News
 
 **02/14/25**     I got a summer internship offer from Sony Japan! Super excited to be learning and working in 🗼 this summer
@@ -20,15 +18,21 @@ search: false
 **01/20/25**     Our paper, *Seeing Eye to AI ?*, is accepted to CHI 2025 at 🎡!
 :::
 
-I am a Ph.D. candidate at [Northwestern University](https://www.northwestern/edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) at [Mu Collective](https://mucollective.northwestern.edu/).
+<!-- [{{<fa graduation-cap >}} Google Scholar](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link} -->
+
+I am a final-year Ph.D. candidate at [Northwestern University](https://www.northwestern/edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) at [Mu Collective](https://mucollective.northwestern.edu/).
 
 Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
+
+:::{.callout-important appearance="simple"}
+{{<fa fish-fins>}} **I am on the job market!** I am seeking full-time roles in research and development, such as Research Scientist, Research Engineer, and Data Scientist, where I can tackle data-driven problems and help build the future of human-AI collaboration.
+
+I welcome you to [view my CV](grad_cv.pdf) and [connect on LinkedIn []{.mdi--linkedin} ](https://www.linkedin.com/in/sheng-long/). 
+:::
 
 ## Research
 
 My research focuses on developing theoretical frameworks and empirical tools to better understand how people reason about and interact with abstract visual information. I had also worked on questions that involve more economics and fairness concerns previously.
-
-My CV is [here](grad_cv.pdf).
 
 ## Publications
 
@@ -36,8 +40,8 @@ My CV is [here](grad_cv.pdf).
 
 -   **Seeing Eye to AI? Applying Deep-Feature-Based Similarity Metrics to Information Visualization**\
     *Sheng Long*, [Angelos Chatzimparmpas](https://www.angeloschatzimparmpas.com/){.author-link}, [Emma Alexamder](https://www.alexander.vision/emma){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, [Jessica Hullman](http://users.eecs.northwestern.edu/~jhullman/){.author-link}\
-    [CHI'25: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems (To appear)]{style="color: #D3D3D3"}\
-    [ []{.simple-icons--osf} OSF Preprint](https://osf.io/preprints/osf/z6s59_v1){.paper-link} [poster](GC-poster.pdf){.paper-link}
+    [CHI'25: Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems]{style="color: #D3D3D3"}\
+    [{{<fa eye>}} Paper](https://dl.acm.org/doi/10.1145/3706598.3713955){.paper-link} [ []{.simple-icons--osf} OSF](https://osf.io/dj2ms/){.paper-link} [poster](GC-poster.pdf){.paper-link}
 -   **Old Wine in a New Bottle? Analyzing Visual Lineups with Signal Detection Theory**\
     *Sheng Long*, [Matthew Kay](https://www.mjskay.com/){.author-link}\
     [BELIV '24: Evaluation and Beyond --- Methodological Approaches for Visualization]{style="color: #D3D3D3"}\
