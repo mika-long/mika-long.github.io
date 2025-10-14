@@ -1,6 +1,6 @@
 .DS_Store
-.Rproj.user
+.Rproj.user/**
 
-/.quarto/
+/.quarto/**
 
 **/*.quarto_ipynb
