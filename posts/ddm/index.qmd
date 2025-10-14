@@ -1,10 +1,10 @@
 ---
-title: "Drift Diffusion Models (with brms)"
+title: "Drift Diffusion Models"
 author: 
   name: Sheng Long
-categories: [Statistics, Draft]
+categories: [Statistics]
 date: last-modified
-draft: false  
+draft: true  
 format:
   html: 
     reference-location: margin
@@ -12,7 +12,7 @@ format:
     toc: true 
     code-overflow: wrap 
 description: "Notes related to drift diffusion models."
-bibliography: "ddm.bib"
+bibliography: ddm.bib
 ---
 
 ```{r}
@@ -26,10 +26,13 @@ library(ggplot2)
 theme_set(theme_minimal())
 ```
 
+<<<<<<< HEAD
 :::{.callout-warning appearance="minimal"}
 ### 🚧 Under construction 🚧
 :::
 
+=======
+>>>>>>> 4df492f1b36b72883b8d4ee26d9001984b90c98d
 :::{.callout-note}
 The data was obtained from the supplementary material of @myersPracticalIntroductionUsing2022 at https://osf.io/cpfzj/files. 
 :::
@@ -77,4 +80,7 @@ df1 %>% ggplot(aes(x = RT, color = R, fill = R)) +
 Nevertheless, guess what? `brms` does implement the [Wiener diffusion model](https://paulbuerkner.com/brms/reference/Wiener.html) with parameters for boundary separation `alpha`, non-decision time `tau`, bias `beta`, and drift rate `delta`. Onwards to modelling!^[There are also other blog posts, such as [this one](http://singmann.org/wiener-model-analysis-with-brms-part-i/), that talks about using brms to perform Wiener model analysis.] Also as a todo to myself --- might be interesting to see how Wiener process models differ than/similar to Gaussian process models. 
 :::
 
+<<<<<<< HEAD
 TBC ... 
+=======
+>>>>>>> 4df492f1b36b72883b8d4ee26d9001984b90c98d

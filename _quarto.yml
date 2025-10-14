@@ -17,7 +17,11 @@ website:
     
   page-footer: 
     background: light 
+<<<<<<< HEAD
     left: © 2024 Sheng Long
+=======
+    left: © 2024 Sheng Long 
+>>>>>>> 4df492f1b36b72883b8d4ee26d9001984b90c98d
     right: This website is built with {{< fa brands r-project title="R Project" >}}, {{< fa brands github title="Github" >}}, [Quarto](https://quarto.org/), [fontawesome](https://github.com/quarto-ext/fontawesome), [iconify.design](https://iconify.design/), and [faviconer](http://faviconer.com/icon/latest).
 
   search: false
