@@ -1,55 +1,35 @@
 {
   "index.qmd": {
-    "index.html": "92502e67"
-  },
-  "about.qmd": {
-    "about.html": "bec59921"
-  },
-  "useful_resources.qmd": {
-    "useful_resources.html": "30e6a278"
-  },
-  "posts/jnd/index.qmd": {
-    "index.html": "8c924284"
+    "index.html": "dfd4eb2f"
   },
   "posts.qmd": {
-    "posts.html": "1a1ee0f3"
+    "posts.html": "53bbfcc0"
   },
-  "posts/multi-level models/index.qmd": {
-    "index.html": "fdcf601e"
-  },
-  "posts/roc curve/index.qmd": {
-    "index.html": "0f6e4bb5"
-  },
-  "posts/national park vists/park_visits.qmd": {
-    "park_visits.html": "d86390ac"
-  },
-  "posts/national park vists/index.qmd": {
-    "index.html": "77656ff0"
-  },
-  "sverto/example.qmd": {
-    "example.html": "c0a78698"
-  },
-  "posts/sgt and st/index.qmd": {
-    "index.html": "94b57383"
-  },
-  "posts/mixture model 1/index.qmd": {
-    "index.html": "ab7b42e0"
-  },
-  "posts/gm music/index.qmd": {
-    "index.html": "b0d143a5"
-  },
-  "posts/gm_music/index.qmd": {
-    "index.html": "668c3b63"
+  "posts/ddm/index.qmd": {
+    "index.html": "ce523c5a"
   },
   "posts/creativity/index.qmd": {
-    "index.html": "1a9d5cbd"
+    "index.html": "24422de9"
   },
-<<<<<<< Updated upstream
-  "posts/ddm/index.qmd": {
-    "index.html": "2fac5ef0"
-=======
+  "posts/jnd/index.qmd": {
+    "index.html": "4f5ff2e0"
+  },
+  "posts/multi-level models/index.qmd": {
+    "index.html": "04782794"
+  },
+  "posts/roc curve/index.qmd": {
+    "index.html": "3b3d00d7"
+  },
   "posts/explore vs exploit/index.qmd": {
-    "index.html": "c4010006"
->>>>>>> Stashed changes
+    "index.html": "53094942"
+  },
+  "posts/national park vists/index.qmd": {
+    "index.html": "95d418fc"
+  },
+  "posts/sgt and st/index.qmd": {
+    "index.html": "d2f0a3e3"
+  },
+  "posts/mixture model 1/index.qmd": {
+    "index.html": "0b93d9eb"
   }
 }
