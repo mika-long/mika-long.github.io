@@ -44,7 +44,12 @@
   "posts/creativity/index.qmd": {
     "index.html": "1a9d5cbd"
   },
+<<<<<<< Updated upstream
   "posts/ddm/index.qmd": {
     "index.html": "2fac5ef0"
+=======
+  "posts/explore vs exploit/index.qmd": {
+    "index.html": "c4010006"
+>>>>>>> Stashed changes
   }
 }
