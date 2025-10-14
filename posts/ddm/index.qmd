@@ -1,0 +1,75 @@
+---
+title: "Drift Diffusion Models"
+author: 
+  name: Sheng Long
+categories: [Statistics]
+date: last-modified
+draft: true  
+format:
+  html: 
+    reference-location: margin
+    citations-hover: true
+    toc: true 
+    code-overflow: wrap 
+description: "Notes related to drift diffusion models."
+bibliography: "ddm.bib"
+---
+
+```{r}
+#| echo: false 
+#| output: false 
+#| warning: false 
+
+library(tidyverse)
+library(tidybayes)
+library(ggplot2)
+theme_set(theme_minimal())
+```
+
+:::{.callout-note}
+The data was obtained from the supplementary material of @myersPracticalIntroductionUsing2022 at https://osf.io/cpfzj/files. 
+:::
+
+# A Short History of Drift Diffusion Models 
+
+Drift diffusion models (DDMs) were first introduced by Ratcliff and colleagues [cite]. It is one example of a broader class of computational cognitive models called *evidence accumulation models*. 
+
+For now let's look at a simple two-choice decision-making model. The DDM makes the following assumptions:
+
+- the response time on each trial can be decomposed into three parts: stimulus encoding time ($T_e$), decision time ($T_d$), and motor response time ($T_r$). 
+$$RT = T_e +T_d +T_r$$
+- There are two decision **boundaries**. By convention, the lower boundary is assigned a value of 0, and the upper boundary is defined by a parameter $a$ that represents boundary separation. 
+- On each trial, the decision process starts from a location on the y-axis defined by a parameter denoting a relative starting point ($z$) that ranges from 0 to 1. $z$ reflects the response bias --- if it is the middle between the two responses, then it favors neither response. Closer distance to one boundary implies bias for that boundary. 
+- Across many trials, the average rate at which evidence accumulates towards the correct boundary is defined by **drift rate** $d$. It is a measure of information of speed of information processing, which may vary depending on task difficulty. 
+
+# A concrete example 
+
+Suppose we collect data from human participants on a simple task with two stimuli, $s_1$ and $s_2$, that map to two responses, $r_1$ and $r_2$. The task has 500 trials, 150 of which are $s_1$ and 350 of which are $s_2$. 
+
+Let us read in the data from one participant:
+
+```{r}
+df1 <- read.csv("data/testdata.csv") %>% as_tibble(.)
+df1
+df1 %>% group_by(S, R) %>% count(.)
+```
+
+The correct response is responding `r1` for stimulus `s1` and `r2` for stimulus `r2`. 
+
+We can plot the distribution of response time:
+
+```{r}
+#| code-fold: true
+
+df1 %>% ggplot(aes(x = RT, color = R, fill = R)) + 
+  # geom_density() + 
+  geom_dots(alpha = 0.8) + 
+  facet_wrap(~S)
+```
+
+:::{.callout-note title="Tangential rant" collapse="true"}
+@myersPracticalIntroductionUsing2022 give a pretty detailed introduction, but they lack the mathematical equation I needed to start building the model in `brms`. I've been following their paper until the part of Bayesian modeling, and checked their code as well. Apparently they are using some packaged called `DMC`...? Unclear which specific package they're calling though^[I suspect it's [this one](https://github.com/humanfactors/dmc)...], cause the code just had `source(dmc/dmc.R)`. Truth be told I just wanted to see what is the link function and the likelihood function at this point ... 
+
+Nevertheless, guess what? `brms` does implement the [Wiener diffusion model](https://paulbuerkner.com/brms/reference/Wiener.html) with parameters for boundary separation `alpha`, non-decision time `tau`, bias `beta`, and drift rate `delta`. Onwards to modelling!^[There are also other blog posts, such as [this one](http://singmann.org/wiener-model-analysis-with-brms-part-i/), that talks about using brms to perform Wiener model analysis.] Also as a todo to myself --- might be interesting to see how Wiener process models differ than/similar to Gaussian process models. 
+:::
+

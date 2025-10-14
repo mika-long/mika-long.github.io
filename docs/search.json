@@ -1,0 +1,54 @@
+[
+  {
+    "objectID": "useful_resources.html",
+    "href": "useful_resources.html",
+    "title": "Useful Resources",
+    "section": "",
+    "text": "…"
+  },
+  {
+    "objectID": "useful_resources.html#how-to-read-papers",
+    "href": "useful_resources.html#how-to-read-papers",
+    "title": "Useful Resources",
+    "section": "",
+    "text": "…"
+  },
+  {
+    "objectID": "useful_resources.html#how-to-review-papers",
+    "href": "useful_resources.html#how-to-review-papers",
+    "title": "Useful Resources",
+    "section": "How to review papers",
+    "text": "How to review papers\n\nAn Unoffical Guide to Seven Stages of Reviewing for CHI\n\ngoogle doc"
+  },
+  {
+    "objectID": "posts.html",
+    "href": "posts.html",
+    "title": "Notes",
+    "section": "",
+    "text": "National Park Visit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nJust Noticeable Difference\n\n\n\n\n\n\nPsychophysics\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nSheng Long\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/jnd/index.html",
+    "href": "posts/jnd/index.html",
+    "title": "Just Noticeable Difference",
+    "section": "",
+    "text": "Formally, Just Noticeable Difference (JND) can be defined as the magnitude of change in a stimulus necessary for it to be perceived as different from another stimulus, or as the smallest detectable difference between two stimuli (Stern and Johnson 2010)."
+  },
+  {
+    "objectID": "posts/jnd/index.html#absolute-vs.-difference-threshold",
+    "href": "posts/jnd/index.html#absolute-vs.-difference-threshold",
+    "title": "Just Noticeable Difference",
+    "section": "Absolute vs. Difference Threshold",
+    "text": "Absolute vs. Difference Threshold"
+<<<<<<< HEAD
+  },
+  {
+    "objectID": "posts/national park vists/park_visits.html",
+    "href": "posts/national park vists/park_visits.html",
+    "title": "National Park Visit",
+    "section": "",
+    "text": "Code\n# custom theme \ntheme_custom &lt;- function() {\n  theme_minimal() + \n  theme(\n    text = element_text(family = \"Avenir\"), \n    plot.title = element_text(family = \"Avenir\"), \n    axis.text = element_text(family=\"Avenir\")\n  )\n}\n\ntheme_set(theme_custom())\n\n\nFirst we load the data1. The file is not quite ready to be merged with other ones, so we make changes to it.\n1 which was obtained from https://www.responsible-datasets-in-context.com/posts/np-data/?tab=explore-the-data\n\nCode\ndf &lt;- read.csv(file = \"US-National-Parks_Use_1979-2023_By-Month.csv\") %&gt;% \n  tibble(.) %&gt;% \n  mutate(ParkName = str_remove(ParkName, \"NP.*$\")) |&gt;\n  mutate(ParkName = trimws(ParkName)) %&gt;% \n  mutate(Region = trimws(Region))\n\nhead(df)\n\n\n# A tibble: 6 × 12\n  ParkName UnitCode ParkType      Region    State  Year Month RecreationVisits\n  &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt; &lt;int&gt; &lt;int&gt;            &lt;int&gt;\n1 Acadia   ACAD     National Park Northeast ME     1979     1             6011\n2 Acadia   ACAD     National Park Northeast ME     1979     2             5243\n3 Acadia   ACAD     National Park Northeast ME     1979     3            11165\n4 Acadia   ACAD     National Park Northeast ME     1979     4           219351\n5 Acadia   ACAD     National Park Northeast ME     1979     5           339416\n6 Acadia   ACAD     National Park Northeast ME     1979     6           543205\n# ℹ 4 more variables: NonRecreationVisits &lt;int&gt;, TentCampers &lt;int&gt;,\n#   RVCampers &lt;int&gt;, Backcountry &lt;int&gt;\n\n\n\n\nLet’s animate things!\nThe following is a static graph:\n\n\nCode\ndf %&gt;% \n  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + \n  geom_line() + \n  facet_wrap(~UnitCode) + \n  scale_x_continuous(breaks = 1:12, labels = 1:12) + \n  scale_color_viridis_c()\n\n\n\n\n\n\n\n\n\nLet’s try animating this!\n\n\nCode\ndf %&gt;% filter(ParkName == \"Acadia\") %&gt;% \n  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + \n  geom_line() + \n  scale_color_viridis_c()+ \n  scale_x_continuous(breaks = 1:12, labels = 1:12) + \n  scale_y_continuous(labels = function(x) paste0(x/1000, \"K\"))\n\n\n\n\n\n\n\n\n\n\n\nCode\ndf %&gt;% filter(ParkName == \"Acadia\") %&gt;% \n  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + \n  geom_line(linewidth=1.5) + \n  scale_color_viridis_c()+ \n  scale_x_continuous(breaks = 1:12, labels = 1:12) +\n  scale_y_continuous(labels = function(x) paste0(x/1000, \"K\")) + \n  labs(title = 'Year: {frame_time}') + \n  transition_time(Year) + \n  shadow_mark(past = T, future = F, alpha = 0.1)"
+=======
+>>>>>>> b82a8b0281af8c2173651455fa229568608de388
+  }
+]

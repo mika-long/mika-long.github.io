@@ -1,0 +1,45 @@
+---
+title: "On Creativity"
+categories: [Music]
+date: last-modified
+draft: true 
+format:
+  html: 
+    reference-location: margin
+    citations-hover: true
+    toc: true 
+    code-overflow: wrap 
+description: "Notes related to definitions of creativity and measures of creativity, both human and AI."
+bibliography: "creativity.bib"
+---
+
+During my summer internship at Sony^[Shout out to the Sony people! It was a great summer.]  
+
+## So what is "creativity" anyways? 
+
+In a NSF workshop report @shneiderman2005nsf on creativity support tools, the participants provided some really nice takes. Specifically, the chapter on *Creativity Support Tool Evaluation Methods and Metrics* gave an overview on existing research on creativity. 
+
+### Divergent and Convergent Thinking
+
+... 
+
+## Ways to measure creativity 
+
+Given the fact the creativity is multidimensional, one could imagine that trying to measure creativity is not an easy task. 
+
+One way to measure creativity is the **Torrance Tests of Creative Thinking**^[... and here's the [Wiki](https://en.wikipedia.org/wiki/Torrance_Tests_of_Creative_Thinking) link]. It was first developed by XXX in XXX. 
+
+There are also domain specific ways to measure creativity, such as the ones in music. XXX 
+
+The last thing I'll mention briefly is that there is a **Divergent Association Task**^[Those interested can take the test [here](https://www.datcreativity.com/)] (DAT). The research done by Olson et al. @olsonNamingUnrelatedWords2021 found that XXX. Given the fact that the DAT is administered in English, there has also been multi-lingual extensions to it, such as the one by Haase et al. [...], as well as a Japanese version of DAT (https://www.jstage.jst.go.jp/article/jcss/32/1/32_2024.038/_article/-char/en) 
+
+## Measuring creativity with Homogenization Analysis 
+
+In ..., 
+
+## Measuring and Benchmarking LLM Creativity
+
+- [Benchmarking LLM creativity](https://www.lesswrong.com/posts/rJCktCzwu5WAdMANx/ideas-for-benchmarking-llm-creativity) 
+- [How can we measure creativity?](https://www.lesswrong.com/posts/smjMNYeS2myBpqYGn/how-can-we-measure-creativity) 
+
+... 

@@ -1,0 +1,14 @@
+[
+  {
+    "listing": "/posts.html",
+    "items": [
+<<<<<<< Updated upstream
+      "/posts/gm_music/index.html",
+=======
+      "/posts/explore vs exploit/index.html",
+>>>>>>> Stashed changes
+      "/posts/mixture model 1/index.html",
+      "/posts/sgt and st/index.html"
+    ]
+  }
+]

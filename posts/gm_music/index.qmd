@@ -1,0 +1,53 @@
+---
+title: "Creating music with GM package"
+author: 
+  name: Sheng Long
+categories: [Music]
+date: last-modified
+draft: false
+format:
+  html: 
+    reference-location: margin
+    toc: true 
+    code-overflow: wrap 
+description: "Experimenting with the GM R package to create music."
+---
+
+```{r}
+#| output: false 
+
+library(gm)
+```
+
+# Overview 
+
+I saw the [`gm` package](https://flujoo.github.io/gm/index.html) on this [Bluesky post](https://bsky.app/profile/andrew.heiss.phd/post/3m2cmi4cuok27) and thought I'd give it a try. Here's the [reference document](https://flujoo.github.io/gm/articles/gm.html). 
+
+---
+
+Create simple music: 
+
+```{r}
+music <- 
+  Music() +
+  Meter(4, 4) +
+  Line(c("C5", "D5", "E5", "F5"))
+  
+show(music)
+```
+
+Let's try something a bit more complicated: 
+
+```{r}
+moon <- Music() + 
+  Meter(4, 4) + 
+  Key(2) + 
+  Line(
+    pitches = c("A3", "B3", "D4", "E4", "F#4", "A4", "B4"),
+    durations = c("quarter.", "eighth", "eighth", "eighth", "eighth", "eighth", "whole")
+  )
+
+show(moon)
+```
+
+Note that the above is the opening ascent of 「彩云追月」 ("Colorful Clouds Chasing the Moon")^[Taken from [Pentatonic _Xuangong_ 旋宮 Transformations in Chinese Music](https://mtosmt.org/issues/mto.24.30.1/mto.24.30.1.lam.html) by Nathan L. Lam]. 
