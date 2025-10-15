@@ -1,17 +1,19 @@
 ---
 title: "Useful Resources"
-author: 
-  - name: "Sheng Long"
-  - orcid: 0000-0000-0000-0000
-license: "CC BY" 
-
 ---
 
+The following are some websites that I found useful. 
 
-## How to read papers  
+## Academia related
+
+### How to read papers  
 - ... 
 
-## How to review papers 
+### How to review papers 
 
 - [An Unoffical Guide to Seven Stages of Reviewing for CHI](https://nehakumar.medium.com/an-unofficial-guide-to-seven-stages-of-reviewing-for-chi-7938880fc895)
   - [google doc](https://docs.google.com/document/d/1MpH3zV8WFU5avQHqrVTtxu-wNWzeTstxWy7K__HK5Nc/edit?tab=t.0#heading=h.mq8hia60enm8) 
+  
+## General Sofware related
+
+- [Reproducible environments for `R` and `Python`](https://occasionaldivergences.com/posts/rep-env/#:~:text=This%20takes%20a%20snapshot%20of,version%20of%20the%20required%20packages.&text=If%20a%20package%20you're,package%20from%20is%20non%2Dstandard.&text=I've%20tried%20to%20provide,with%20renv::restore()%20.) 
