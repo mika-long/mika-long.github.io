@@ -131,6 +131,8 @@ make_stancode(formula = f, prior = p, data = df1,
 Now we can fit the model: 
 
 ```{r}
+#| eval: false
+
 m.wiener <- brm(formula = f,
                 data = df1,
                 family = wiener(link_bs = "identity", 

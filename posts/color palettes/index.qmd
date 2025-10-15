@@ -1,5 +1,36 @@
 ---
-title: "index"
-format: html
+title: "Notes on color palettes"
+description: "Some notes on color palettes" 
+date: last-modified
+bibliography: color.bib
+draft: true 
 ---
+
+```{r}
+#| code-fold: true 
+
+library(RColorBrewer)
+par(mar=c(3,4,2,2))
+display.brewer.all()
+```
+
+Chances are, if you've taken a data science class before that talks about color palettes, you must have known the "Brewer" palette. You can also go on the [ColorBrewer](https://colorbrewer2.org/) website to decide which color palette to use, and whether they are printing-friendly, color-blind friendly, etc. But how were these color palettes designed in the first place? 
+
+## What is "colorbrewer.org"? 
+
+Cynthia Brewer^[Website [here](https://sites.psu.edu/cbrewer/)], then a PhD student (?) first designed the color palettes in 19xx. 
+
+@harrowerColorBrewerorgOnlineTool2003 also published a paper detailing the design decisions that went into building the `colorbrewer` website. 
+
+## Color systems 
+
+Color systems are XXX. Perhaps one of the most famour color systems are the Munsell color system, which is used to establsh color standards and acceptable ranges of color deviation for commericial products and to classify colors. 
+
+### Different ways to represent the color system 
+
+- The cylindrical relationship 
+- The isometric view 
+- The plan view 
+- color [gamut](https://en.wikipedia.org/wiki/Gamut) 
+
 

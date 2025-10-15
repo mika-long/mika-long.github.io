@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-10-14">
+<meta name="dcterms.date" content="2025-10-15">
 <meta name="description" content="Notes related to drift diffusion models.">
 
 <title>Drift Diffusion Models – Sheng Long</title>
@@ -113,6 +113,7 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<meta name="quarto:status" content="draft">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -150,7 +151,7 @@ window.Quarto = {
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -225,7 +226,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 14, 2025</p>
+      <p class="date">October 15, 2025</p>
     </div>
   </div>
   
@@ -344,7 +345,164 @@ Note
 </div>
 </div>
 </div>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;There are also other blog posts, such as <a href="http://singmann.org/wiener-model-analysis-with-brms-part-i/">this one</a>, that talks about using brms to perform Wiener model analysis.</p></div></div><div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;I suspect it’s <a href="https://github.com/humanfactors/dmc">this one</a>…</p></div></div><p>TBC …</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;There are also other blog posts, such as <a href="http://singmann.org/wiener-model-analysis-with-brms-part-i/">this one</a>, that talks about using brms to perform Wiener model analysis.</p></div></div><div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;I suspect it’s <a href="https://github.com/humanfactors/dmc">this one</a>…</p></div></div><p>Before we can fit the model in <code>brms</code> we need to first intall the <code>RWiener</code> package. Also, in the documentation of <code>brms</code>, it says:</p>
+<blockquote class="blockquote">
+<p>Family <code>wiener</code> provides an implementation of the Wiener diffusion model. For this family, the main formula predicts the drift parameter ‘delta’ and all other parameters are modeled as auxiliary parameters.</p>
+</blockquote>
+<p>First specify the formula for the drift parameter <code>delta</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">brmsformula</span>(RT <span class="sc">|</span> <span class="fu">dec</span>(R) <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> S, </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                 bs <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> S, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                 ndt <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> S, </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                 bias <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> S)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Get a sense of the default priors:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_prior</span>(f,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">data =</span> df1, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">family =</span> <span class="fu">wiener</span>(<span class="at">link_bs =</span> <span class="st">"identity"</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">link_ndt =</span> <span class="st">"identity"</span>, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">link_bias =</span> <span class="st">"identity"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  prior class coef group resp dpar nlpar lb ub tag       source
+ (flat)     b                                           default
+ (flat)     b  Ss1                                 (vectorized)
+ (flat)     b  Ss2                                 (vectorized)
+ (flat)     b                 bias                      default
+ (flat)     b  Ss1            bias                 (vectorized)
+ (flat)     b  Ss2            bias                 (vectorized)
+ (flat)     b                   bs                      default
+ (flat)     b  Ss1              bs                 (vectorized)
+ (flat)     b  Ss2              bs                 (vectorized)
+ (flat)     b                  ndt                      default
+ (flat)     b  Ss1             ndt                 (vectorized)
+ (flat)     b  Ss2             ndt                 (vectorized)</code></pre>
+</div>
+</div>
+<p>All of these are flat priors by default. We can set them to be something weakly informative:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">prior</span>(<span class="st">"cauchy(0, 5)"</span>, <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">set_prior</span>(<span class="st">"normal(1.5, 1)"</span>, <span class="at">class =</span> <span class="st">"b"</span>, <span class="at">dpar =</span> <span class="st">"bs"</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">set_prior</span>(<span class="st">"normal(0.2, 0.1)"</span>, <span class="at">class =</span> <span class="st">"b"</span>, <span class="at">dpar =</span> <span class="st">"ndt"</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">set_prior</span>(<span class="st">"normal(0.5, 0.2)"</span>, <span class="at">class =</span> <span class="st">"b"</span>, <span class="at">dpar =</span> <span class="st">"bias"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Stan code
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For those who are more familiar with <code>Stan</code> we can also examine the stan code behind this <code>brms</code> formula and prior:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make_stancode</span>(<span class="at">formula =</span> f, <span class="at">prior =</span> p, <span class="at">data =</span> df1, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> <span class="fu">wiener</span>(<span class="at">link_bs =</span> <span class="st">"identity"</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">link_ndt =</span> <span class="st">"identity"</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">link_bias =</span> <span class="st">"identity"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>// generated with brms 2.23.0
+functions {
+  /* Wiener diffusion log-PDF for a single response
+   * Args:
+   *   y: reaction time data
+   *   dec: decision data (0 or 1)
+   *   alpha: boundary separation parameter &gt; 0
+   *   tau: non-decision time parameter &gt; 0
+   *   beta: initial bias parameter in [0, 1]
+   *   delta: drift rate parameter
+   * Returns:
+   *   a scalar to be added to the log posterior
+   */
+   real wiener_diffusion_lpdf(real y, int dec, real alpha,
+                              real tau, real beta, real delta) {
+     if (dec == 1) {
+       return wiener_lpdf(y | alpha, tau, beta, delta);
+     } else {
+       return wiener_lpdf(y | alpha, tau, 1 - beta, - delta);
+     }
+   }
+}
+data {
+  int&lt;lower=1&gt; N;  // total number of observations
+  vector[N] Y;  // response variable
+  array[N] int&lt;lower=0,upper=1&gt; dec;  // decisions
+  int&lt;lower=1&gt; K;  // number of population-level effects
+  matrix[N, K] X;  // population-level design matrix
+  int&lt;lower=1&gt; K_bs;  // number of population-level effects
+  matrix[N, K_bs] X_bs;  // population-level design matrix
+  int&lt;lower=1&gt; K_ndt;  // number of population-level effects
+  matrix[N, K_ndt] X_ndt;  // population-level design matrix
+  int&lt;lower=1&gt; K_bias;  // number of population-level effects
+  matrix[N, K_bias] X_bias;  // population-level design matrix
+  int prior_only;  // should the likelihood be ignored?
+}
+transformed data {
+  real min_Y = min(Y);
+}
+parameters {
+  vector[K] b;  // regression coefficients
+  vector[K_bs] b_bs;  // regression coefficients
+  vector[K_ndt] b_ndt;  // regression coefficients
+  vector[K_bias] b_bias;  // regression coefficients
+}
+transformed parameters {
+  // prior contributions to the log posterior
+  real lprior = 0;
+  lprior += cauchy_lpdf(b | 0, 5);
+  lprior += normal_lpdf(b_bs | 1.5, 1);
+  lprior += normal_lpdf(b_ndt | 0.2, 0.1);
+  lprior += normal_lpdf(b_bias | 0.5, 0.2);
+}
+model {
+  // likelihood including constants
+  if (!prior_only) {
+    // initialize linear predictor term
+    vector[N] mu = rep_vector(0.0, N);
+    // initialize linear predictor term
+    vector[N] bs = rep_vector(0.0, N);
+    // initialize linear predictor term
+    vector[N] ndt = rep_vector(0.0, N);
+    // initialize linear predictor term
+    vector[N] bias = rep_vector(0.0, N);
+    mu += X * b;
+    bs += X_bs * b_bs;
+    ndt += X_ndt * b_ndt;
+    bias += X_bias * b_bias;
+    for (n in 1:N) {
+      target += wiener_diffusion_lpdf(Y[n] | dec[n], bs[n], ndt[n], bias[n], mu[n]);
+    }
+  }
+  // priors including constants
+  target += lprior;
+}
+generated quantities {
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Now we can fit the model:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m.wiener <span class="ot">&lt;-</span> <span class="fu">brm</span>(<span class="at">formula =</span> f,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> df1,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="fu">wiener</span>(<span class="at">link_bs =</span> <span class="st">"identity"</span>, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                                <span class="at">link_ndt =</span> <span class="st">"identity"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                                <span class="at">link_bias =</span> <span class="st">"identity"</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">prior =</span> p, </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">iter =</span> <span class="dv">2000</span>, </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">warmup =</span> <span class="dv">1000</span>, </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">chains =</span> <span class="dv">4</span>, </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">cores =</span> <span class="dv">4</span>, </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">control =</span> <span class="fu">list</span>(<span class="at">max_treedepth =</span> <span class="dv">15</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 
 
 

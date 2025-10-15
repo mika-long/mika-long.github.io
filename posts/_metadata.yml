@@ -15,3 +15,9 @@ author:
   name: Sheng Long
 
 code-overflow: wrap
+
+format:
+  html: 
+    reference-location: margin
+    toc: true 
+    code-overflow: wrap 
