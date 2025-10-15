@@ -4,7 +4,7 @@ author:
   name: Sheng Long
 categories: [Statistics]
 date: last-modified
-draft: false  
+draft: true  
 format:
   html: 
     reference-location: margin
@@ -24,6 +24,7 @@ library(tidyverse)
 library(tidybayes)
 library(ggplot2)
 theme_set(theme_minimal())
+library(brms)
 ```
 
 
@@ -78,5 +79,68 @@ df1 %>% ggplot(aes(x = RT, color = R, fill = R)) +
 Nevertheless, guess what? `brms` does implement the [Wiener diffusion model](https://paulbuerkner.com/brms/reference/Wiener.html) with parameters for boundary separation `alpha`, non-decision time `tau`, bias `beta`, and drift rate `delta`. Onwards to modelling!^[There are also other blog posts, such as [this one](http://singmann.org/wiener-model-analysis-with-brms-part-i/), that talks about using brms to perform Wiener model analysis.] Also as a todo to myself --- might be interesting to see how Wiener process models differ than/similar to Gaussian process models. 
 :::
 
-TBC ... 
+Before we can fit the model in `brms` we need to first intall the `RWiener` package. Also, in the documentation of `brms`, it says: 
+
+> Family `wiener` provides an implementation of the Wiener diffusion model. For this family, the main formula predicts the drift parameter 'delta' and all other parameters are modeled as auxiliary parameters. 
+
+First specify the formula for the drift parameter `delta`: 
+
+```{r}
+f <- brmsformula(RT | dec(R) ~ 0 + S, 
+                 bs ~ 0 + S, 
+                 ndt ~ 0 + S, 
+                 bias ~ 0 + S)
+```
+
+
+Get a sense of the default priors: 
+
+```{r}
+get_prior(f,
+          data = df1, 
+          family = wiener(link_bs = "identity", 
+                          link_ndt = "identity", 
+                          link_bias = "identity"))
+```
+
+All of these are flat priors by default. We can set them to be something weakly informative: 
+
+```{r}
+p <- c(
+ prior("cauchy(0, 5)", class = "b"),
+ set_prior("normal(1.5, 1)", class = "b", dpar = "bs"),
+ set_prior("normal(0.2, 0.1)", class = "b", dpar = "ndt"),
+ set_prior("normal(0.5, 0.2)", class = "b", dpar = "bias")
+)
+```
+
+:::{.callout-note collapse="true"}
+## Stan code 
+
+For those who are more familiar with `Stan` we can also examine the stan code behind this `brms` formula and prior: 
+
+```{r}
+make_stancode(formula = f, prior = p, data = df1, 
+              family = wiener(link_bs = "identity", 
+                              link_ndt = "identity",
+                              link_bias = "identity"))
+```
+
+:::
+
+Now we can fit the model: 
+
+```{r}
+m.wiener <- brm(formula = f,
+                data = df1,
+                family = wiener(link_bs = "identity", 
+                                link_ndt = "identity",
+                                link_bias = "identity"),
+                prior = p, 
+                iter = 2000, 
+                warmup = 1000, 
+                chains = 4, 
+                cores = 4, 
+                control = list(max_treedepth = 15))
+```
 
