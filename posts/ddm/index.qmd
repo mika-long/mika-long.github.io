@@ -25,6 +25,15 @@ library(tidybayes)
 library(ggplot2)
 theme_set(theme_minimal())
 library(brms)
+library(RWiener)
+```
+
+
+```{r}
+dat <- rwiener(100,2,.3,.5,0)
+
+## plot
+plot(dat)
 ```
 
 
