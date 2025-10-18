@@ -1,0 +1,70 @@
+---
+title: "Prior predictive checks"
+author: 
+  name: Sheng Long
+draft: true  
+description: "Checking my understanding of prior predictive checks and the Wiener process model"
+---
+
+```{r}
+#| echo: false 
+#| output: false 
+#| warning: false 
+
+library(tidyverse)
+library(tidybayes)
+library(ggplot2)
+theme_set(theme_minimal())
+library(brms)
+library(cmdstanr)
+# library(RWiener)
+```
+
+Very simple toy model: `y ~ N(mu, sigma)`. 
+
+
+```{r}
+# data 
+df <- as_tibble(rnorm(100, 5, 3))
+# formula 
+f <- bf(value ~ 1)
+make_stancode(f, data = df)
+```
+
+# Prior Predictive Checks 
+
+- source: https://mc-stan.org/docs/stan-users-guide/posterior-predictive-checks.html#prior-predictive-checks 
+
+Let's assume `mu ~ N(4, 2)` and `sigma ~ N(3, 1)`: 
+
+```{r}
+# Define the data 
+N <- 100
+my_x <- rnorm(N, 0, 1)
+
+stan_data <- list(
+  N = N, 
+  x = my_x
+)
+
+model <- cmdstan_model("ex1.stan")
+```
+
+Fit the stan model: 
+
+```{r}
+fit1 <- model$sample(
+  data = stan_data, 
+  chains = 4, 
+  fixed_param = TRUE, 
+  iter_warmup = 0, 
+  iter_sampling = 1000, 
+  refresh = 0
+)
+```
+
+```{r}
+fit1$draws("y_sim", format = "matrix") %>% as_tibble(.)
+```
+
+
