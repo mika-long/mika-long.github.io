@@ -1,0 +1,45 @@
+---
+title: "Wiener Process"
+format: html 
+---
+
+# Simulating a Wiener procss model 
+
+```{r}
+#| echo: false 
+
+library(tidyverse)
+library(ggplot2)
+theme_set(theme_minimal())
+```
+
+Source: https://sites.me.ucsb.edu/~moehlis/APC591/tutorials/tutorial7/node2.html 
+
+A standard Wiener process^[often called Brownian motion] on the interval $[0, T]$ is a random variable $W(t)$ that depends continuously on $t in [0, T]$ and satisifes the following: 
+
+- $W(0) = 0$ 
+- For $0 <= s < t <= T$, 
+$$W(t) - W(s) \sim \sqrt{t-s} \mathcal{N}(0, 1)$$
+- For $0 <= s < t < u < v <= T$, $W(t) - W(s)$ and $W(v) - W(u)$ are independent. 
+
+To make things easier on a computer, we discretize the Wiener process with a timestamp $d t$ as $$d W \sim \sqrt{d t} \mathcal{N}(0, 1)$$ 
+
+```{r}
+T = 1 
+N = 500 
+dt = T / N 
+W <- c(sqrt(dt) * rnorm(1, 0, 1))
+for (i in 2:N){
+  dW <- sqrt(dt) * rnorm(1, 0, 1)
+  W <- c(W, tail(W, n = 1) + dW)
+}
+```
+
+```{r}
+plot(W, type = "l")
+
+W %>% as_tibble(.) %>% 
+  ggplot(aes(x = 1:500, y = value)) + 
+  geom_line()
+```
+

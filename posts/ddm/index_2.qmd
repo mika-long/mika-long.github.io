@@ -13,6 +13,7 @@ description: "Checking my understanding of prior predictive checks and the Wiene
 
 library(tidyverse)
 library(tidybayes)
+library(ggdist)
 library(ggplot2)
 theme_set(theme_minimal())
 library(brms)
@@ -64,7 +65,17 @@ fit1 <- model$sample(
 ```
 
 ```{r}
-fit1$draws("y_sim", format = "matrix") %>% as_tibble(.)
+fit1$draws("y_sim") %>% as_draws_df(.) %>% 
+  select(1) # %>% 
+  ggplot(aes(x = `y_sim[1]`)) # + 
+  geom_slab()
 ```
 
+---
+
+## Prior predictive check with a Weiner process model 
+
+```{r}
+
+```
 
