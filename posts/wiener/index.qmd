@@ -1,16 +1,29 @@
 ---
-title: "Wiener Process"
-format: html 
+title: "Wiener Process, Brownian Motion, and Drift Diffusion Models"
+categories: [statistics]
+date: 10/22/25
+bibliography: "wiener.bib"
+draft: true 
 ---
 
-# Simulating a Wiener procss model 
+:::{.callout-note}
+## TLDR 
+
+I was interested in learning more about the drift diffusion model, then I got curious about how the model actually works, which led me to discover connections between it and Brownian Motion. 
+:::
+
+## Simulating a Wiener process model 
 
 ```{r}
 #| echo: false 
+#| warning: false
 
 library(tidyverse)
+library(ggdist)
 library(ggplot2)
 theme_set(theme_minimal())
+
+set.seed(51)
 ```
 
 Source: https://sites.me.ucsb.edu/~moehlis/APC591/tutorials/tutorial7/node2.html 
@@ -25,21 +38,91 @@ $$W(t) - W(s) \sim \sqrt{t-s} \mathcal{N}(0, 1)$$
 To make things easier on a computer, we discretize the Wiener process with a timestamp $d t$ as $$d W \sim \sqrt{d t} \mathcal{N}(0, 1)$$ 
 
 ```{r}
-T = 1 
-N = 500 
-dt = T / N 
-W <- c(sqrt(dt) * rnorm(1, 0, 1))
-for (i in 2:N){
-  dW <- sqrt(dt) * rnorm(1, 0, 1)
-  W <- c(W, tail(W, n = 1) + dW)
+# params
+T <- 1
+N <- 500              # number of steps
+dt <- T / N
+times <- seq(0, T, length.out = N + 1)
+paths <- 50
+
+# storage (rows = paths, cols = time steps including t=0)
+W <- matrix(0, nrow = paths, ncol = N + 1)
+hit_idx <- rep(NA_integer_, paths)  # index of first hit (NA if never hits)
+
+for (p in seq_len(paths)) {
+  for (i in 2:(N + 1)) {
+    dW <- sqrt(dt) * rnorm(1)
+    W[p, i] <- W[p, i - 1] + dW
+    if (W[p, i] >= 1 || W[p, i] <= -1) {
+      hit_idx[p] <- i
+      # copy the absorbing value forward
+      if (i < (N + 1)) W[p, (i + 1):(N + 1)] <- W[p, i]
+      break
+    }
+  }
+  # if never hit, W[p, ] is already fully filled
 }
+
+# convert to long dataframe for ggplot
+df <- tibble(
+  path = rep(seq_len(paths), each = N + 1),
+  time = rep(times, times = paths),
+  W = as.vector(t(W))    # t(W) so we stack path-wise
+)
 ```
 
 ```{r}
-plot(W, type = "l")
+#| code-fold: true 
+df <- df %>% mutate(path = factor(path))
 
-W %>% as_tibble(.) %>% 
-  ggplot(aes(x = 1:500, y = value)) + 
-  geom_line()
+# quick plot: many thin lines (no legend), dashed horizontal at ±1
+ggplot(df, aes(x = time, y = W, group = path, color = path)) +
+  geom_line(linewidth = 0.6, show.legend = FALSE, alpha = 0.8) +
+  geom_hline(yintercept = c(-1, 1), linetype = "dashed") +
+  labs(title = "Simulated paths with absorbing boundaries at ±1",
+       x = "time", y = "W(t)") +
+  theme_minimal()
+```
+
+```{r}
+# compute first-passage time per path
+first_passage <- df %>%
+  group_by(path) %>%
+  summarize(
+    hit_time = ifelse(any(abs(W) >= 1),
+                      time[which(abs(W) >= 1)[1]],
+                      NA_real_)  # NA if never hit
+  ) %>%
+  ungroup()
+
+# look at summary
+summary(first_passage$hit_time)
+```
+
+```{r}
+ggplot(first_passage, aes(x = hit_time)) +
+  stat_halfeye() + 
+  # geom_histogram(binwidth = 0.02, fill = "steelblue", color = "white") +
+  labs(
+    title = "Distribution of First-Passage Times (|W| ≥ 1)",
+    x = "First passage time",
+    y = "Count"
+  )
+```
+
+## Drift Diffusion Models 
+
+For a detailed tutorial on Drift Diffusion Models, see @myersPracticalIntroductionUsing2022. 
+
+## Comprison to the `RWiener` package
+
+- [Reference manual](https://cran.r-project.org/web/packages/RWiener/RWiener.pdf) 
+
+
+```{r}
+library(RWiener)
+dat <- rwiener(100,3,.25,.5,0.8)
+
+dat %>% count(resp)
 ```
 
