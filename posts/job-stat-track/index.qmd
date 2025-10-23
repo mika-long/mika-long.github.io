@@ -1,0 +1,171 @@
+---
+title: "Automatically update job application stages via Apps Script"
+date: last-modified
+categories: ["misc"]
+---
+
+I used to manually key into a google sheets to keep track of the jobs that I applied to across companies. With the help of [Apps Script](https://script.google.com/home) life got a lot easier. 
+
+Assuming that the column names for keeping track of job applications is Stage, Company, Position, Applied Date, the following script will automatically populate an existing google sheets so that one does not need to do it manually by hand. 
+
+Here I am using `gemini-2.5-flash` for the best bang for buck and setting `temperature = 0.2` cause it's a somewhat deterministic data extraction task. 
+
+```js
+const SHEET_NAME = "Script"; // Exact name of the sheet tab 
+const GMAIL_PROCESSED_LABEL = "Job-Processed"; // Prevents double-processing 
+
+// --- DETECTION RULES ---- 
+const knownSenders = [
+  "greenhouse-mail.io", 
+  "lever.co", 
+  "myworkdayjobs.com", 
+  "icims.com" // add more if needed
+]
+const subjectKeywords = [
+  "application has been received",
+  "your application for",
+  "thank you for your interest",
+  "update on your application",
+  "following up on your",
+  "application to" // add more if needed
+];
+
+/** Store the Gemini API Key securely using script properties
+ * Run this function once manuallly from the Apps Script editor to set the key 
+ */
+function setAPIKey() {
+  const apiKey = "PASTE_API_KEY_HERE"; // gemini api key 
+  PropertiesService.getScriptProperties().setProperty('GEMINI_API_KEY', apiKey); 
+  Logger.log("API Key has been set successfully.")
+}
+
+/**
+ * Checks if a given email message is likely related to a job application 
+ * @param {GmailMessage} message: The Gmail message object 
+ */
+function isJobApplicationEmail(message){
+    const from = message.getFrom().toLowerCase(); 
+    const subject = message.getSubject().toLowerCase(); 
+
+    // Check if the sender is from a known ATS 
+    if (knownSenders.some(sender => from.includes(sender))) {
+      return true;
+    }
+
+    // 2. Check if the subject contains any of the keywords
+    if (subjectKeywords.some(keyword => subject.includes(keyword))) {
+      return true;
+    }
+
+    return false;
+}
+
+/**
+ * Main function. Scans recent unread emails, processes job-related ones,
+ * and updates the Google Sheet.
+ */
+function processJobEmails() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  
+  // Get / create the memory label  
+  let label = GmailApp.getUserLabelByName(GMAIL_PROCESSED_LABEL);
+  if (!label) {
+    label = GmailApp.createLabel(GMAIL_PROCESSED_LABEL);
+  }
+
+  // search for emails in the primary or updates inbox for the last 7 days that were not processed already 
+  const searchQuery = `(category:primary OR category:updates) newer_than:7d -label:${GMAIL_PROCESSED_LABEL}`;
+  const threads = GmailApp.search(searchQuery);
+
+  for (const thread of threads) {
+    const message = thread.getMessages()[0]; // Get the first message
+
+    // check if it's a job application email
+    if (isJobApplicationEmail(message)) {
+      const emailBody = message.getPlainBody();
+      const emailSubject = message.getSubject();
+      const emailDate = message.getDate();
+
+      const extractedInfo = extractInfoWithLLM(emailSubject, emailBody);
+
+      if (extractedInfo) {
+        sheet.appendRow([
+          extractedInfo.status || "Applied",
+          extractedInfo.company || "N/A",
+          extractedInfo.job_title || "N/A",
+          emailDate
+        ]);
+
+        // Automatically label the thread and mark it as read
+        thread.addLabel(label);
+        thread.markRead();
+      }
+    }
+  }
+}
+
+/**
+ * Calls the Gemini API to extract structured data from email text.
+ * (This function remains unchanged from the previous version)
+ * @param {string} text1 The plain text content of the email subject.
+ * @param {string} text2 The plain text content of the email body.
+ * @return {Object|null} A JSON object with extracted info, or null on failure.
+ * Full details here: https://codelabs.developers.google.com/codelabs/gemini-workspace
+ */
+function extractInfoWithLLM(text1, text2) {
+  const API_KEY = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
+  if (!API_KEY) {
+    Logger.log("Error: API Key not set. Please run the setApiKey() function.");
+    return null;
+  }
+  
+  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+
+  const prompt = `
+    From the following email body and email title, extract the company name, the job title, and the current application status.
+    The status should be one of: "Applied" or "Rejected".
+    If you cannot find a piece of information, use the value "N/A".
+    Return the result as a single, minified JSON object with the keys "company", "job_title", and "status".
+
+    Email Subject: 
+    ---
+    ${text1.substring(0, 1000)}
+    ---
+
+    Email Body:
+    ---
+    ${text2.substring(0, 4000)}
+    ---
+  `;
+
+  const payload = {
+    contents: [{
+      parts: [{
+        text: prompt
+      }]
+    }],
+    generationConfig: {
+      "temperature": 0.3
+    }
+  };
+
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const responseText = response.getContentText();
+    const jsonText = responseText.match(/\{.*\}/s)[0];
+    const raw_data = JSON.parse(jsonText);
+    const data = raw_data.candidates[0].content.parts[0].text.match(/\{.*\}/s); 
+    return JSON.parse(data);
+  } catch (e) {
+    Logger.log(`Error calling LLM or parsing response: ${e.toString()}`);
+    return null;
+  }
+}
+```

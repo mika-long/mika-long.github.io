@@ -9,7 +9,14 @@ draft: true
 :::{.callout-note}
 ## TLDR 
 
-I was interested in learning more about the drift diffusion model, then I got curious about how the model actually works, which led me to discover connections between it and Brownian Motion. 
+I was interested in learning more about the drift diffusion model, then I got curious about how the model actually works, which led me to discover connections between it and Brownian Motion.
+
+Some more notes: 
+
+- [Brownian motion related](https://ionides.github.io/620/notes/diffusions.pdf)
+- [stochastic processes for AP](https://fiveable.me/stochastic-processes/unit-9)
+- [stochastic calculus](https://math.nyu.edu/~goodman/teaching/StochCalc2018/notes/Lesson2.pdf) 
+- [Brownian motion with drift and scaling](https://www.randomservices.org/random/brown/Drift.html) 
 :::
 
 ## Simulating a Wiener process model 
@@ -28,7 +35,7 @@ set.seed(51)
 
 Source: https://sites.me.ucsb.edu/~moehlis/APC591/tutorials/tutorial7/node2.html 
 
-A standard Wiener process^[often called Brownian motion] on the interval $[0, T]$ is a random variable $W(t)$ that depends continuously on $t in [0, T]$ and satisifes the following: 
+A standard Wiener process^[often called Brownian motion] on the interval $[0, T]$ is a random variable $W(t)$ that depends continuously on $t \in [0, T]$ and satisifes the following: 
 
 - $W(0) = 0$ 
 - For $0 <= s < t <= T$, 
@@ -110,11 +117,17 @@ ggplot(first_passage, aes(x = hit_time)) +
   )
 ```
 
-## Drift Diffusion Models 
+## Drift Diffusion Models (DDM)
+
+So what is a "drift diffusion model"? Well it is a model that has been widely used in pscyhology and neuroeconomics to explain observed patterns of choices and _response times_^[See [this paper](https://www.pnas.org/doi/10.1073/pnas.2011446117) for more]. 
 
 For a detailed tutorial on Drift Diffusion Models, see @myersPracticalIntroductionUsing2022. 
 
-## Comprison to the `RWiener` package
+### Connections between DDM and Brownian Motion 
+
+TODO 
+
+## Comparison to the `RWiener` package
 
 - [Reference manual](https://cran.r-project.org/web/packages/RWiener/RWiener.pdf) 
 
