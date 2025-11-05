@@ -6,136 +6,262 @@ bibliography: "wiener.bib"
 draft: true 
 ---
 
-:::{.callout-note}
-## TLDR 
-
-I was interested in learning more about the drift diffusion model, then I got curious about how the model actually works, which led me to discover connections between it and Brownian Motion.
-
-Some more notes: 
-
-- [Brownian motion related](https://ionides.github.io/620/notes/diffusions.pdf)
-- [stochastic processes for AP](https://fiveable.me/stochastic-processes/unit-9)
-- [stochastic calculus](https://math.nyu.edu/~goodman/teaching/StochCalc2018/notes/Lesson2.pdf) 
-- [Brownian motion with drift and scaling](https://www.randomservices.org/random/brown/Drift.html) 
-:::
-
-## Simulating a Wiener process model 
-
 ```{r}
 #| echo: false 
-#| warning: false
+#| warning: false 
 
 library(tidyverse)
-library(ggdist)
 library(ggplot2)
 theme_set(theme_minimal())
-
+# set seed 
 set.seed(51)
 ```
 
-Source: https://sites.me.ucsb.edu/~moehlis/APC591/tutorials/tutorial7/node2.html 
 
-A standard Wiener process^[often called Brownian motion] on the interval $[0, T]$ is a random variable $W(t)$ that depends continuously on $t \in [0, T]$ and satisifes the following: 
+:::{.callout-note}
+TODO 
+:::
 
-- $W(0) = 0$ 
-- For $0 <= s < t <= T$, 
-$$W(t) - W(s) \sim \sqrt{t-s} \mathcal{N}(0, 1)$$
-- For $0 <= s < t < u < v <= T$, $W(t) - W(s)$ and $W(v) - W(u)$ are independent. 
+The Drift Diffusion Model (DDM), also known as Ratcliff's Diffusion Model (RDM), was first developed by Ratcliff in 1978 [@ratcliff1978theory]. It is a model based on *accumulation of evidence*, otherwise more generally called **sampling models**. These models represent decisions as the accumulation of evidence until a threshold is reached, leading to a corresponding action. 
 
-To make things easier on a computer, we discretize the Wiener process with a timestamp $d t$ as $$d W \sim \sqrt{d t} \mathcal{N}(0, 1)$$ 
+## The basic model 
 
 ```{r}
-# params
-T <- 1
-N <- 500              # number of steps
-dt <- T / N
-times <- seq(0, T, length.out = N + 1)
-paths <- 50
+#| code-fold: true
 
-# storage (rows = paths, cols = time steps including t=0)
-W <- matrix(0, nrow = paths, ncol = N + 1)
-hit_idx <- rep(NA_integer_, paths)  # index of first hit (NA if never hits)
-
-for (p in seq_len(paths)) {
-  for (i in 2:(N + 1)) {
-    dW <- sqrt(dt) * rnorm(1)
-    W[p, i] <- W[p, i - 1] + dW
-    if (W[p, i] >= 1 || W[p, i] <= -1) {
-      hit_idx[p] <- i
-      # copy the absorbing value forward
-      if (i < (N + 1)) W[p, (i + 1):(N + 1)] <- W[p, i]
-      break
-    }
-  }
-  # if never hit, W[p, ] is already fully filled
-}
-
-# convert to long dataframe for ggplot
-df <- tibble(
-  path = rep(seq_len(paths), each = N + 1),
-  time = rep(times, times = paths),
-  W = as.vector(t(W))    # t(W) so we stack path-wise
-)
-```
-
-```{r}
-#| code-fold: true 
-df <- df %>% mutate(path = factor(path))
-
-# quick plot: many thin lines (no legend), dashed horizontal at ±1
-ggplot(df, aes(x = time, y = W, group = path, color = path)) +
-  geom_line(linewidth = 0.6, show.legend = FALSE, alpha = 0.8) +
-  geom_hline(yintercept = c(-1, 1), linetype = "dashed") +
-  labs(title = "Simulated paths with absorbing boundaries at ±1",
-       x = "time", y = "W(t)") +
+cumsum(c(0.5, rnorm(999, mean = 0, sd = 0.1))) %>% as_tibble(.) %>% 
+  mutate(value = ifelse(value >= 1, 1, value)) %>% 
+  mutate(value = ifelse(value <= 0, 0, value)) %>% 
+  mutate(id = 1:1000) %>% 
+  ggplot(aes(x = id, y = value)) + 
+  geom_line() + 
+  geom_hline(yintercept = 0, color = "gray", linetype = 2) + 
+  geom_hline(yintercept = 1, color = "gray", linetype = 2) + 
   theme_minimal()
 ```
 
 ```{r}
-# compute first-passage time per path
-first_passage <- df %>%
-  group_by(path) %>%
-  summarize(
-    hit_time = ifelse(any(abs(W) >= 1),
-                      time[which(abs(W) >= 1)[1]],
-                      NA_real_)  # NA if never hit
-  ) %>%
-  ungroup()
+n_lines <- 5
+n_steps <- 100
 
-# look at summary
-summary(first_passage$hit_time)
+map(1:n_lines, \(i) rnorm(n_steps, sd = 0.1)) |>
+  set_names(paste0("sim", 1:n_lines)) |>
+  map(\(l) accumulate(l, \(acc, nxt) .05 + acc + nxt)) |>
+  map(\(x) tibble(value = x, step = 1:n_steps)) # |>
+  list_rbind(names_to = "simulation") |>
+  ggplot(aes(x = step, y = value)) +
+    geom_line(aes(color = simulation)) +
+    ggtitle("Simulations of a random walk with drift")
 ```
+
+
+The model assumes two boundaries, each triggering a certain response (e.g., "yes" and "no" response in a same-different experiment). The evidence accumulation is a process that fluctuates from a *starting point* towards one of two boundaries. 
+
+The RDM requires 8 parameters: 
+
+- mean drift rate ($v$) 
+- across-trial variability in drift rate ($\eta$)
+- within-trial variability in drift rate ($s$)
+- boundary separation ($a$) 
+- mean starting point ($z$)
+- across-trial range of variability in starting point ($s_z$)
+- mean processing time of the non-decision components ($T_{e r}$) where $e r$ stands for *encoding and motor response time* where $T_{e r} \equiv T_e + T_r$. 
+- across-trials variability in the non-decision component of processing ($s_{T_{e r}}$) 
+
+
+## A simpler starting point: EZ-Diffusion 
+
+We will first focus on a simplified version of the RDM model, aka, the **EZ Diffusion Model**^[For details, see [@groulxEZDiffusionModel2020]]. It has fewer parameters than the original model, and thus requires less empirical data to fit.   
+
+The EZ model focuses on three parameters: 
+
+1. the drift rate $v$ 
+2. the boundary separation $a$^[Note that the starting point, $z$, is fixed to be the halfway point in the boundary, i.e., $z \equiv a / 2$ ]
+3. the non-decision time $T_{e r}$ 
+
+It does not require raw data at all, only **three descriptive statistics**: 
+
+1. the mean of the all the response time in a given condition, 
+2. the variance of those response times, and 
+3. the proportion of correct answers. 
+
+First we install the EZ2 package^[Note that it's not on CRAN] 
 
 ```{r}
-ggplot(first_passage, aes(x = hit_time)) +
-  stat_halfeye() + 
-  # geom_histogram(binwidth = 0.02, fill = "steelblue", color = "white") +
-  labs(
-    title = "Distribution of First-Passage Times (|W| ≥ 1)",
-    x = "First passage time",
-    y = "Count"
-  )
+# install.packages("EZ2", repos = "http://R-Forge.R-project.org")
+library(EZ2)
 ```
 
-## Drift Diffusion Models (DDM)
-
-So what is a "drift diffusion model"? Well it is a model that has been widely used in pscyhology and neuroeconomics to explain observed patterns of choices and _response times_^[See [this paper](https://www.pnas.org/doi/10.1073/pnas.2011446117) for more]. 
-
-For a detailed tutorial on Drift Diffusion Models, see @myersPracticalIntroductionUsing2022. 
-
-### Connections between DDM and Brownian Motion 
-
-TODO 
-
-## Comparison to the `RWiener` package
-
-- [Reference manual](https://cran.r-project.org/web/packages/RWiener/RWiener.pdf) 
-
+We will use the data set used in [a tutorial by Henrik Singmann]^[http://singmann.org/wiener-model-analysis-with-brms-part-i/], i.e., the Speed-Accuracy data from Wagenmakers, Ratcliff, Gomez & McKoon^[https://www.rdocumentation.org/packages/rtdists/versions/0.7-3/topics/speed_acc]: 
 
 ```{r}
-library(RWiener)
-dat <- rwiener(100,3,.25,.5,0.8)
+data(speed_acc, package = "rtdists")
 
-dat %>% count(resp)
+speed_acc %>% head(.)
+glimpse(speed_acc)
 ```
+
+The above `speed_acc` data comes from 17 participants performing a task in which they have to decide if a presented string is a word or a non-word. Participants made decisions either in under condition `speed` or condition `accuracy`, where the conditions differ in the instructions. We will restrict our analysis to participant 1, and the condition `speed` to calculate the descriptive statistics:  
+
+```{r}
+pid1 <- speed_acc %>% filter(id == 1, condition == "speed")
+pid1
+```
+
+Calculate descriptive statistics: 
+
+```{r}
+# mean response time 
+mrt <- pid1 %>% pull(rt) %>% mean(.)
+# variance response time 
+vrt <- pid1 %>% pull(rt) %>% var(.)
+# proportion of correct answers 
+pid1 %>% mutate(response = as.character(response), 
+                stim_cat = as.character(stim_cat)) %>% 
+  count(stim_cat == response)
+
+p_c <-  864 / (96 + 864)
+```
+
+We can use the `Data2EZ` function to get the EZ diffusion model parameters: 
+
+```{r}
+Data2EZ(Pc = p_c, 
+        VRT = vrt, 
+        MRT = mrt)
+```
+
+
+
+<!-- ## TLDR  -->
+
+<!-- I was interested in learning more about the drift diffusion model, then I got curious about how the model actually works, which led me to discover connections between it and Brownian Motion. -->
+
+<!-- Some more notes:  -->
+
+<!-- - [Brownian motion related](https://ionides.github.io/620/notes/diffusions.pdf) -->
+<!-- - [stochastic processes for AP](https://fiveable.me/stochastic-processes/unit-9) -->
+<!-- - [stochastic calculus](https://math.nyu.edu/~goodman/teaching/StochCalc2018/notes/Lesson2.pdf)  -->
+<!-- - [Brownian motion with drift and scaling](https://www.randomservices.org/random/brown/Drift.html)  -->
+<!-- ::: -->
+
+<!-- ## Simulating a Wiener process model  -->
+
+<!-- ```{r} -->
+<!-- #| echo: false  -->
+<!-- #| warning: false -->
+
+<!-- library(tidyverse) -->
+<!-- library(ggdist) -->
+<!-- library(ggplot2) -->
+<!-- theme_set(theme_minimal()) -->
+
+<!-- set.seed(51) -->
+<!-- ``` -->
+
+<!-- Source: https://sites.me.ucsb.edu/~moehlis/APC591/tutorials/tutorial7/node2.html  -->
+
+<!-- A standard Wiener process^[often called Brownian motion] on the interval $[0, T]$ is a random variable $W(t)$ that depends continuously on $t \in [0, T]$ and satisifes the following:  -->
+
+<!-- - $W(0) = 0$  -->
+<!-- - For $0 <= s < t <= T$,  -->
+<!-- $$W(t) - W(s) \sim \sqrt{t-s} \mathcal{N}(0, 1)$$ -->
+<!-- - For $0 <= s < t < u < v <= T$, $W(t) - W(s)$ and $W(v) - W(u)$ are independent.  -->
+
+<!-- To make things easier on a computer, we discretize the Wiener process with a timestamp $d t$ as $$d W \sim \sqrt{d t} \mathcal{N}(0, 1)$$  -->
+
+<!-- ```{r} -->
+<!-- # params -->
+<!-- T <- 1 -->
+<!-- N <- 500              # number of steps -->
+<!-- dt <- T / N -->
+<!-- times <- seq(0, T, length.out = N + 1) -->
+<!-- paths <- 50 -->
+
+<!-- # storage (rows = paths, cols = time steps including t=0) -->
+<!-- W <- matrix(0, nrow = paths, ncol = N + 1) -->
+<!-- hit_idx <- rep(NA_integer_, paths)  # index of first hit (NA if never hits) -->
+
+<!-- for (p in seq_len(paths)) { -->
+<!--   for (i in 2:(N + 1)) { -->
+<!--     dW <- sqrt(dt) * rnorm(1) -->
+<!--     W[p, i] <- W[p, i - 1] + dW -->
+<!--     if (W[p, i] >= 1 || W[p, i] <= -1) { -->
+<!--       hit_idx[p] <- i -->
+<!--       # copy the absorbing value forward -->
+<!--       if (i < (N + 1)) W[p, (i + 1):(N + 1)] <- W[p, i] -->
+<!--       break -->
+<!--     } -->
+<!--   } -->
+<!--   # if never hit, W[p, ] is already fully filled -->
+<!-- } -->
+
+<!-- # convert to long dataframe for ggplot -->
+<!-- df <- tibble( -->
+<!--   path = rep(seq_len(paths), each = N + 1), -->
+<!--   time = rep(times, times = paths), -->
+<!--   W = as.vector(t(W))    # t(W) so we stack path-wise -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| code-fold: true  -->
+<!-- df <- df %>% mutate(path = factor(path)) -->
+
+<!-- # quick plot: many thin lines (no legend), dashed horizontal at ±1 -->
+<!-- ggplot(df, aes(x = time, y = W, group = path, color = path)) + -->
+<!--   geom_line(linewidth = 0.6, show.legend = FALSE, alpha = 0.8) + -->
+<!--   geom_hline(yintercept = c(-1, 1), linetype = "dashed") + -->
+<!--   labs(title = "Simulated paths with absorbing boundaries at ±1", -->
+<!--        x = "time", y = "W(t)") + -->
+<!--   theme_minimal() -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # compute first-passage time per path -->
+<!-- first_passage <- df %>% -->
+<!--   group_by(path) %>% -->
+<!--   summarize( -->
+<!--     hit_time = ifelse(any(abs(W) >= 1), -->
+<!--                       time[which(abs(W) >= 1)[1]], -->
+<!--                       NA_real_)  # NA if never hit -->
+<!--   ) %>% -->
+<!--   ungroup() -->
+
+<!-- # look at summary -->
+<!-- summary(first_passage$hit_time) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- ggplot(first_passage, aes(x = hit_time)) + -->
+<!--   stat_halfeye() +  -->
+<!--   # geom_histogram(binwidth = 0.02, fill = "steelblue", color = "white") + -->
+<!--   labs( -->
+<!--     title = "Distribution of First-Passage Times (|W| ≥ 1)", -->
+<!--     x = "First passage time", -->
+<!--     y = "Count" -->
+<!--   ) -->
+<!-- ``` -->
+
+<!-- ## Drift Diffusion Models (DDM) -->
+
+<!-- So what is a "drift diffusion model"? Well it is a model that has been widely used in pscyhology and neuroeconomics to explain observed patterns of choices and _response times_^[See [this paper](https://www.pnas.org/doi/10.1073/pnas.2011446117) for more].  -->
+
+<!-- For a detailed tutorial on Drift Diffusion Models, see @myersPracticalIntroductionUsing2022.  -->
+
+<!-- ### Connections between DDM and Brownian Motion  -->
+
+<!-- TODO  -->
+
+<!-- ## Comparison to the `RWiener` package -->
+
+<!-- - [Reference manual](https://cran.r-project.org/web/packages/RWiener/RWiener.pdf)  -->
+
+
+<!-- ```{r} -->
+<!-- library(RWiener) -->
+<!-- dat <- rwiener(100,3,.25,.5,0.8) -->
+
+<!-- dat %>% count(resp) -->
+<!-- ``` -->
 
