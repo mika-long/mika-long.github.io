@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sheng Long">
+<meta name="dcterms.date" content="2025-10-22">
+<meta name="description" content="Some preliminary notes on the drift diffusion model.">
+
+<title>Wiener Process, Brownian Motion, and Drift Diffusion Models – Sheng Long</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-94b6cfe4f8e67a4063fb7b0fd2f7359c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<meta name="quarto:status" content="draft">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../grad_cv.pdf"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-basic-model" id="toc-the-basic-model" class="nav-link active" data-scroll-target="#the-basic-model">The basic model</a></li>
+  <li><a href="#a-simpler-starting-point-ez-diffusion" id="toc-a-simpler-starting-point-ez-diffusion" class="nav-link" data-scroll-target="#a-simpler-starting-point-ez-diffusion">A simpler starting point: EZ-Diffusion</a>
+  <ul class="collapse">
+  <li><a href="#some-caveats" id="toc-some-caveats" class="nav-link" data-scroll-target="#some-caveats">Some caveats</a></li>
+  </ul></li>
+  <li><a href="#advancing-to-the-more-complex-8-parameter-model" id="toc-advancing-to-the-more-complex-8-parameter-model" class="nav-link" data-scroll-target="#advancing-to-the-more-complex-8-parameter-model">Advancing to the more complex 8-parameter model</a></li>
+  <li><a href="#connections-between-signal-detection-theory-drift-diffusion-model-and-sequential-probability-ratio-tests" id="toc-connections-between-signal-detection-theory-drift-diffusion-model-and-sequential-probability-ratio-tests" class="nav-link" data-scroll-target="#connections-between-signal-detection-theory-drift-diffusion-model-and-sequential-probability-ratio-tests">Connections between Signal Detection Theory, Drift Diffusion Model, and Sequential Probability Ratio Tests</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Wiener Process, Brownian Motion, and Drift Diffusion Models</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">statistics</div>
+    <div class="quarto-category">decision-making</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Some preliminary notes on the drift diffusion model.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sheng Long </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Updated</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 22, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled" title="A very short background">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A very short background
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Drift Diffusion Model (DDM), also known as Ratcliff’s Diffusion Model (RDM), was first developed by Ratcliff in 1978 <span class="citation" data-cites="ratcliff1978theory">(<a href="#ref-ratcliff1978theory" role="doc-biblioref">Ratcliff 1978</a>)</span>. It is a model based on <em>accumulation of evidence</em>, otherwise more generally called <strong>sampling models</strong>. These models represent decisions as the accumulation of evidence until a threshold is reached, leading to a corresponding action.</p>
+</div>
+</div>
+<section id="the-basic-model" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="the-basic-model">The basic model</h2>
+<p>We will use the <a href="https://purrr.tidyverse.org/reference/accumulate.html"><code>accumulate</code> function</a> in <code>purrr</code> to accumulate evidence sampled from <span class="math inline">\(\mathcal{N}(0, 0.1)\)</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. We also assumed that the starting point is 0.5, and that there is no drift.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;If we don’t care about whether accumulated evidence stays the same after it reaches the decision thresholds, then we could also just use the <code>cumsum</code> function in base R.</p></div></div><div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define function of sampling till it reaches the "decision boundary" of </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 0 or 1 </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sample_till_boundry <span class="ot">&lt;-</span> <span class="cf">function</span>(out, input) {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (out <span class="sc">&gt;=</span> <span class="dv">1</span>){</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="dv">1</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (out <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="dv">0</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  out <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">sd =</span> <span class="fl">0.1</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 1:100 %&gt;% accumulate(sample_till_boundry, .init = 0.5) %&gt;% plot(.)</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>n_lines <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>n_steps <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span>n_lines, \(i) <span class="dv">1</span><span class="sc">:</span>(n_steps<span class="dv">-1</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>(<span class="fu">paste0</span>(<span class="st">"sim"</span>, <span class="dv">1</span><span class="sc">:</span>n_lines)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(\(l) <span class="fu">accumulate</span>(l, sample_till_boundry, <span class="at">.init =</span> <span class="fl">0.5</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(\(x) <span class="fu">tibble</span>(<span class="at">value =</span> x, <span class="at">step =</span> <span class="dv">1</span><span class="sc">:</span>n_steps)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list_rbind</span>(<span class="at">names_to =</span> <span class="st">"simulation"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> step, <span class="at">y =</span> value)) <span class="sc">+</span> </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> simulation)) <span class="sc">+</span> </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"darkgray"</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"darkgray"</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The model assumes two boundaries, each triggering a certain response (e.g., “yes” and “no” response in a same-different experiment). The evidence accumulation is a process that fluctuates from a <em>starting point</em> towards one of two boundaries.</p>
+<p>The RDM requires 8 parameters:</p>
+<ul>
+<li>mean drift rate (<span class="math inline">\(v\)</span>)</li>
+<li>across-trial variability in drift rate (<span class="math inline">\(\eta\)</span>)</li>
+<li>within-trial variability in drift rate (<span class="math inline">\(s\)</span>)</li>
+<li>boundary separation (<span class="math inline">\(a\)</span>)</li>
+<li>mean starting point (<span class="math inline">\(z\)</span>)</li>
+<li>across-trial range of variability in starting point (<span class="math inline">\(s_z\)</span>)</li>
+<li>mean processing time of the non-decision components (<span class="math inline">\(T_{e r}\)</span>) where <span class="math inline">\(e r\)</span> stands for <em>encoding and motor response time</em> where <span class="math inline">\(T_{e r} \equiv T_e + T_r\)</span>.</li>
+<li>across-trials variability in the non-decision component of processing (<span class="math inline">\(s_{T_{e r}}\)</span>)</li>
+</ul>
+</section>
+<section id="a-simpler-starting-point-ez-diffusion" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="a-simpler-starting-point-ez-diffusion">A simpler starting point: EZ-Diffusion</h2>
+<p>We will first focus on a simplified version of the RDM model, aka, the <strong>EZ Diffusion Model</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. It has fewer parameters than the original model, and thus requires less empirical data to fit.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;For details, see <span class="citation" data-cites="groulxEZDiffusionModel2020">(<a href="#ref-groulxEZDiffusionModel2020" role="doc-biblioref">T. Groulx, Harding, and Cousineau 2020</a>)</span></p></div></div><p>The EZ model focuses on three parameters:</p>
+<ol type="1">
+<li>the drift rate <span class="math inline">\(v\)</span></li>
+<li>the boundary separation <span class="math inline">\(a\)</span><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+<li>the non-decision time <span class="math inline">\(T_{e r}\)</span></li>
+</ol>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Note that the starting point, <span class="math inline">\(z\)</span>, is fixed to be the halfway point in the boundary, i.e., <span class="math inline">\(z \equiv a / 2\)</span> </p></div></div><p>It does not require raw data at all, only <strong>three descriptive statistics</strong>:</p>
+<ol type="1">
+<li>the mean of the all the response time in a given condition,</li>
+<li>the variance of those response times, and</li>
+<li>the proportion of correct answers.</li>
+</ol>
+<p>First we install the <code>EZ2</code> package:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("EZ2", repos = "http://R-Forge.R-project.org")</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EZ2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We will use the data set used in <a href="http://singmann.org/wiener-model-analysis-with-brms-part-i/">a tutorial by Henrik Singmann</a>, i.e., the Speed-Accuracy data <a href="https://www.rdocumentation.org/packages/rtdists/versions/0.7-3/topics/speed_acc"><code>speed-acc</code></a> from <span class="citation" data-cites="wagenmakers2008diffusion">(<a href="#ref-wagenmakers2008diffusion" role="doc-biblioref">Wagenmakers et al. 2008</a>)</span>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(speed_acc, <span class="at">package =</span> <span class="st">"rtdists"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>speed_acc <span class="sc">%&gt;%</span> <span class="fu">head</span>(.)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 14%">
+<col style="width: 7%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">block</th>
+<th style="text-align: left;">condition</th>
+<th style="text-align: left;">stim</th>
+<th style="text-align: left;">stim_cat</th>
+<th style="text-align: left;">frequency</th>
+<th style="text-align: left;">response</th>
+<th style="text-align: right;">rt</th>
+<th style="text-align: left;">censor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">5015</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: left;">nw_low</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: right;">0.700</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">3623</td>
+<td style="text-align: left;">word</td>
+<td style="text-align: left;">very_low</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: right;">0.392</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">6481</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: left;">nw_very_low</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: right;">0.460</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">3305</td>
+<td style="text-align: left;">word</td>
+<td style="text-align: left;">very_low</td>
+<td style="text-align: left;">word</td>
+<td style="text-align: right;">0.455</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">2244</td>
+<td style="text-align: left;">word</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: right;">0.505</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">4468</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: left;">nw_high</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: right;">0.773</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(speed_acc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 31,522
+Columns: 9
+$ id        &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ block     &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ condition &lt;fct&gt; speed, speed, speed, speed, speed, speed, speed, speed, spee…
+$ stim      &lt;fct&gt; 5015, 3623, 6481, 3305, 2244, 4468, 1047, 5711, 5036, 1111, …
+$ stim_cat  &lt;fct&gt; nonword, word, nonword, word, word, nonword, word, nonword, …
+$ frequency &lt;fct&gt; nw_low, very_low, nw_very_low, very_low, low, nw_high, high,…
+$ response  &lt;fct&gt; nonword, nonword, nonword, word, nonword, nonword, word, wor…
+$ rt        &lt;dbl&gt; 0.700, 0.392, 0.460, 0.455, 0.505, 0.773, 0.390, 0.587, 0.60…
+$ censor    &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALS…</code></pre>
+</div>
+</div>
+<p>The above <code>speed_acc</code> data comes from 17 participants performing a task in which they have to decide if a presented string is a word or a non-word. Participants made decisions either in under condition <code>speed</code> or condition <code>accuracy</code>, where the conditions differ in the instructions. We will restrict our analysis to participant 1, and the condition <code>speed</code> to calculate the descriptive statistics:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pid1 <span class="ot">&lt;-</span> speed_acc <span class="sc">%&gt;%</span> <span class="fu">filter</span>(id <span class="sc">==</span> <span class="dv">1</span>, condition <span class="sc">==</span> <span class="st">"speed"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pid1 <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 14%">
+<col style="width: 7%">
+<col style="width: 13%">
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 8%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">block</th>
+<th style="text-align: left;">condition</th>
+<th style="text-align: left;">stim</th>
+<th style="text-align: left;">stim_cat</th>
+<th style="text-align: left;">frequency</th>
+<th style="text-align: left;">response</th>
+<th style="text-align: right;">rt</th>
+<th style="text-align: left;">censor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">5015</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: left;">nw_low</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: right;">0.700</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">3623</td>
+<td style="text-align: left;">word</td>
+<td style="text-align: left;">very_low</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: right;">0.392</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">6481</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: left;">nw_very_low</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: right;">0.460</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">3305</td>
+<td style="text-align: left;">word</td>
+<td style="text-align: left;">very_low</td>
+<td style="text-align: left;">word</td>
+<td style="text-align: right;">0.455</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">speed</td>
+<td style="text-align: left;">2244</td>
+<td style="text-align: left;">word</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: left;">nonword</td>
+<td style="text-align: right;">0.505</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Calculate descriptive statistics for participant with <code>id == 1</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mean response time </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mrt <span class="ot">&lt;-</span> pid1 <span class="sc">%&gt;%</span> <span class="fu">pull</span>(rt) <span class="sc">%&gt;%</span> <span class="fu">mean</span>(.)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># variance response time </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>vrt <span class="ot">&lt;-</span> pid1 <span class="sc">%&gt;%</span> <span class="fu">pull</span>(rt) <span class="sc">%&gt;%</span> <span class="fu">var</span>(.)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># proportion of correct answers </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>pid1 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">response =</span> <span class="fu">as.character</span>(response), </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">stim_cat =</span> <span class="fu">as.character</span>(stim_cat)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(stim_cat <span class="sc">==</span> response)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">stim_cat == response</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">96</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">864</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>p_c <span class="ot">&lt;-</span>  <span class="dv">864</span> <span class="sc">/</span> (<span class="dv">96</span> <span class="sc">+</span> <span class="dv">864</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We can use the <code>Data2EZ</code> function to get the EZ diffusion model parameters:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Data2EZ</span>(<span class="at">Pc =</span> p_c, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">VRT =</span> vrt, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">MRT =</span> mrt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$v
+[1] 0.2046432
+
+$a
+[1] 0.1073686
+
+$Ter
+[1] 0.3302674</code></pre>
+</div>
+</div>
+<section id="some-caveats" class="level3">
+<h3 class="anchored" data-anchor-id="some-caveats">Some caveats</h3>
+<p>According to <span class="citation" data-cites="groulxEZDiffusionModel2020">(<a href="#ref-groulxEZDiffusionModel2020" role="doc-biblioref">T. Groulx, Harding, and Cousineau 2020</a>)</span>, the EZ model provides a perfect fit at the level of descriptive statistics, but there is <strong>no guarantee</strong> that the fit is perfect at the raw data’s level.</p>
+<p>Also, EZ, like any sampling model, should be fit on a <strong>per-participant basis</strong> as group characteristics are not necessarily the average of the individuals’ characteristics.</p>
+</section>
+</section>
+<section id="advancing-to-the-more-complex-8-parameter-model" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="advancing-to-the-more-complex-8-parameter-model">Advancing to the more complex 8-parameter model</h2>
+<p>The next step is to extend the current model to account for the parameters that won’t accounted for before. This time we will try to follow what was done in [this tutorial by Henrik Singmann]<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and also make things Bayesian.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;http://singmann.org/wiener-model-analysis-with-brms-part-i/</p></div></div><p><code>#TODO</code></p>
+</section>
+<section id="connections-between-signal-detection-theory-drift-diffusion-model-and-sequential-probability-ratio-tests" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="connections-between-signal-detection-theory-drift-diffusion-model-and-sequential-probability-ratio-tests">Connections between Signal Detection Theory, Drift Diffusion Model, and Sequential Probability Ratio Tests</h2>
+<p>In very simple terms:</p>
+<ul>
+<li>The relationship between SDT and SPRT:
+<ul>
+<li>SDT uses <em>one observation</em> and <em>one threshold</em> that partitions the decision variable’s event space into two regions</li>
+<li>SPRT uses an initially-undetermined number of observations and two decision thresholds that partition the decision variable’s event space into three regions<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></li>
+</ul></li>
+<li>The relationship between SPRT and DDM:
+<ul>
+<li>DDM can be viewed as a <em>continuous-time, special case</em> of the SPRT</li>
+</ul></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;In a limiting case, if we “squeeze” the two boundaries into one (i.e., <span class="math inline">\(a = 0\)</span>), then it becomes the SDT model</p></div></div><p>For those who are more interested, there is an excellent tutorial by <span class="citation" data-cites="griffithStatisticsOptimalDecision2021">(<a href="#ref-griffithStatisticsOptimalDecision2021" role="doc-biblioref">Griffith, Baker, and Lepora 2021</a>)</span>, as well as a more recent review article by <span class="citation" data-cites="duffyDisentanglingSourcesVariability2025">(<a href="#ref-duffyDisentanglingSourcesVariability2025" role="doc-biblioref">Duffy et al. 2025</a>)</span> that places more focus in the neural science domain.</p>
+<!-- ## TLDR  -->
+<!-- I was interested in learning more about the drift diffusion model, then I got curious about how the model actually works, which led me to discover connections between it and Brownian Motion. -->
+<!-- Some more notes:  -->
+<!-- - [Brownian motion related](https://ionides.github.io/620/notes/diffusions.pdf) -->
+<!-- - [stochastic processes for AP](https://fiveable.me/stochastic-processes/unit-9) -->
+<!-- - [stochastic calculus](https://math.nyu.edu/~goodman/teaching/StochCalc2018/notes/Lesson2.pdf)  -->
+<!-- - [Brownian motion with drift and scaling](https://www.randomservices.org/random/brown/Drift.html)  -->
+<!-- ::: -->
+<!-- ## Simulating a Wiener process model  -->
+<!-- ```{r} -->
+<!-- #| echo: false  -->
+<!-- #| warning: false -->
+<!-- library(tidyverse) -->
+<!-- library(ggdist) -->
+<!-- library(ggplot2) -->
+<!-- theme_set(theme_minimal()) -->
+<!-- set.seed(51) -->
+<!-- ``` -->
+<!-- Source: https://sites.me.ucsb.edu/~moehlis/APC591/tutorials/tutorial7/node2.html  -->
+<!-- A standard Wiener process^[often called Brownian motion] on the interval $[0, T]$ is a random variable $W(t)$ that depends continuously on $t \in [0, T]$ and satisifes the following:  -->
+<!-- - $W(0) = 0$  -->
+<!-- - For $0 <= s < t <= T$,  -->
+<!-- $$W(t) - W(s) \sim \sqrt{t-s} \mathcal{N}(0, 1)$$ -->
+<!-- - For $0 <= s < t < u < v <= T$, $W(t) - W(s)$ and $W(v) - W(u)$ are independent.  -->
+<!-- To make things easier on a computer, we discretize the Wiener process with a timestamp $d t$ as $$d W \sim \sqrt{d t} \mathcal{N}(0, 1)$$  -->
+<!-- ```{r} -->
+<!-- # params -->
+<!-- T <- 1 -->
+<!-- N <- 500              # number of steps -->
+<!-- dt <- T / N -->
+<!-- times <- seq(0, T, length.out = N + 1) -->
+<!-- paths <- 50 -->
+<!-- # storage (rows = paths, cols = time steps including t=0) -->
+<!-- W <- matrix(0, nrow = paths, ncol = N + 1) -->
+<!-- hit_idx <- rep(NA_integer_, paths)  # index of first hit (NA if never hits) -->
+<!-- for (p in seq_len(paths)) { -->
+<!--   for (i in 2:(N + 1)) { -->
+<!--     dW <- sqrt(dt) * rnorm(1) -->
+<!--     W[p, i] <- W[p, i - 1] + dW -->
+<!--     if (W[p, i] >= 1 || W[p, i] <= -1) { -->
+<!--       hit_idx[p] <- i -->
+<!--       # copy the absorbing value forward -->
+<!--       if (i < (N + 1)) W[p, (i + 1):(N + 1)] <- W[p, i] -->
+<!--       break -->
+<!--     } -->
+<!--   } -->
+<!--   # if never hit, W[p, ] is already fully filled -->
+<!-- } -->
+<!-- # convert to long dataframe for ggplot -->
+<!-- df <- tibble( -->
+<!--   path = rep(seq_len(paths), each = N + 1), -->
+<!--   time = rep(times, times = paths), -->
+<!--   W = as.vector(t(W))    # t(W) so we stack path-wise -->
+<!-- ) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- #| code-fold: true  -->
+<!-- df <- df %>% mutate(path = factor(path)) -->
+<!-- # quick plot: many thin lines (no legend), dashed horizontal at ±1 -->
+<!-- ggplot(df, aes(x = time, y = W, group = path, color = path)) + -->
+<!--   geom_line(linewidth = 0.6, show.legend = FALSE, alpha = 0.8) + -->
+<!--   geom_hline(yintercept = c(-1, 1), linetype = "dashed") + -->
+<!--   labs(title = "Simulated paths with absorbing boundaries at ±1", -->
+<!--        x = "time", y = "W(t)") + -->
+<!--   theme_minimal() -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- # compute first-passage time per path -->
+<!-- first_passage <- df %>% -->
+<!--   group_by(path) %>% -->
+<!--   summarize( -->
+<!--     hit_time = ifelse(any(abs(W) >= 1), -->
+<!--                       time[which(abs(W) >= 1)[1]], -->
+<!--                       NA_real_)  # NA if never hit -->
+<!--   ) %>% -->
+<!--   ungroup() -->
+<!-- # look at summary -->
+<!-- summary(first_passage$hit_time) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- ggplot(first_passage, aes(x = hit_time)) + -->
+<!--   stat_halfeye() +  -->
+<!--   # geom_histogram(binwidth = 0.02, fill = "steelblue", color = "white") + -->
+<!--   labs( -->
+<!--     title = "Distribution of First-Passage Times (|W| ≥ 1)", -->
+<!--     x = "First passage time", -->
+<!--     y = "Count" -->
+<!--   ) -->
+<!-- ``` -->
+<!-- ## Drift Diffusion Models (DDM) -->
+<!-- So what is a "drift diffusion model"? Well it is a model that has been widely used in pscyhology and neuroeconomics to explain observed patterns of choices and _response times_^[See [this paper](https://www.pnas.org/doi/10.1073/pnas.2011446117) for more].  -->
+<!-- For a detailed tutorial on Drift Diffusion Models, see @myersPracticalIntroductionUsing2022.  -->
+<!-- ### Connections between DDM and Brownian Motion  -->
+<!-- TODO  -->
+<!-- ## Comparison to the `RWiener` package -->
+<!-- - [Reference manual](https://cran.r-project.org/web/packages/RWiener/RWiener.pdf)  -->
+<!-- ```{r} -->
+<!-- library(RWiener) -->
+<!-- dat <- rwiener(100,3,.25,.5,0.8) -->
+<!-- dat %>% count(resp) -->
+<!-- ``` -->
+
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-duffyDisentanglingSourcesVariability2025" class="csl-entry" role="listitem">
+Duffy, Jade S., Mark A. Bellgrove, Peter R. Murphy, and Redmond G. O’Connell. 2025. <span>“Disentangling Sources of Variability in Decision-Making.”</span> <em>Nature Reviews Neuroscience</em> 26 (5): 247–62. <a href="https://doi.org/10.1038/s41583-025-00916-3">https://doi.org/10.1038/s41583-025-00916-3</a>.
+</div>
+<div id="ref-griffithStatisticsOptimalDecision2021" class="csl-entry" role="listitem">
+Griffith, Thom, Sophie-Anne Baker, and Nathan F. Lepora. 2021. <span>“The Statistics of Optimal Decision Making: <span>Exploring</span> the Relationship Between Signal Detection Theory and Sequential Analysis.”</span> <em>Journal of Mathematical Psychology</em> 103 (August): 102544. <a href="https://doi.org/10.1016/j.jmp.2021.102544">https://doi.org/10.1016/j.jmp.2021.102544</a>.
+</div>
+<div id="ref-ratcliff1978theory" class="csl-entry" role="listitem">
+Ratcliff, Roger. 1978. <span>“A Theory of Memory Retrieval.”</span> <em>Psychological Review</em> 85 (2): 59. <a href="https://doi.org/10.1037/0033-295X.85.2.59">https://doi.org/10.1037/0033-295X.85.2.59</a>.
+</div>
+<div id="ref-groulxEZDiffusionModel2020" class="csl-entry" role="listitem">
+T. Groulx, Julien, Bradley Harding, and Denis Cousineau. 2020. <span>“The <span>EZ Diffusion Model</span>: <span>An</span> Overview with Derivation, Software, and an Application to the <span>Same-Different</span> Task.”</span> <em>The Quantitative Methods for Psychology</em> 16 (2): 154–74. <a href="https://doi.org/10.20982/tqmp.16.2.p154">https://doi.org/10.20982/tqmp.16.2.p154</a>.
+</div>
+<div id="ref-wagenmakers2008diffusion" class="csl-entry" role="listitem">
+Wagenmakers, Eric-Jan, Roger Ratcliff, Pablo Gomez, and Gail McKoon. 2008. <span>“A Diffusion Model Account of Criterion Shifts in the Lexical Decision Task.”</span> <em>Journal of Memory and Language</em> 58 (1): 140–59.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2024 Sheng Long</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>This website is built with <i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i>, <i class="fa-brands fa-github" title="Github" aria-label="github"></i>, <a href="https://quarto.org/">Quarto</a>, <a href="https://github.com/quarto-ext/fontawesome">fontawesome</a>, <a href="https://iconify.design/">iconify.design</a>, and <a href="http://faviconer.com/icon/latest">faviconer</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

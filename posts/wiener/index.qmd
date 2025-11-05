@@ -1,9 +1,13 @@
 ---
 title: "Wiener Process, Brownian Motion, and Drift Diffusion Models"
-categories: [statistics]
+categories: [statistics, decision-making]
 date: 10/22/25
 bibliography: "wiener.bib"
 draft: true 
+format: 
+  html: 
+    df-print: kable
+description: Some preliminary notes on the drift diffusion model. 
 ---
 
 ```{r}
@@ -18,40 +22,43 @@ set.seed(51)
 ```
 
 
-:::{.callout-note}
-TODO 
+:::{.callout-note title="A very short background"}
+The Drift Diffusion Model (DDM), also known as Ratcliff's Diffusion Model (RDM), was first developed by Ratcliff in 1978 [@ratcliff1978theory]. It is a model based on *accumulation of evidence*, otherwise more generally called **sampling models**. These models represent decisions as the accumulation of evidence until a threshold is reached, leading to a corresponding action. 
 :::
 
-The Drift Diffusion Model (DDM), also known as Ratcliff's Diffusion Model (RDM), was first developed by Ratcliff in 1978 [@ratcliff1978theory]. It is a model based on *accumulation of evidence*, otherwise more generally called **sampling models**. These models represent decisions as the accumulation of evidence until a threshold is reached, leading to a corresponding action. 
-
 ## The basic model 
+
+We will use the [`accumulate` function](https://purrr.tidyverse.org/reference/accumulate.html) in `purrr` to accumulate evidence sampled from $\mathcal{N}(0, 0.1)$^[If we don't care about whether accumulated evidence stays the same after it reaches the decision thresholds, then we could also just use the `cumsum` function in base R.]. We also assumed that the starting point is 0.5, and that there is no drift.  
 
 ```{r}
 #| code-fold: true
 
-cumsum(c(0.5, rnorm(999, mean = 0, sd = 0.1))) %>% as_tibble(.) %>% 
-  mutate(value = ifelse(value >= 1, 1, value)) %>% 
-  mutate(value = ifelse(value <= 0, 0, value)) %>% 
-  mutate(id = 1:1000) %>% 
-  ggplot(aes(x = id, y = value)) + 
-  geom_line() + 
-  geom_hline(yintercept = 0, color = "gray", linetype = 2) + 
-  geom_hline(yintercept = 1, color = "gray", linetype = 2) + 
-  theme_minimal()
-```
+# define function of sampling till it reaches the "decision boundary" of 
+# 0 or 1 
+sample_till_boundry <- function(out, input) {
+  if (out >= 1){
+    return(1)
+  } else if (out <= 0) {
+    return(0)
+  }
+  out + rnorm(1, sd = 0.1)
+}
 
-```{r}
+# 1:100 %>% accumulate(sample_till_boundry, .init = 0.5) %>% plot(.)
+
 n_lines <- 5
 n_steps <- 100
 
-map(1:n_lines, \(i) rnorm(n_steps, sd = 0.1)) |>
-  set_names(paste0("sim", 1:n_lines)) |>
-  map(\(l) accumulate(l, \(acc, nxt) .05 + acc + nxt)) |>
-  map(\(x) tibble(value = x, step = 1:n_steps)) # |>
-  list_rbind(names_to = "simulation") |>
-  ggplot(aes(x = step, y = value)) +
-    geom_line(aes(color = simulation)) +
-    ggtitle("Simulations of a random walk with drift")
+map(1:n_lines, \(i) 1:(n_steps-1)) %>% 
+  set_names(paste0("sim", 1:n_lines)) %>% 
+  map(\(l) accumulate(l, sample_till_boundry, .init = 0.5)) %>% 
+  map(\(x) tibble(value = x, step = 1:n_steps)) %>% 
+  list_rbind(names_to = "simulation") %>% 
+  ggplot(aes(x = step, y = value)) + 
+  geom_line(aes(color = simulation)) + 
+  geom_hline(yintercept = 1, color = "darkgray", linetype = 2) + 
+  geom_hline(yintercept = 0, color = "darkgray", linetype = 2) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 5))
 ```
 
 
@@ -85,14 +92,14 @@ It does not require raw data at all, only **three descriptive statistics**:
 2. the variance of those response times, and 
 3. the proportion of correct answers. 
 
-First we install the EZ2 package^[Note that it's not on CRAN] 
+First we install the `EZ2` package:  
 
 ```{r}
 # install.packages("EZ2", repos = "http://R-Forge.R-project.org")
 library(EZ2)
 ```
 
-We will use the data set used in [a tutorial by Henrik Singmann]^[http://singmann.org/wiener-model-analysis-with-brms-part-i/], i.e., the Speed-Accuracy data from Wagenmakers, Ratcliff, Gomez & McKoon^[https://www.rdocumentation.org/packages/rtdists/versions/0.7-3/topics/speed_acc]: 
+We will use the data set used in [a tutorial by Henrik Singmann](http://singmann.org/wiener-model-analysis-with-brms-part-i/), i.e., the Speed-Accuracy data [`speed-acc`](https://www.rdocumentation.org/packages/rtdists/versions/0.7-3/topics/speed_acc) from [@wagenmakers2008diffusion]: 
 
 ```{r}
 data(speed_acc, package = "rtdists")
@@ -105,10 +112,10 @@ The above `speed_acc` data comes from 17 participants performing a task in which
 
 ```{r}
 pid1 <- speed_acc %>% filter(id == 1, condition == "speed")
-pid1
+pid1 %>% head(5)
 ```
 
-Calculate descriptive statistics: 
+Calculate descriptive statistics for participant with `id == 1`: 
 
 ```{r}
 # mean response time 
@@ -130,6 +137,32 @@ Data2EZ(Pc = p_c,
         VRT = vrt, 
         MRT = mrt)
 ```
+
+### Some caveats 
+
+According to [@groulxEZDiffusionModel2020], the EZ model provides a perfect fit at the level of descriptive statistics, but there is **no guarantee** that the fit is perfect at the raw data's level. 
+
+Also, EZ, like any sampling model, should be fit on a **per-participant basis** as group characteristics are not necessarily the average of the individuals' characteristics. 
+
+
+## Advancing to the more complex 8-parameter model
+
+The next step is to extend the current model to account for the parameters that won't accounted for before. This time we will try to follow what was done in [this tutorial by Henrik Singmann]^[http://singmann.org/wiener-model-analysis-with-brms-part-i/] and also make things Bayesian. 
+
+`#TODO` 
+
+## Connections between Signal Detection Theory, Drift Diffusion Model, and Sequential Probability Ratio Tests
+
+In very simple terms: 
+
+- The relationship between SDT and SPRT: 
+  - SDT uses *one observation* and *one threshold* that partitions the decision variable's event space into two regions 
+  - SPRT uses an initially-undetermined number of observations and two decision thresholds that partition the decision variable's event space into three regions^[In a limiting case, if we "squeeze" the two boundaries into one (i.e., $a = 0$), then it becomes the SDT model] 
+- The relationship between SPRT and DDM: 
+  - DDM can be viewed as a *continuous-time, special case* of the SPRT 
+  
+For those who are more interested, there is an excellent tutorial by [@griffithStatisticsOptimalDecision2021], as well as a more recent review article by [@duffyDisentanglingSourcesVariability2025] that places more focus in the neural science domain. 
+
 
 
 
