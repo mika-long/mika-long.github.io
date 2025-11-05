@@ -1,9 +1,9 @@
 ---
-title: "Wiener Process, Brownian Motion, and Drift Diffusion Models"
+title: "Notes on Drift Diffusion Models"
 categories: [statistics, decision-making]
-date: 10/22/25
+date: 11/05/25
 bibliography: "wiener.bib"
-draft: true 
+draft: false 
 format: 
   html: 
     df-print: kable
