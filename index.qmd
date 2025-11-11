@@ -13,9 +13,15 @@ search: false
 
 ### News
 
-**02/14/25**     I got a summer internship offer from Sony Japan! Super excited to be learning and working in 🗼 this summer
+**10/27/25**     I contributed a [virtual chinrest plugin](https://revisit.dev/study/library-virtual-chinrest/) to [`reVISit`](https://revisit.dev/), an open-source framework for reproducible visualization studies. 
 
-**01/20/25**     Our paper, *Seeing Eye to AI ?*, is accepted to CHI 2025 at 🎡!
+**10/22/25**     Our CS+LAW paper was mentioned in [this Quanta magazine](https://www.quantamagazine.org/the-game-theory-of-how-algorithms-can-drive-up-prices-20251022/) post. 
+
+**04/28/25**     I presented *Seeing Eye to AI* at CHI'25 🎡
+
+**02/14/25**     I got a summer internship offer from Sony Japan 🗼!
+
+<!-- **01/20/25**     Our paper, *Seeing Eye to AI ?*, is accepted to CHI 2025 at 🎡! -->
 :::
 
 <!-- [{{<fa graduation-cap >}} Google Scholar](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link} -->
@@ -25,9 +31,7 @@ I am a final-year Ph.D. candidate at [Northwestern University](https://www.north
 Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
 
 :::{.callout-important appearance="simple"}
-{{<fa fish-fins>}} **I am on the job market!** I am seeking full-time roles in research and development, such as Research Scientist, Research Engineer, and Data Scientist, where I can tackle data-driven problems and help build the future of human-AI collaboration.
-
-I welcome you to [view my CV](grad_cv.pdf) and [connect on LinkedIn []{.mdi--linkedin} ](https://www.linkedin.com/in/sheng-long/). 
+{{<fa fish-fins>}} **I am on the job market!** I am seeking full-time roles where I can tackle data-driven problems and help build the future of human-AI collaboration. I welcome you to [view my CV](grad_cv.pdf) and [connect on LinkedIn []{.mdi--linkedin} ](https://www.linkedin.com/in/sheng-long/). 
 :::
 
 ## Research

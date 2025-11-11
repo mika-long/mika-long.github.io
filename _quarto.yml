@@ -26,5 +26,5 @@ format:
   html:
     css: styles.css
     toc: false
-    mainfont: Noto Sans SC
+    mainfont: Noto Sans
     page-layout: full
