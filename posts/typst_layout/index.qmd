@@ -1,0 +1,98 @@
+---
+title: "Tips and Tricks for Typst Formatting"
+date: "11-18-2025"
+draft: true 
+---
+
+```{r}
+#| echo: false 
+
+library(typr)
+# typr::has_typst_cli()
+```
+
+## Shift images that are wrapped around
+
+The [`wrap-it`](https://typst.app/universe/package/wrap-it/) package on `typst`^[to embed typst output in quarto documents, use the `typr` package.] allows one to wrap text around images. The syntax is usually something like 
+
+```typst
+#let fig = figure(...)
+#let body = lorem(30)
+#wrap-content(fig, body)
+```
+
+```{r}
+#| echo: false 
+# put typst into the path 
+# Sys.setenv(PATH = paste(Sys.getenv("PATH"), "/usr/local/bin/typst", sep = ":"))
+```
+
+
+... which would render something like the following: 
+
+```{r}
+#| code-fold: true
+#| output: false 
+# 1. define typst source code 
+typst_source <- c(
+  '#import "@preview/wrap-it:0.1.1": *',
+  '#set page(width: 10cm, height: auto, margin: (left: 2cm, top: 0cm, bottom: 0cm, right: 2cm))', 
+  '#let fig = figure(rect(fill: teal, radius: 0.5em, width: em), caption: [A figure])',
+'#let body = lorem(50)',
+'#wrap-content(fig, body, columns: (1fr, 1fr))'
+)
+
+# get source directory and construct local output path 
+source_dir <- knitr::current_input(dir = TRUE)
+# print(source_dir)
+png_filename <- "typst-output-graphic.png"
+png_output_file <- fs::path(source_dir, png_filename)
+
+typr::typr_compile(input = typst_source,
+                   output_format = "png",
+                   output_file = png_filename, 
+                   typst_args = c("--ppi", "300"))
+```
+
+```{r}
+#| code-fold: true
+knitr::include_graphics(png_filename)
+```
+
+
+But let's say you want to "shift" this image to the left side into the margin, but want the text to still follow the margin. How does one do that? The answer: use [`box`](https://typst.app/docs/reference/layout/box/) to wrap the image and manipulate the `inset` and [`move`](https://typst.app/docs/reference/layout/move/). The new function would look like something like this: 
+
+```typst
+#let fig = figure(...)
+#let body = lorem(30)
+#wrap-content(move(dx: -0.75in, box(fig, inset: (right: -0.75in))), body)
+```
+
+```{r}
+#| code-fold: true 
+#| output: false 
+
+typst_source <- c(
+  '#import "@preview/wrap-it:0.1.1": *',
+  '#set page(width: 15cm, height: auto, margin: (left: 2cm, top: 0cm, bottom: 0cm, right: 2cm))',
+  '#let fig = figure(rect(fill: teal, radius: 0.5em, width: 8em), caption: [A figure])',
+'#let body = lorem(50)',
+'#wrap-content(move(dx: -1cm, box(fig, inset:(left: -1cm))), body, columns: (1fr, 1fr))'
+)
+
+source_dir <- knitr::current_input(dir = TRUE)
+# print(source_dir)
+png_filename <- "typst-output-graphic-2.png"
+png_output_file <- fs::path(source_dir, png_filename)
+
+typr::typr_compile(input = typst_source,
+                   output_format = "png",
+                   output_file = png_filename, 
+                   typst_args = c("--ppi", "300"))
+```
+
+```{r}
+#| code-fold: true
+knitr::include_graphics(png_filename)
+```
+
