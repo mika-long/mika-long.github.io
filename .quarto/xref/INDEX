@@ -52,5 +52,8 @@
   },
   "posts/typst_layout/index.qmd": {
     "index.html": "a1a080f4"
+  },
+  "posts/poisson-disk/index.ipynb": {
+    "index.html": "5731c5b8"
   }
 }
