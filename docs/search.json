@@ -4,51 +4,69 @@
     "href": "useful_resources.html",
     "title": "Useful Resources",
     "section": "",
-    "text": "…"
+    "text": "The following are some websites that I found useful."
   },
   {
-    "objectID": "useful_resources.html#how-to-read-papers",
-    "href": "useful_resources.html#how-to-read-papers",
+    "objectID": "useful_resources.html#academia-related",
+    "href": "useful_resources.html#academia-related",
     "title": "Useful Resources",
+    "section": "Academia related",
+    "text": "Academia related\n\nHow to read papers\n\n…\n\n\n\nHow to review papers\n\nAn Unoffical Guide to Seven Stages of Reviewing for CHI\n\ngoogle doc"
+  },
+  {
+    "objectID": "useful_resources.html#general-sofware-related",
+    "href": "useful_resources.html#general-sofware-related",
+    "title": "Useful Resources",
+    "section": "General Sofware related",
+    "text": "General Sofware related\n\nReproducible environments for R and Python"
+  },
+  {
+    "objectID": "posts/gm_music/index.html",
+    "href": "posts/gm_music/index.html",
+    "title": "Creating music with GM package",
     "section": "",
-    "text": "…"
-  },
-  {
-    "objectID": "useful_resources.html#how-to-review-papers",
-    "href": "useful_resources.html#how-to-review-papers",
-    "title": "Useful Resources",
-    "section": "How to review papers",
-    "text": "How to review papers\n\nAn Unoffical Guide to Seven Stages of Reviewing for CHI\n\ngoogle doc"
+    "text": "library(gm)\n\n\nOverview\nI saw the gm package on this Bluesky post and thought I’d give it a try. Here’s the reference document.\n\nCreate simple music:\n\nmusic &lt;- \n  Music() +\n  Meter(4, 4) +\n  Line(c(\"C5\", \"D5\", \"E5\", \"F5\"))\n  \nshow(music)\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet’s try something a bit more complicated:\n\nmoon &lt;- Music() + \n  Meter(4, 4) + \n  Key(2) + \n  Line(\n    pitches = c(\"A3\", \"B3\", \"D4\", \"E4\", \"F#4\", \"A4\", \"B4\"),\n    durations = c(\"quarter.\", \"eighth\", \"eighth\", \"eighth\", \"eighth\", \"eighth\", \"whole\")\n  )\n\nshow(moon)\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote that the above is the opening ascent of 「彩云追月」 (“Colorful Clouds Chasing the Moon”)1.\n\n\n1 Taken from Pentatonic Xuangong 旋宮 Transformations in Chinese Music by Nathan L. Lam"
   },
   {
     "objectID": "posts.html",
     "href": "posts.html",
     "title": "Notes",
     "section": "",
-    "text": "National Park Visit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nJust Noticeable Difference\n\n\n\n\n\n\nPsychophysics\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nSheng Long\n\n\n\n\n\n\nNo matching items"
+    "text": "🚧 (Mostly) Under construction 🚧\n\n\n\n\n\n\n\n\n\nPoisson Disk Sampling\n\n\n\n\n\nSome notes on Poisson disk sampling.\n\n\n\n\n\nNov 19, 2025\n\n2 min\n\n\n\n\n\n\nNotes on Drift Diffusion Models\n\n\n\n\n\n\nstatistics\n\ndecision-making\n\n\n\nSome preliminary notes on the drift diffusion model.\n\n\n\n\n\nNov 5, 2025\n\n10 min\n\n\n\n\n\n\nAutomatically update job application stages via Apps Script\n\n\n\n\n\n\nmisc\n\n\n\n\n\n\n\n\n\nOct 23, 2025\n\n5 min\n\n\n\n\n\n\nSkewed Generalized T Distribution and Skewed T Distribution\n\n\n\n\n\n\nStatistics\n\n\n\nSome notes on the skewed (generalized) T distribution.\n\n\n\n\n\nOct 14, 2025\n\n8 min\n\n\n\n\n\n\nSimple Mixture Models with brms and stan\n\n\n\n\n\n\nStatistics\n\n\n\nFitting mixture models using brms and stan, using the old faithful eruptaion data as an example.\n\n\n\n\n\nOct 13, 2025\n\n5 min\n\n\n\n\n\n\nCreating music with GM package\n\n\n\n\n\n\nMusic\n\n\n\nExperimenting with the GM R package to create music.\n\n\n\n\n\nOct 6, 2025\n\n1 min\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "posts/jnd/index.html",
-    "href": "posts/jnd/index.html",
-    "title": "Just Noticeable Difference",
+    "objectID": "posts/poisson-disk/index.html",
+    "href": "posts/poisson-disk/index.html",
+    "title": "Poisson Disk Sampling",
     "section": "",
-    "text": "Formally, Just Noticeable Difference (JND) can be defined as the magnitude of change in a stimulus necessary for it to be perceived as different from another stimulus, or as the smallest detectable difference between two stimuli (Stern and Johnson 2010)."
+    "text": "NoteWhat is Poisson Disk Sampling?\n\n\n\nPut simply, it is a sampling algorithm that places the sample randomly1, such that they are not too close from each other."
   },
   {
-    "objectID": "posts/jnd/index.html#absolute-vs.-difference-threshold",
-    "href": "posts/jnd/index.html#absolute-vs.-difference-threshold",
-    "title": "Just Noticeable Difference",
-    "section": "Absolute vs. Difference Threshold",
-    "text": "Absolute vs. Difference Threshold"
-<<<<<<< HEAD
+    "objectID": "posts/poisson-disk/index.html#observation-1-random-points-end-up-forming-clusters",
+    "href": "posts/poisson-disk/index.html#observation-1-random-points-end-up-forming-clusters",
+    "title": "Poisson Disk Sampling",
+    "section": "Observation 1: Random points end up forming clusters",
+    "text": "Observation 1: Random points end up forming clusters\nIn the following we will use numpy and vega-altair to show that random uniform sampling results in clusters.\n\n# random number generator \nrng = np.random.default_rng()\nx = rng.integers(low=1, high=100, size = 100)\ny = rng.integers(low=1, high=100, size = 100)\n# create dataframe \ndf = pl.DataFrame({'x': x, 'y': y})\n\n\n# plot chart \nalt.Chart(data = df).mark_point().encode(\n    x='x',\n    y='y'\n)"
   },
   {
-    "objectID": "posts/national park vists/park_visits.html",
-    "href": "posts/national park vists/park_visits.html",
-    "title": "National Park Visit",
-    "section": "",
-    "text": "Code\n# custom theme \ntheme_custom &lt;- function() {\n  theme_minimal() + \n  theme(\n    text = element_text(family = \"Avenir\"), \n    plot.title = element_text(family = \"Avenir\"), \n    axis.text = element_text(family=\"Avenir\")\n  )\n}\n\ntheme_set(theme_custom())\n\n\nFirst we load the data1. The file is not quite ready to be merged with other ones, so we make changes to it.\n1 which was obtained from https://www.responsible-datasets-in-context.com/posts/np-data/?tab=explore-the-data\n\nCode\ndf &lt;- read.csv(file = \"US-National-Parks_Use_1979-2023_By-Month.csv\") %&gt;% \n  tibble(.) %&gt;% \n  mutate(ParkName = str_remove(ParkName, \"NP.*$\")) |&gt;\n  mutate(ParkName = trimws(ParkName)) %&gt;% \n  mutate(Region = trimws(Region))\n\nhead(df)\n\n\n# A tibble: 6 × 12\n  ParkName UnitCode ParkType      Region    State  Year Month RecreationVisits\n  &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt; &lt;int&gt; &lt;int&gt;            &lt;int&gt;\n1 Acadia   ACAD     National Park Northeast ME     1979     1             6011\n2 Acadia   ACAD     National Park Northeast ME     1979     2             5243\n3 Acadia   ACAD     National Park Northeast ME     1979     3            11165\n4 Acadia   ACAD     National Park Northeast ME     1979     4           219351\n5 Acadia   ACAD     National Park Northeast ME     1979     5           339416\n6 Acadia   ACAD     National Park Northeast ME     1979     6           543205\n# ℹ 4 more variables: NonRecreationVisits &lt;int&gt;, TentCampers &lt;int&gt;,\n#   RVCampers &lt;int&gt;, Backcountry &lt;int&gt;\n\n\n\n\nLet’s animate things!\nThe following is a static graph:\n\n\nCode\ndf %&gt;% \n  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + \n  geom_line() + \n  facet_wrap(~UnitCode) + \n  scale_x_continuous(breaks = 1:12, labels = 1:12) + \n  scale_color_viridis_c()\n\n\n\n\n\n\n\n\n\nLet’s try animating this!\n\n\nCode\ndf %&gt;% filter(ParkName == \"Acadia\") %&gt;% \n  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + \n  geom_line() + \n  scale_color_viridis_c()+ \n  scale_x_continuous(breaks = 1:12, labels = 1:12) + \n  scale_y_continuous(labels = function(x) paste0(x/1000, \"K\"))\n\n\n\n\n\n\n\n\n\n\n\nCode\ndf %&gt;% filter(ParkName == \"Acadia\") %&gt;% \n  ggplot(aes(x = Month, y = RecreationVisits, color = Year, group = Year)) + \n  geom_line(linewidth=1.5) + \n  scale_color_viridis_c()+ \n  scale_x_continuous(breaks = 1:12, labels = 1:12) +\n  scale_y_continuous(labels = function(x) paste0(x/1000, \"K\")) + \n  labs(title = 'Year: {frame_time}') + \n  transition_time(Year) + \n  shadow_mark(past = T, future = F, alpha = 0.1)"
-=======
->>>>>>> b82a8b0281af8c2173651455fa229568608de388
+    "objectID": "posts/poisson-disk/index.html#observation-2-bridson-algorithm",
+    "href": "posts/poisson-disk/index.html#observation-2-bridson-algorithm",
+    "title": "Poisson Disk Sampling",
+    "section": "Observation 2: Bridson’ algorithm",
+    "text": "Observation 2: Bridson’ algorithm\nRobert Bridson provided an \\(O(n)\\) algorithm2, that is a modification of dart throwing, that creates samples that are at least a certain distnace apart from each other.\n2 … in this paperThe following code is borrowed from this blog post.\n\n# choose up to k points around each reference point \n# default is 30, as per the original paper\nk = 30 \n\n# minimum distance between samples \nr = 10 \n\nwidth, height = 100, 100\n\n# cell side length \na = r / np.sqrt(2) \n# num of cells in the x- and y- directions of the grid \nnx, ny = int(width / a) + 1, int(height / a) + 1\n\n# a list of coordinates in the grid of cells \ncoords_list = [(ix, iy) for ix in range(nx) for iy in range(ny)]\n\n# initialize the dictionary of cells \ncells = {coords: None for coords in coords_list}\n\nDefine functions:\n\n\nCode\ndef get_cell_coords(pt):\n    \"\"\"Get the coordinates of the cell that pt = (x,y) falls in.\"\"\"\n\n    return int(pt[0] // a), int(pt[1] // a)\n\ndef get_neighbours(coords):\n    \"\"\"Return the indexes of points in cells neighbouring cell at coords.\n\n    For the cell at coords = (x,y), return the indexes of points in the cells\n    with neighbouring coordinates illustrated below: ie those cells that could \n    contain points closer than r.\n\n                                     ooo\n                                    ooooo\n                                    ooXoo\n                                    ooooo\n                                     ooo\n\n    \"\"\"\n\n    dxdy = [(-1,-2),(0,-2),(1,-2),(-2,-1),(-1,-1),(0,-1),(1,-1),(2,-1),\n            (-2,0),(-1,0),(1,0),(2,0),(-2,1),(-1,1),(0,1),(1,1),(2,1),\n            (-1,2),(0,2),(1,2),(0,0)]\n    neighbours = []\n    for dx, dy in dxdy:\n        neighbour_coords = coords[0] + dx, coords[1] + dy\n        if not (0 &lt;= neighbour_coords[0] &lt; nx and\n                0 &lt;= neighbour_coords[1] &lt; ny):\n            # We're off the grid: no neighbours here.\n            continue\n        neighbour_cell = cells[neighbour_coords]\n        if neighbour_cell is not None:\n            # This cell is occupied: store this index of the contained point.\n            neighbours.append(neighbour_cell)\n    return neighbours\n\ndef point_valid(pt):\n    '''Is pt a valid point to emit as a sample?\n    It must be no closer than r from any other point: check the cells in its\n    immediate neighbourhood.\n    '''\n\n    cell_coords = get_cell_coords(pt)\n    for idx in get_neighbours(cell_coords):\n        nearby_pt = samples[idx]\n        # Squared distance between or candidate point, pt, and this nearby_pt.\n        distance2 = (nearby_pt[0]-pt[0])**2 + (nearby_pt[1]-pt[1])**2\n        if distance2 &lt; r**2:\n            # The points are too close, so pt is not a candidate.\n            return False\n    # All points tested: if we're here, pt is valid\n    return True\n\ndef get_point(k, refpt):\n    '''Try to find a candidate point relative to refpt to emit in the sample. \n    We draw up to k points from the annulus of inner radius r and outer radius 2r\n    around the reference point, refpt. If none of them are suitable (because\n    they're too close to existing points in the sample), return False.\n    Otherwise, return the pt.\n    '''\n    i = 0\n    while i &lt; k:\n        i += 1\n        rho = np.sqrt(np.random.uniform(r**2, 4 * r**2))\n        theta = np.random.uniform(0, 2*np.pi)\n        pt = refpt[0] + rho*np.cos(theta), refpt[1] + rho*np.sin(theta)\n        if not (0 &lt;= pt[0] &lt; width and 0 &lt;= pt[1] &lt; height):\n            # This point falls outside the domain, so try again.\n            continue\n        if point_valid(pt):\n            return pt\n\n    # We failed to find a suitable point in the vicinity of refpt.\n    return False\n\n\nActual sample:\n\n# Pick a random point to start with.\npt = (np.random.uniform(0, width), np.random.uniform(0, height))\nsamples = [pt]\n# Our first sample is indexed at 0 in the samples list...\ncells[get_cell_coords(pt)] = 0\n# ... and it is active, in the sense that we're going to look for more points\n# in its neighbourhood.\nactive = [0]\n\nnsamples = 1\n# As long as there are points in the active list, keep trying to find samples.\nwhile active:\n    # choose a random \"reference\" point from the active list.\n    idx = np.random.choice(active)\n    refpt = samples[idx]\n    # Try to pick a new point relative to the reference point.\n    pt = get_point(k, refpt)\n    if pt:\n        # Point pt is valid: add it to the samples list and mark it as active\n        samples.append(pt)\n        nsamples += 1\n        active.append(len(samples)-1)\n        cells[get_cell_coords(pt)] = len(samples) - 1\n    else:\n        # We had to give up looking for valid points near refpt, so remove it\n        # from the list of \"active\" points.\n        active.remove(idx)\n\nTurn np.array into data frame for plotting:\n\ndf = pl.DataFrame(np.round(samples, 2)).rename({'column_0':'x', 'column_1':'y'})\ndf\n\n\nshape: (64, 2)\n\n\n\nx\ny\n\n\nf64\nf64\n\n\n\n\n61.63\n94.91\n\n\n48.0\n94.44\n\n\n75.05\n87.33\n\n\n62.33\n84.48\n\n\n48.76\n80.67\n\n\n…\n…\n\n\n31.45\n99.34\n\n\n68.56\n19.15\n\n\n80.32\n4.83\n\n\n94.16\n3.38\n\n\n69.83\n1.43\n\n\n\n\n\n\nPlot the samples after poisson disk sampling:\n\n# plot chart \nalt.Chart(data = df).mark_point().encode(\n    x='x',\n    y='y'\n)"
+  },
+  {
+    "objectID": "posts/poisson-disk/index.html#poisson-disk-sampling-with-scipy",
+    "href": "posts/poisson-disk/index.html#poisson-disk-sampling-with-scipy",
+    "title": "Poisson Disk Sampling",
+    "section": "Poisson Disk Sampling with scipy",
+    "text": "Poisson Disk Sampling with scipy\nCompare the results to the custom poisson disk sampling function implemented by scipy, with documentation here.\n\nfrom scipy.stats import qmc\n# create engine \nengine = qmc.PoissonDisk(d = 2, radius = 10 / 100, rng = None)\nsample = engine.random(64)\n\n\ndf = pl.DataFrame(np.round(qmc.scale(sample, l_bounds = [0, 0], u_bounds = [100, 100]), 2)).rename({'column_0': 'x', 'column_1': 'y'})\ndf\n\n\nshape: (64, 2)\n\n\n\nx\ny\n\n\nf64\nf64\n\n\n\n\n63.05\n85.83\n\n\n73.1\n84.98\n\n\n52.88\n88.09\n\n\n56.37\n72.02\n\n\n66.1\n98.73\n\n\n…\n…\n\n\n37.3\n26.58\n\n\n48.62\n45.11\n\n\n99.55\n80.4\n\n\n63.13\n9.37\n\n\n99.32\n0.13\n\n\n\n\n\n\n\n# plot chart \nalt.Chart(data = df).mark_point().encode(\n    x='x',\n    y='y'\n)\n\n\n\n\n\n\n\n\nTangent\nLet’s say instead of trying to spread the points to the entire surface, we only sample say 10 points, and let’s also make the minimum space between the points smaller.\n::: {#f5d07e89 .cell 0=‘c’ 1=‘o’ 2=‘d’ 3=‘e’ 4=‘-’ 5=‘f’ 6=‘o’ 7=‘l’ 8=‘d’ 9=‘:’ 10=‘f’ 11=‘a’ 12=‘l’ 13=‘s’ 14=‘e’ execution_count=64}\nengine = qmc.PoissonDisk(d = 2, radius = 5 / 100, rng = None)\nsample = engine.random(20)\ndf = pl.DataFrame(np.round(qmc.scale(sample, l_bounds = [0, 0], u_bounds = [100, 100]), 2)).rename({'column_0': 'x', 'column_1': 'y'})\n:::\n\n# plot chart \nalt.Chart(data = df).mark_point().encode(\n    x='x',\n    y='y'\n)\n\n\n\n\n\n\n\nSometimes the dots appear quite tightly clustered together. We could try to make them spread across more by utilizing the optimization parameter:\n\nengine = qmc.PoissonDisk(d = 2, radius = 5 / 100, rng = None, optimization=\"lloyd\")\nsample = engine.random(20)\ndf = pl.DataFrame(np.round(qmc.scale(sample, l_bounds = [0, 0], u_bounds = [100, 100]), 2)).rename({'column_0': 'x', 'column_1': 'y'})\n\n\n# plot chart \nalt.Chart(data = df).mark_point().encode(\n    x='x',\n    y='y'\n)\n\n\n\n\n\n\n\n… which comes at a cost of sometimes violating the minimum distance apart from each other."
+  },
+  {
+    "objectID": "posts/poisson-disk/index.html#implementations-in-other-languages",
+    "href": "posts/poisson-disk/index.html#implementations-in-other-languages",
+    "title": "Poisson Disk Sampling",
+    "section": "Implementations in other languages",
+    "text": "Implementations in other languages\nThere are also javascript implementation of the Bridson algorithm, for example, see this github repo, which not only allows specifying the minimum distance between each points, but also the maximum distance between each points.\nThere is also this R implementation that comes with a nice illustration."
   }
 ]

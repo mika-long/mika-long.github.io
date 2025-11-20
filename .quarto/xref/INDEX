@@ -1,59 +1,59 @@
 {
-  "index.qmd": {
-    "index.html": "dfd4eb2f"
-  },
-  "posts.qmd": {
-    "posts.html": "53bbfcc0"
+  "posts/multi-level models/index.qmd": {
+    "index.html": "9fef8e9d"
   },
   "posts/ddm/index.qmd": {
-    "index.html": "ce523c5a"
-  },
-  "posts/creativity/index.qmd": {
-    "index.html": "24422de9"
-  },
-  "posts/jnd/index.qmd": {
-    "index.html": "4f5ff2e0"
-  },
-  "posts/multi-level models/index.qmd": {
-    "index.html": "04782794"
-  },
-  "posts/roc curve/index.qmd": {
-    "index.html": "3b3d00d7"
-  },
-  "posts/explore vs exploit/index.qmd": {
-    "index.html": "53094942"
-  },
-  "posts/national park vists/index.qmd": {
-    "index.html": "95d418fc"
-  },
-  "posts/sgt and st/index.qmd": {
-    "index.html": "d2f0a3e3"
-  },
-  "posts/mixture model 1/index.qmd": {
-    "index.html": "0b93d9eb"
-  },
-  "posts/color palettes/index.qmd": {
-    "index.html": "9c91cded"
-  },
-  "useful_resources.qmd": {
-    "useful_resources.html": "1fc66b89"
-  },
-  "posts/wiener/wiener.ipynb": {
-    "wiener.html": "281229bf"
+    "index.html": "330a98f8"
   },
   "posts/ddm/index_2.qmd": {
-    "index_2.html": "3bc08acf"
+    "index_2.html": "3bb5a729"
+  },
+  "index.qmd": {
+    "index.html": "393e2487"
   },
   "posts/wiener/index.qmd": {
-    "index.html": "39859953"
+    "index.html": "5eb590bb"
   },
-  "posts/job-stat-track/index.qmd": {
-    "index.html": "77758522"
-  },
-  "posts/typst_layout/index.qmd": {
-    "index.html": "a1a080f4"
+  "posts/jnd/index.qmd": {
+    "index.html": "49ef72d4"
   },
   "posts/poisson-disk/index.ipynb": {
-    "index.html": "5731c5b8"
+    "index.html": "f06d2f02"
+  },
+  "posts/roc curve/index.qmd": {
+    "index.html": "72a71919"
+  },
+  "posts/explore vs exploit/index.qmd": {
+    "index.html": "9d6507e6"
+  },
+  "posts/sgt and st/index.qmd": {
+    "index.html": "7d9e62db"
+  },
+  "posts/mixture model 1/index.qmd": {
+    "index.html": "cf96587a"
+  },
+  "posts/job-stat-track/index.qmd": {
+    "index.html": "2def22e7"
+  },
+  "posts/creativity/index.qmd": {
+    "index.html": "2b37f7c2"
+  },
+  "posts/typst_layout/index.qmd": {
+    "index.html": "39e00a23"
+  },
+  "posts/gm_music/index.qmd": {
+    "index.html": "956e8006"
+  },
+  "posts/national park vists/index.qmd": {
+    "index.html": "e6fcd2c2"
+  },
+  "posts/color palettes/index.qmd": {
+    "index.html": "c3136ce7"
+  },
+  "posts.qmd": {
+    "posts.html": "98085482"
+  },
+  "useful_resources.qmd": {
+    "useful_resources.html": "38ab56e1"
   }
 }

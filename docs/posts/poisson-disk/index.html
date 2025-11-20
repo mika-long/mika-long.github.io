@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dac0d762ad69f7fabc58156a55ce8b55.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-2f1d5595274720d733f4ffbbd914babc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -215,7 +215,7 @@ window.Quarto = {
 <div>
   <div class="abstract">
     <div class="block-title">Abstract</div>
-    <p>Some <strong>notes</strong> on Poisson disk sampling.</p>
+    <p>Some notes on Poisson disk sampling.</p>
   </div>
 </div>
 
@@ -628,7 +628,7 @@ window.Quarto = {
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> qmc.PoissonDisk(d <span class="op">=</span> <span class="dv">2</span>, radius <span class="op">=</span> <span class="dv">10</span> <span class="op">/</span> <span class="dv">100</span>, rng <span class="op">=</span> <span class="va">None</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> engine.random(<span class="dv">64</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f545752a" class="cell" data-execution_count="46">
+<div id="f545752a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pl.DataFrame(np.<span class="bu">round</span>(qmc.scale(sample, l_bounds <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>], u_bounds <span class="op">=</span> [<span class="dv">100</span>, <span class="dv">100</span>]), <span class="dv">2</span>)).rename({<span class="st">'column_0'</span>: <span class="st">'x'</span>, <span class="st">'column_1'</span>: <span class="st">'y'</span>})</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">

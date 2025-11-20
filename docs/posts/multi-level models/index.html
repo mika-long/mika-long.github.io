@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-11-19">
+<meta name="dcterms.date" content="2025-11-20">
 
 <title>A Model by Many Names (and Notations) – Sheng Long</title>
 <style>
@@ -22,7 +22,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -39,7 +59,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dac0d762ad69f7fabc58156a55ce8b55.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-2f1d5595274720d733f4ffbbd914babc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -137,6 +157,7 @@ window.Quarto = {
   <ul>
   <li><a href="#notation-type" id="toc-notation-type" class="nav-link active" data-scroll-target="#notation-type">Notation type</a>
   <ul class="collapse">
+  <li><a href="#math-notation-and-design-formula" id="toc-math-notation-and-design-formula" class="nav-link" data-scroll-target="#math-notation-and-design-formula">Math notation and design formula</a></li>
   <li><a href="#unconditional-means-model" id="toc-unconditional-means-model" class="nav-link" data-scroll-target="#unconditional-means-model">Unconditional Means model</a></li>
   </ul></li>
   </ul>
@@ -167,7 +188,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 19, 2025</p>
+      <p class="date">November 20, 2025</p>
     </div>
   </div>
   
@@ -179,7 +200,41 @@ window.Quarto = {
 </header>
 
 
-<section id="notation-type" class="level1 page-columns page-full">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What’s up with all this terminology?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>My mental model of how hierarchical models work is heavily influenced by <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span>. In his book, McElreath said:</p>
+<blockquote class="blockquote">
+<p>I adopt the terminology of <span class="citation" data-cites="gelman2005analysis">Gelman (<a href="#ref-gelman2005analysis" role="doc-biblioref">2005</a>)</span>, who argues that the common term <em>random effects</em> hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly because the terms <em>fixed</em> and <em>random effects</em> mean different things to different statisticians. See pages 20–21 of Gelman’s paper. I fully realize, however, that by trying to spread Gelman’s alternative jargon, I am essentially splitting into a very strong wind.</p>
+</blockquote>
+<p>The TLDR is that there have been a lot of different definitions of fixed and random effects in different contexts, across different disciplines. Gelman chose to sidestep the overloaded terms and define</p>
+<blockquote class="blockquote">
+<p>… effects (or coefficients) in a multilevel model as <em>constant</em> if they are identical for all groups in a population and <em>varying</em> if they are allowed to differ from group to group.</p>
+</blockquote>
+<p>What this implies in terms of how the math notation<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is that</p>
+<ul>
+<li>Units <span class="math inline">\(i = 1, ..., n\)</span></li>
+<li>Outcome measurements <span class="math inline">\(y = (y_1, ..., y_n)\)</span></li>
+<li>Regression predictors represented by an <span class="math inline">\(n \times k\)</span> matrix <span class="math inline">\(X\)</span></li>
+<li>Groups <span class="math inline">\(j = 1, ..., J\)</span>. This works for a single level of grouping (e.g., students within schools, persons within states, tadpoles within tanks)
+<ul>
+<li>Occasioally use <span class="math inline">\(k = 1, ..., K\)</span> for a second level of grouping (e.g., students within schools within districts)</li>
+</ul></li>
+<li>Index variable <span class="math inline">\(j[i]\)</span> code group membership. For example, if you get <span class="math inline">\(j[35] = 4\)</span> that means the 35th data unit in the data belongs to group 4.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Referring to section 12.1 Notation from Gelman and Hill 2007</p></div></div><section id="notation-type" class="level1 page-columns page-full">
 <h1>Notation type</h1>
 <ol type="1">
 <li>Composite — “composite form” see Singer 1998</li>
@@ -201,9 +256,51 @@ window.Quarto = {
 <ol start="3" type="1">
 <li>Matrix</li>
 </ol>
+<ul>
+<li>the best way to express something succinctly</li>
+<li><span class="math inline">\(\mathbf{y} = X \mathbf{\beta} + Z \mathbf{u} + \mathbf{\epsilon}\)</span></li>
+<li>… where <span class="math inline">\(X_j\)</span> is the <strong>design matrix</strong> for the fixed effects and <span class="math inline">\(Z_j\)</span> is the design matrix for the <strong>random effects</strong>.</li>
+</ul>
+<section id="math-notation-and-design-formula" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="math-notation-and-design-formula">Math notation and design formula</h2>
+<p>According to <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span>, it is a compact form of notation, that are intimately related to a “common matrix algebra description of linear models”. If you’ve run <code>lmer</code> code before you know what something like <code>y ~ 1 + x</code> means.</p>
+<p><a href="https://xiaoyingpu.github.io/">Xiaoying Pu</a> provided a <a href="https://xiaoyingpu.github.io/note/cheat/">cheat sheet</a> for reading/writing R formulas used in <code>lmer</code> and <code>brms</code>.</p>
+<p>In <span class="citation" data-cites="barrRandomEffectsStructure2013">Barr et al. (<a href="#ref-barrRandomEffectsStructure2013" role="doc-biblioref">2013</a>)</span>, the provide a nice table.</p>
+<p>In <span class="citation" data-cites="gaSoftwareFittingMultilevel2013">Ga&amp;amp et al. (<a href="#ref-gaSoftwareFittingMultilevel2013" role="doc-biblioref">2013</a>)</span>, they looked at the software for fitting multilevel models, and they had a nice table<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> about statistical software packages containing modules/functions designed to fix various classes of mixed-effects models. Below I will reproduce this table, but focusing only on the <code>R</code> side of things:</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Table 26.1</p></div></div><table class="caption-top table">
+<caption><code>R</code> software packages and functions for fitting mixed models.</caption>
+<thead>
+<tr class="header">
+<th><code>R</code> package</th>
+<th style="text-align: left;">Linear Mixed Models <br> <strong>LMM</strong></th>
+<th style="text-align: right;">Generalized Linear Mixed Models <br> <strong>GLMM</strong></th>
+<th style="text-align: center;">Nonlinear Mixed Models <br> <strong>NLMM</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/nlme/index.html"><code>nlme</code></a></td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/lme4/index.html"><code>lme4</code></a></td>
+<td style="text-align: left;">123</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: center;">123</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/brms/index.html"><code>brms</code></a></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p>We will leverage this paper<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> but use the dataset (<code>brandsma</code> object in the <code>mice</code> package) mentioned by this source<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Multilevel Model Notation - Establishing the commonalities</p></div><div id="fn2"><p><sup>2</sup>&nbsp;https://stefvanbuuren.name/fimd/sec-threeformulations.html</p></div></div><div class="cell">
+<p>We will leverage this paper<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> but use the dataset (<code>brandsma</code> object in the <code>mice</code> package) mentioned by this source<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Multilevel Model Notation - Establishing the commonalities</p></div><div id="fn4"><p><sup>4</sup>&nbsp;https://stefvanbuuren.name/fimd/sec-threeformulations.html</p></div></div><div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
@@ -271,6 +368,7 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 <li><code>sex</code>: sex of pupil</li>
 <li><code>den</code>: school denomination, predictor at school level.</li>
 </ul>
+</section>
 <section id="unconditional-means-model" class="level2">
 <h2 class="anchored" data-anchor-id="unconditional-means-model">Unconditional Means model</h2>
 <p><span class="math display">\[y_{ij} = \beta_0 + u_{0j} + \epsilon_{ij}\]</span></p>
@@ -320,11 +418,25 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 <!-- - https://assets.cambridge.org/97805218/67061/excerpt/9780521867061_excerpt.pdf#page=1.29  -->
 
 
+
 </section>
 </section>
 
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-barrRandomEffectsStructure2013" class="csl-entry" role="listitem">
+Barr, Dale J., Roger Levy, Christoph Scheepers, and Harry J. Tily. 2013. <span>“Random Effects Structure for Confirmatory Hypothesis Testing: <span>Keep</span> It Maximal.”</span> <em>Journal of Memory and Language</em> 68 (3): 10.1016/j.jml.2012.11.001. <a href="https://doi.org/10.1016/j.jml.2012.11.001">https://doi.org/10.1016/j.jml.2012.11.001</a>.
+</div>
+<div id="ref-gaSoftwareFittingMultilevel2013" class="csl-entry" role="listitem">
+Ga&amp;amp, Andrzej, #322, ecki, and Brady West. 2013. <span>“Software for <span>Fitting Multilevel Models</span>.”</span> In <em>The <span>SAGE Handbook</span> of <span>Multilevel Modeling</span></em>, 465–84. SAGE Publications Ltd. <a href="https://doi.org/10.4135/9781446247600">https://doi.org/10.4135/9781446247600</a>.
+</div>
+<div id="ref-gelman2005analysis" class="csl-entry" role="listitem">
+Gelman, Andrew. 2005. <span>“Analysis of Variance—Why It Is More Important Than Ever.”</span> <a href="https://arxiv.org/pdf/math/0504499">https://arxiv.org/pdf/math/0504499</a>.
+</div>
+<div id="ref-mcelreath2020statistical" class="csl-entry" role="listitem">
+McElreath, Richard. 2020. <span>“Statistical Rethinking: A Bayesian Course with Examples in r and STAN.”</span>
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

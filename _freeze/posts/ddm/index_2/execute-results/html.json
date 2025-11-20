@@ -1,0 +1,15 @@
+{
+  "hash": "dafcb0f5210729d2efcb58e452f5f488",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Prior predictive checks\"\nauthor: \n  name: Sheng Long\ndraft: true  \ndescription: \"Checking my understanding of prior predictive checks and the Wiener process model\"\n---\n\n\n::: {.cell}\n\n:::\n\n\nVery simple toy model: `y ~ N(mu, sigma)`. \n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# # data \n# df <- as_tibble(rnorm(100, 5, 3))\n# # formula \n# f <- bf(value ~ 1)\n# make_stancode(f, data = df)\n```\n:::\n\n\n# Prior Predictive Checks \n\n- source: https://mc-stan.org/docs/stan-users-guide/posterior-predictive-checks.html#prior-predictive-checks \n\nLet's assume `mu ~ N(4, 2)` and `sigma ~ N(3, 1)`: \n\n\n::: {.cell}\n\n```{.r .cell-code}\n# # Define the data \n# N <- 100\n# my_x <- rnorm(N, 0, 1)\n# \n# stan_data <- list(\n#   N = N, \n#   x = my_x\n# )\n# \n# model <- cmdstan_model(\"ex1.stan\")\n```\n:::\n\n\nFit the stan model: \n\n\n::: {.cell}\n\n```{.r .cell-code}\n# fit1 <- model$sample(\n#   data = stan_data, \n#   chains = 4, \n#   fixed_param = TRUE, \n#   iter_warmup = 0, \n#   iter_sampling = 1000, \n#   refresh = 0\n# )\n```\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# fit1$draws(\"y_sim\") %>% as_draws_df(.) %>% \n#   select(1) # %>% \n#   ggplot(aes(x = `y_sim[1]`)) # + \n#   geom_slab()\n```\n:::\n\n\n---\n\n## Prior predictive check with a Weiner process model \n\n\n::: {.cell}\n\n```{.r .cell-code}\n# TODO \n```\n:::\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
