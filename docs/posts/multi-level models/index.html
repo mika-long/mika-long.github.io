@@ -159,6 +159,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#math-notation-and-design-formula" id="toc-math-notation-and-design-formula" class="nav-link" data-scroll-target="#math-notation-and-design-formula">Math notation and design formula</a></li>
   <li><a href="#unconditional-means-model" id="toc-unconditional-means-model" class="nav-link" data-scroll-target="#unconditional-means-model">Unconditional Means model</a></li>
+  <li><a href="#composite-notation" id="toc-composite-notation" class="nav-link" data-scroll-target="#composite-notation">Composite Notation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -200,6 +201,7 @@ window.Quarto = {
 </header>
 
 
+<p>Now <a href="https://stefvanbuuren.name/fimd/sec-threeformulations.html">this link</a> is really helpful.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -234,7 +236,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Referring to section 12.1 Notation from Gelman and Hill 2007</p></div></div><section id="notation-type" class="level1 page-columns page-full">
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Referring to section 12.1 Notation from <span class="citation" data-cites="gelman2007data">Gelman and Hill (<a href="#ref-gelman2007data" role="doc-biblioref">2007</a>)</span></p></div></div><section id="notation-type" class="level1 page-columns page-full">
 <h1>Notation type</h1>
 <ol type="1">
 <li>Composite — “composite form” see Singer 1998</li>
@@ -379,6 +381,10 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 <li>the effect of being a particular student in school <span class="math inline">\(j\)</span>: <span class="math inline">\(\epsilon_{ij}\)</span></li>
 </ul>
 <p>(TODO – run the model)</p>
+</section>
+<section id="composite-notation" class="level2">
+<h2 class="anchored" data-anchor-id="composite-notation">Composite Notation</h2>
+<p>The same model can be rewritten as <span class="math display">\[\texttt{lpo}_{ic}=\beta_0 + \beta_1 \texttt{sex}_{ic} + \beta_2 \texttt{den}_c + u_{0c} + \epsilon_{ic}\]</span> Which in Gelman notation, is something like (<code>TODO</code> this is not right …) <span class="math display">\[\texttt{lpo}_{i} = \beta_0 + \beta_1 \texttt{sex}_{\texttt{class}[i]} + \beta_2 \texttt{den}_{j[i]} + u_{0c} + \epsilon_{ic} \]</span></p>
 <hr>
 <blockquote class="blockquote">
 <p>Multilevel models contain two forms of stochastic variation, usually called variance components, captured in random effects <span class="math inline">\(u_{0j}\)</span> and error <span class="math inline">\(\epsilon_{ij}\)</span> terms,</p>
@@ -432,6 +438,9 @@ Ga&amp;amp, Andrzej, #322, ecki, and Brady West. 2013. <span>“Software for <sp
 </div>
 <div id="ref-gelman2005analysis" class="csl-entry" role="listitem">
 Gelman, Andrew. 2005. <span>“Analysis of Variance—Why It Is More Important Than Ever.”</span> <a href="https://arxiv.org/pdf/math/0504499">https://arxiv.org/pdf/math/0504499</a>.
+</div>
+<div id="ref-gelman2007data" class="csl-entry" role="listitem">
+Gelman, Andrew, and Jennifer Hill. 2007. <em>Data Analysis Using Regression and Multilevel/Hierarchical Models</em>. Cambridge university press.
 </div>
 <div id="ref-mcelreath2020statistical" class="csl-entry" role="listitem">
 McElreath, Richard. 2020. <span>“Statistical Rethinking: A Bayesian Course with Examples in r and STAN.”</span>

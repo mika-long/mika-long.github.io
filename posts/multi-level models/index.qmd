@@ -9,6 +9,8 @@ reference-location: margin
 draft: true
 ---
 
+Now [this link](https://stefvanbuuren.name/fimd/sec-threeformulations.html) is really helpful. 
+
 :::{.callout-note collapse="true"}
 ## What's up with all this terminology? 
 
@@ -18,11 +20,9 @@ My mental model of how hierarchical models work is heavily influenced by @mcelre
 
 The TLDR is that there have been a lot of different definitions of fixed and random effects in different contexts, across different disciplines. Gelman chose to sidestep the overloaded terms and define 
 
-> ... effects (or coefficients) in a multilevel model as *constant* if they are
-identical for all groups in a population and *varying* if they are allowed to
-differ from group to group. 
+> ... effects (or coefficients) in a multilevel model as *constant* if they are identical for all groups in a population and *varying* if they are allowed to differ from group to group. 
 
-What this implies in terms of how the math notation^[Referring to section 12.1 Notation from Gelman and Hill 2007] is that
+What this implies in terms of how the math notation^[Referring to section 12.1 Notation from @gelman2007data] is that
 
 - Units $i = 1, ..., n$ 
 - Outcome measurements $y = (y_1, ..., y_n)$ 
@@ -106,6 +106,13 @@ The model posits that the score of a randomly selected student $i$ in a randomly
 - the effect of being a particular student in school $j$: $\epsilon_{ij}$ 
 
 (TODO -- run the model)
+
+## Composite Notation 
+
+The same model can be rewritten as 
+$$\texttt{lpo}_{ic}=\beta_0 + \beta_1 \texttt{sex}_{ic} + \beta_2 \texttt{den}_c + u_{0c} + \epsilon_{ic}$$
+Which in Gelman notation, is something like (`TODO` this is not right ...)
+$$\texttt{lpo}_{i} = \beta_0 + \beta_1 \texttt{sex}_{\texttt{class}[i]} + \beta_2 \texttt{den}_{j[i]} + u_{0c} + \epsilon_{ic} $$
 
 ---
 
