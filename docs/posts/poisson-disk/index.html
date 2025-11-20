@@ -8,6 +8,7 @@
 
 <meta name="author" content="Sheng Long">
 <meta name="dcterms.date" content="2025-11-19">
+<meta name="keywords" content="visualization">
 
 <title>Poisson Disk Sampling – Sheng Long</title>
 <style>
@@ -172,10 +173,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-is-poisson-disk-sampling" id="toc-what-is-poisson-disk-sampling" class="nav-link active" data-scroll-target="#what-is-poisson-disk-sampling">What is “Poisson Disk Sampling”?</a>
-  <ul class="collapse">
-  <li><a href="#observation-1-random-points-end-up-forming-clusters" id="toc-observation-1-random-points-end-up-forming-clusters" class="nav-link" data-scroll-target="#observation-1-random-points-end-up-forming-clusters">Observation 1: Random points end up forming clusters</a></li>
-  </ul></li>
+  <li><a href="#observation-1-random-points-end-up-forming-clusters" id="toc-observation-1-random-points-end-up-forming-clusters" class="nav-link active" data-scroll-target="#observation-1-random-points-end-up-forming-clusters">Observation 1: Random points end up forming clusters</a></li>
   <li><a href="#observation-2-bridson-algorithm" id="toc-observation-2-bridson-algorithm" class="nav-link" data-scroll-target="#observation-2-bridson-algorithm">Observation 2: Bridson’ algorithm</a></li>
   <li><a href="#poisson-disk-sampling-with-scipy" id="toc-poisson-disk-sampling-with-scipy" class="nav-link" data-scroll-target="#poisson-disk-sampling-with-scipy">Poisson Disk Sampling with <code>scipy</code></a>
   <ul class="collapse">
@@ -214,16 +212,38 @@ window.Quarto = {
     
   </div>
   
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>Some <strong>notes</strong> on Poisson disk sampling.</p>
+  </div>
+</div>
 
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>visualization</p>
+  </div>
+</div>
 
 </header>
 
 
-<section id="what-is-poisson-disk-sampling" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="what-is-poisson-disk-sampling">What is “Poisson Disk Sampling”?</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="What is Poisson Disk Sampling?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What is Poisson Disk Sampling?
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Put simply, it is a sampling algorithm that places the sample randomly<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, such that they are not too close from each other.</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;see source here: https://en.wikipedia.org/wiki/Supersampling#Poisson_disk</p></div></div><section id="observation-1-random-points-end-up-forming-clusters" class="level3">
-<h3 class="anchored" data-anchor-id="observation-1-random-points-end-up-forming-clusters">Observation 1: Random points end up forming clusters</h3>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;see source here: https://en.wikipedia.org/wiki/Supersampling#Poisson_disk</p></div></div><section id="observation-1-random-points-end-up-forming-clusters" class="level2">
+<h2 class="anchored" data-anchor-id="observation-1-random-points-end-up-forming-clusters">Observation 1: Random points end up forming clusters</h2>
 <p>In the following we will use <code>numpy</code> and <code>vega-altair</code> to show that random uniform sampling results in clusters.</p>
 <div id="dc9d7000" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># random number generator </span></span>
@@ -311,7 +331,6 @@ window.Quarto = {
 </div>
 </div>
 </section>
-</section>
 <section id="observation-2-bridson-algorithm" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="observation-2-bridson-algorithm">Observation 2: Bridson’ algorithm</h2>
 <p>Robert Bridson provided an <span class="math inline">\(O(n)\)</span> algorithm<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, that is a modification of dart throwing, that creates samples that are at least a certain distnace apart from each other.</p>
@@ -338,7 +357,9 @@ window.Quarto = {
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>cells <span class="op">=</span> {coords: <span class="va">None</span> <span class="cf">for</span> coords <span class="kw">in</span> coords_list}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Define functions:</p>
-<div id="d3b31ff4" class="cell" data-execution_count="13">
+<div id="d3b31ff4" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_cell_coords(pt):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the coordinates of the cell that pt = (x,y) falls in."""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -417,6 +438,7 @@ window.Quarto = {
 <span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We failed to find a suitable point in the vicinity of refpt.</span></span>
 <span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <p>Actual sample:</p>
 <div id="9b220f17" class="cell" data-execution_count="14">

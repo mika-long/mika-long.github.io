@@ -48,10 +48,10 @@ source_dir <- knitr::current_input(dir = TRUE)
 png_filename <- "typst-output-graphic.png"
 png_output_file <- fs::path(source_dir, png_filename)
 
-typr::typr_compile(input = typst_source,
-                   output_format = "png",
-                   output_file = png_filename, 
-                   typst_args = c("--ppi", "300"))
+# typr::typr_compile(input = typst_source,
+#                    output_format = "png",
+#                    output_file = png_filename, 
+#                    typst_args = c("--ppi", "300"))
 ```
 
 ```{r}
@@ -85,10 +85,10 @@ source_dir <- knitr::current_input(dir = TRUE)
 png_filename <- "typst-output-graphic-2.png"
 png_output_file <- fs::path(source_dir, png_filename)
 
-typr::typr_compile(input = typst_source,
-                   output_format = "png",
-                   output_file = png_filename, 
-                   typst_args = c("--ppi", "300"))
+# typr::typr_compile(input = typst_source,
+#                    output_format = "png",
+#                    output_file = png_filename, 
+#                    typst_args = c("--ppi", "300"))
 ```
 
 ```{r}
@@ -96,3 +96,4 @@ typr::typr_compile(input = typst_source,
 knitr::include_graphics(png_filename)
 ```
 
+To be honest the `typr` package is giving me some interesting bugs and definitely not shifting text in the way I expected it to ... 
