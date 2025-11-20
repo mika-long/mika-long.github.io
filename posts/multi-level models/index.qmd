@@ -9,6 +9,30 @@ reference-location: margin
 draft: true
 ---
 
+:::{.callout-note collapse="true"}
+## What's up with all this terminology? 
+
+My mental model of how hierarchical models work is heavily influenced by @mcelreath2020statistical. In his book, McElreath said: 
+
+> I adopt the terminology of @gelman2005analysis, who argues that the common term *random effects* hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly because the terms *fixed* and *random effects* mean different things to different statisticians. See pages 20--21 of Gelman's paper. I fully realize, however, that by trying to spread Gelman's alternative jargon, I am essentially splitting into a very strong wind.
+
+The TLDR is that there have been a lot of different definitions of fixed and random effects in different contexts, across different disciplines. Gelman chose to sidestep the overloaded terms and define 
+
+> ... effects (or coefficients) in a multilevel model as *constant* if they are
+identical for all groups in a population and *varying* if they are allowed to
+differ from group to group. 
+
+What this implies in terms of how the math notation^[Referring to section 12.1 Notation from Gelman and Hill 2007] is that
+
+- Units $i = 1, ..., n$ 
+- Outcome measurements $y = (y_1, ..., y_n)$ 
+- Regression predictors represented by an $n \times k$ matrix $X$ 
+- Groups $j = 1, ..., J$. This works for a single level of grouping (e.g., students within schools, persons within states, tadpoles within tanks)
+  - Occasioally use $k = 1, ..., K$ for a second level of grouping (e.g., students within schools within districts)
+- Index variable $j[i]$ code group membership. For example, if you get $j[35] = 4$ that means the 35th data unit in the data belongs to group 4. 
+
+:::
+
 # Notation type 
 
 1. Composite --- "composite form" see Singer 1998
@@ -19,6 +43,28 @@ draft: true
 2. Level
   - Bayesian models "naturally related terms through hierarchical structures" 
 3. Matrix 
+  - the best way to express something succinctly 
+  - $\mathbf{y} = X \mathbf{\beta} + Z \mathbf{u} + \mathbf{\epsilon}$ 
+  - ... where $X_j$ is the **design matrix** for the fixed effects and $Z_j$ is the design matrix for the **random effects**.  
+
+## Math notation and design formula 
+
+According to @mcelreath2020statistical, it is a compact form of notation, that are intimately related to a "common matrix algebra description of linear models". If you've run `lmer` code before you know what something like `y ~ 1 + x` means. 
+
+[Xiaoying Pu](https://xiaoyingpu.github.io/) provided a [cheat sheet](https://xiaoyingpu.github.io/note/cheat/) for reading/writing R formulas used in `lmer` and `brms`. 
+
+In @barrRandomEffectsStructure2013, the provide a nice table. 
+
+In @gaSoftwareFittingMultilevel2013, they looked at the software for fitting multilevel models, and they had a nice table^[Table 26.1] about statistical software packages containing modules/functions designed to fix various classes of mixed-effects models. Below I will reproduce this table, but focusing only on the `R` side of things: 
+
+| `R` package | Linear Mixed Models <br> **LMM** | Generalized Linear Mixed Models <br> **GLMM** | Nonlinear Mixed Models <br> **NLMM** |
+|---------|:-----|------:|:------:|
+| [`nlme`](https://cran.r-project.org/web/packages/nlme/index.html)      | 12   |    12 |   12   |
+| [`lme4`](https://cran.r-project.org/web/packages/lme4/index.html)     | 123  |   123 |  123   |
+| [`brms`](https://cran.r-project.org/web/packages/brms/index.html)       | 1    |     1 |   1    |
+
+: `R` software packages and functions for fitting mixed models. 
+
 
 ---
 
