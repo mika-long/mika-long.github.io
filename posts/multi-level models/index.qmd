@@ -39,7 +39,7 @@ What this implies in terms of how the math notation^[Referring to section 12.1 N
   - "essentially the presentation used for mixed effects models" 
   - $\beta$ represent the average effects of variables that are known as *fixed effects*  
   - $u$ represents heterogeneity between the groups, typically called *random effects*  
-  - closer in structure to the syntax used in SAS, STATA, and R (`lmer`, `lmer`) 
+  - closer in structure to the syntax used in SAS, STATA, and R (`nlme`, `lmer`) 
 2. Level
   - Bayesian models "naturally related terms through hierarchical structures" 
 3. Matrix 
@@ -72,8 +72,12 @@ We will leverage this paper^[Multilevel Model Notation - Establishing the common
 
 ```{r}
 #| echo: false
+#| message: false
+#| warning: false
 
 library(tidyverse)
+theme_set(theme_minimal())
+library(lme4)
 # install.packages("mice")
 library(mice)
 data("brandsma", package = "mice")
@@ -86,6 +90,15 @@ df %>% summary()
 df <- df %>% na.omit()
 df %>% glimpse()
 df %>% summary()
+
+# add a new column of participant id 
+# and make the other things into factors 
+df <- df %>% mutate(sch = as.factor(sch), 
+              sex = as.factor(sex), 
+              den = as.factor(den)) %>% 
+  mutate(pid = 1:nrow(df))
+
+df %>% summary()
 ```
 
 We will concentrate on four variables: 
@@ -94,6 +107,21 @@ We will concentrate on four variables:
 - `lpo`: language test post, outcome at pupil level.
 - `sex`: sex of pupil 
 - `den`: school denomination, predictor at school level. 
+
+## Some preliminary checks 
+
+```{r}
+#| code-fold: true
+#| layout-ncol: 2
+
+df %>% ggplot(aes(x = lpo, color = sex)) + 
+  geom_density()
+
+df %>% ggplot(aes(x = lpo, color = den)) + 
+  geom_density() + 
+  facet_wrap(~sex)
+```
+
 
 ## Unconditional Means model 
 
@@ -105,7 +133,12 @@ The model posits that the score of a randomly selected student $i$ in a randomly
 - the effect of being in school $j$: $u_{0j}$
 - the effect of being a particular student in school $j$: $\epsilon_{ij}$ 
 
-(TODO -- run the model)
+`TODO`: I don't think the following is correct ... 
+
+```{r}
+lmer(lpo ~ 1 + den +  (1 | den), data = df)
+```
+
 
 ## Composite Notation 
 
@@ -113,6 +146,11 @@ The same model can be rewritten as
 $$\texttt{lpo}_{ic}=\beta_0 + \beta_1 \texttt{sex}_{ic} + \beta_2 \texttt{den}_c + u_{0c} + \epsilon_{ic}$$
 Which in Gelman notation, is something like (`TODO` this is not right ...)
 $$\texttt{lpo}_{i} = \beta_0 + \beta_1 \texttt{sex}_{\texttt{class}[i]} + \beta_2 \texttt{den}_{j[i]} + u_{0c} + \epsilon_{ic} $$
+
+```{r}
+lmer(lpo ~ 1 + sex + den + (1 | 1 + sex + den), data = df)
+```
+
 
 ---
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-11-20">
+<meta name="dcterms.date" content="2025-11-21">
 
 <title>A Model by Many Names (and Notations) – Sheng Long</title>
 <style>
@@ -21,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -158,6 +193,7 @@ window.Quarto = {
   <li><a href="#notation-type" id="toc-notation-type" class="nav-link active" data-scroll-target="#notation-type">Notation type</a>
   <ul class="collapse">
   <li><a href="#math-notation-and-design-formula" id="toc-math-notation-and-design-formula" class="nav-link" data-scroll-target="#math-notation-and-design-formula">Math notation and design formula</a></li>
+  <li><a href="#some-preliminary-checks" id="toc-some-preliminary-checks" class="nav-link" data-scroll-target="#some-preliminary-checks">Some preliminary checks</a></li>
   <li><a href="#unconditional-means-model" id="toc-unconditional-means-model" class="nav-link" data-scroll-target="#unconditional-means-model">Unconditional Means model</a></li>
   <li><a href="#composite-notation" id="toc-composite-notation" class="nav-link" data-scroll-target="#composite-notation">Composite Notation</a></li>
   </ul></li>
@@ -189,7 +225,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 20, 2025</p>
+      <p class="date">November 21, 2025</p>
     </div>
   </div>
   
@@ -247,7 +283,7 @@ window.Quarto = {
 </li>
 <li><span class="math inline">\(u\)</span> represents heterogeneity between the groups, typically called <em>random effects</em><br>
 </li>
-<li>closer in structure to the syntax used in SAS, STATA, and R (<code>lmer</code>, <code>lmer</code>)</li>
+<li>closer in structure to the syntax used in SAS, STATA, and R (<code>nlme</code>, <code>lmer</code>)</li>
 </ul>
 <ol start="2" type="1">
 <li>Level</li>
@@ -303,30 +339,6 @@ window.Quarto = {
 <hr>
 <p>We will leverage this paper<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> but use the dataset (<code>brandsma</code> object in the <code>mice</code> package) mentioned by this source<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Multilevel Model Notation - Establishing the commonalities</p></div><div id="fn4"><p><sup>4</sup>&nbsp;https://stefvanbuuren.name/fimd/sec-threeformulations.html</p></div></div><div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.1     ✔ stringr   1.5.2
-✔ ggplot2   4.0.0     ✔ tibble    3.3.0
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.1.0     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
-
-Attaching package: 'mice'
-
-
-The following object is masked from 'package:stats':
-
-    filter
-
-
-The following objects are masked from 'package:base':
-
-    cbind, rbind</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 4,106
 Columns: 4
@@ -362,6 +374,16 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
  3rd Qu.:189.0   3rd Qu.:48.00   3rd Qu.:1.0000   3rd Qu.:3.00  
  Max.   :259.0   Max.   :58.00   Max.   :1.0000   Max.   :4.00  </code></pre>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      sch            lpo        sex      den           pid        
+ 120    :  35   Min.   : 8.00   0:1878   1:1094   Min.   :   1.0  
+ 134    :  34   1st Qu.:36.00   1:1770   2:1422   1st Qu.: 912.8  
+ 19     :  33   Median :42.00            3: 951   Median :1824.5  
+ 125    :  33   Mean   :41.28            4: 181   Mean   :1824.5  
+ 155    :  33   3rd Qu.:48.00                     3rd Qu.:2736.2  
+ 161    :  33   Max.   :58.00                     Max.   :3648.0  
+ (Other):3447                                                     </code></pre>
+</div>
 </div>
 <p>We will concentrate on four variables:</p>
 <ul>
@@ -370,6 +392,27 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 <li><code>sex</code>: sex of pupil</li>
 <li><code>den</code>: school denomination, predictor at school level.</li>
 </ul>
+</section>
+<section id="some-preliminary-checks" class="level2">
+<h2 class="anchored" data-anchor-id="some-preliminary-checks">Some preliminary checks</h2>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lpo, <span class="at">color =</span> sex)) <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lpo, <span class="at">color =</span> den)) <span class="sc">+</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sex)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="index_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="unconditional-means-model" class="level2">
 <h2 class="anchored" data-anchor-id="unconditional-means-model">Unconditional Means model</h2>
@@ -380,11 +423,46 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 <li>the effect of being in school <span class="math inline">\(j\)</span>: <span class="math inline">\(u_{0j}\)</span></li>
 <li>the effect of being a particular student in school <span class="math inline">\(j\)</span>: <span class="math inline">\(\epsilon_{ij}\)</span></li>
 </ul>
-<p>(TODO – run the model)</p>
+<p><code>TODO</code>: I don’t think the following is correct …</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lmer</span>(lpo <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> den <span class="sc">+</span>  (<span class="dv">1</span> <span class="sc">|</span> den), <span class="at">data =</span> df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: lpo ~ 1 + den + (1 | den)
+   Data: df
+REML criterion at convergence: 26177.05
+Random effects:
+ Groups   Name        Std.Dev.
+ den      (Intercept) 2.650   
+ Residual             8.752   
+Number of obs: 3648, groups:  den, 4
+Fixed Effects:
+(Intercept)         den2         den3         den4  
+     39.356        3.408        1.461        4.284  </code></pre>
+</div>
+</div>
 </section>
 <section id="composite-notation" class="level2">
 <h2 class="anchored" data-anchor-id="composite-notation">Composite Notation</h2>
 <p>The same model can be rewritten as <span class="math display">\[\texttt{lpo}_{ic}=\beta_0 + \beta_1 \texttt{sex}_{ic} + \beta_2 \texttt{den}_c + u_{0c} + \epsilon_{ic}\]</span> Which in Gelman notation, is something like (<code>TODO</code> this is not right …) <span class="math display">\[\texttt{lpo}_{i} = \beta_0 + \beta_1 \texttt{sex}_{\texttt{class}[i]} + \beta_2 \texttt{den}_{j[i]} + u_{0c} + \epsilon_{ic} \]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lmer</span>(lpo <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> den <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> den), <span class="at">data =</span> df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: lpo ~ 1 + sex + den + (1 | 1 + sex + den)
+   Data: df
+REML criterion at convergence: 26111.05
+Random effects:
+ Groups   Name        Std.Dev.
+ den      (Intercept) 0.4133  
+ sex      (Intercept) 1.1522  
+ Residual             8.6733  
+Number of obs: 3648, groups:  den, 4; sex, 2
+Fixed Effects:
+(Intercept)         sex1         den2         den3         den4  
+     38.208        2.357        3.393        1.484        4.378  </code></pre>
+</div>
+</div>
 <hr>
 <blockquote class="blockquote">
 <p>Multilevel models contain two forms of stochastic variation, usually called variance components, captured in random effects <span class="math inline">\(u_{0j}\)</span> and error <span class="math inline">\(\epsilon_{ij}\)</span> terms,</p>
