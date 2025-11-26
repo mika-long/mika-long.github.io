@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-11-21">
+<meta name="dcterms.date" content="2025-11-26">
 
-<title>A Model by Many Names (and Notations) – Sheng Long</title>
+<title>A Model by Many Names (and Notations and Formulas) – Sheng Long</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,7 +91,7 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-2f1d5595274720d733f4ffbbd914babc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -153,10 +153,6 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    </a>
-  </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -190,12 +186,17 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#notation-type" id="toc-notation-type" class="nav-link active" data-scroll-target="#notation-type">Notation type</a>
+  <li><a href="#level-notation" id="toc-level-notation" class="nav-link active" data-scroll-target="#level-notation">Level Notation</a></li>
+  <li><a href="#composite-notation" id="toc-composite-notation" class="nav-link" data-scroll-target="#composite-notation">Composite Notation</a></li>
+  <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation">Matrix Notation</a></li>
+  <li><a href="#domains-and-preferences" id="toc-domains-and-preferences" class="nav-link" data-scroll-target="#domains-and-preferences">Domains and preferences</a></li>
+  <li><a href="#which-of-these-map-best-to-lme4-and-brms-syntax" id="toc-which-of-these-map-best-to-lme4-and-brms-syntax" class="nav-link" data-scroll-target="#which-of-these-map-best-to-lme4-and-brms-syntax">Which of these map best to <code>lme4</code> and <code>brms</code> syntax?</a></li>
+  <li><a href="#notation-type" id="toc-notation-type" class="nav-link" data-scroll-target="#notation-type">Notation type</a>
   <ul class="collapse">
   <li><a href="#math-notation-and-design-formula" id="toc-math-notation-and-design-formula" class="nav-link" data-scroll-target="#math-notation-and-design-formula">Math notation and design formula</a></li>
   <li><a href="#some-preliminary-checks" id="toc-some-preliminary-checks" class="nav-link" data-scroll-target="#some-preliminary-checks">Some preliminary checks</a></li>
   <li><a href="#unconditional-means-model" id="toc-unconditional-means-model" class="nav-link" data-scroll-target="#unconditional-means-model">Unconditional Means model</a></li>
-  <li><a href="#composite-notation" id="toc-composite-notation" class="nav-link" data-scroll-target="#composite-notation">Composite Notation</a></li>
+  <li><a href="#composite-notation-1" id="toc-composite-notation-1" class="nav-link" data-scroll-target="#composite-notation-1">Composite Notation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -205,7 +206,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">A Model by Many Names (and Notations)</h1>
+<h1 class="title">A Model by Many Names (and Notations and Formulas)</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Statistics</div>
   </div>
@@ -225,7 +226,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 21, 2025</p>
+      <p class="date">November 26, 2025</p>
     </div>
   </div>
   
@@ -237,108 +238,7 @@ window.Quarto = {
 </header>
 
 
-<p>Now <a href="https://stefvanbuuren.name/fimd/sec-threeformulations.html">this link</a> is really helpful.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>What’s up with all this terminology?
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>My mental model of how hierarchical models work is heavily influenced by <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span>. In his book, McElreath said:</p>
-<blockquote class="blockquote">
-<p>I adopt the terminology of <span class="citation" data-cites="gelman2005analysis">Gelman (<a href="#ref-gelman2005analysis" role="doc-biblioref">2005</a>)</span>, who argues that the common term <em>random effects</em> hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly because the terms <em>fixed</em> and <em>random effects</em> mean different things to different statisticians. See pages 20–21 of Gelman’s paper. I fully realize, however, that by trying to spread Gelman’s alternative jargon, I am essentially splitting into a very strong wind.</p>
-</blockquote>
-<p>The TLDR is that there have been a lot of different definitions of fixed and random effects in different contexts, across different disciplines. Gelman chose to sidestep the overloaded terms and define</p>
-<blockquote class="blockquote">
-<p>… effects (or coefficients) in a multilevel model as <em>constant</em> if they are identical for all groups in a population and <em>varying</em> if they are allowed to differ from group to group.</p>
-</blockquote>
-<p>What this implies in terms of how the math notation<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is that</p>
-<ul>
-<li>Units <span class="math inline">\(i = 1, ..., n\)</span></li>
-<li>Outcome measurements <span class="math inline">\(y = (y_1, ..., y_n)\)</span></li>
-<li>Regression predictors represented by an <span class="math inline">\(n \times k\)</span> matrix <span class="math inline">\(X\)</span></li>
-<li>Groups <span class="math inline">\(j = 1, ..., J\)</span>. This works for a single level of grouping (e.g., students within schools, persons within states, tadpoles within tanks)
-<ul>
-<li>Occasioally use <span class="math inline">\(k = 1, ..., K\)</span> for a second level of grouping (e.g., students within schools within districts)</li>
-</ul></li>
-<li>Index variable <span class="math inline">\(j[i]\)</span> code group membership. For example, if you get <span class="math inline">\(j[35] = 4\)</span> that means the 35th data unit in the data belongs to group 4.</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Referring to section 12.1 Notation from <span class="citation" data-cites="gelman2007data">Gelman and Hill (<a href="#ref-gelman2007data" role="doc-biblioref">2007</a>)</span></p></div></div><section id="notation-type" class="level1 page-columns page-full">
-<h1>Notation type</h1>
-<ol type="1">
-<li>Composite — “composite form” see Singer 1998</li>
-</ol>
-<ul>
-<li>“essentially the presentation used for mixed effects models”</li>
-<li><span class="math inline">\(\beta\)</span> represent the average effects of variables that are known as <em>fixed effects</em><br>
-</li>
-<li><span class="math inline">\(u\)</span> represents heterogeneity between the groups, typically called <em>random effects</em><br>
-</li>
-<li>closer in structure to the syntax used in SAS, STATA, and R (<code>nlme</code>, <code>lmer</code>)</li>
-</ul>
-<ol start="2" type="1">
-<li>Level</li>
-</ol>
-<ul>
-<li>Bayesian models “naturally related terms through hierarchical structures”</li>
-</ul>
-<ol start="3" type="1">
-<li>Matrix</li>
-</ol>
-<ul>
-<li>the best way to express something succinctly</li>
-<li><span class="math inline">\(\mathbf{y} = X \mathbf{\beta} + Z \mathbf{u} + \mathbf{\epsilon}\)</span></li>
-<li>… where <span class="math inline">\(X_j\)</span> is the <strong>design matrix</strong> for the fixed effects and <span class="math inline">\(Z_j\)</span> is the design matrix for the <strong>random effects</strong>.</li>
-</ul>
-<section id="math-notation-and-design-formula" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="math-notation-and-design-formula">Math notation and design formula</h2>
-<p>According to <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span>, it is a compact form of notation, that are intimately related to a “common matrix algebra description of linear models”. If you’ve run <code>lmer</code> code before you know what something like <code>y ~ 1 + x</code> means.</p>
-<p><a href="https://xiaoyingpu.github.io/">Xiaoying Pu</a> provided a <a href="https://xiaoyingpu.github.io/note/cheat/">cheat sheet</a> for reading/writing R formulas used in <code>lmer</code> and <code>brms</code>.</p>
-<p>In <span class="citation" data-cites="barrRandomEffectsStructure2013">Barr et al. (<a href="#ref-barrRandomEffectsStructure2013" role="doc-biblioref">2013</a>)</span>, the provide a nice table.</p>
-<p>In <span class="citation" data-cites="gaSoftwareFittingMultilevel2013">Ga&amp;amp et al. (<a href="#ref-gaSoftwareFittingMultilevel2013" role="doc-biblioref">2013</a>)</span>, they looked at the software for fitting multilevel models, and they had a nice table<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> about statistical software packages containing modules/functions designed to fix various classes of mixed-effects models. Below I will reproduce this table, but focusing only on the <code>R</code> side of things:</p>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Table 26.1</p></div></div><table class="caption-top table">
-<caption><code>R</code> software packages and functions for fitting mixed models.</caption>
-<thead>
-<tr class="header">
-<th><code>R</code> package</th>
-<th style="text-align: left;">Linear Mixed Models <br> <strong>LMM</strong></th>
-<th style="text-align: right;">Generalized Linear Mixed Models <br> <strong>GLMM</strong></th>
-<th style="text-align: center;">Nonlinear Mixed Models <br> <strong>NLMM</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://cran.r-project.org/web/packages/nlme/index.html"><code>nlme</code></a></td>
-<td style="text-align: left;">12</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: center;">12</td>
-</tr>
-<tr class="even">
-<td><a href="https://cran.r-project.org/web/packages/lme4/index.html"><code>lme4</code></a></td>
-<td style="text-align: left;">123</td>
-<td style="text-align: right;">123</td>
-<td style="text-align: center;">123</td>
-</tr>
-<tr class="odd">
-<td><a href="https://cran.r-project.org/web/packages/brms/index.html"><code>brms</code></a></td>
-<td style="text-align: left;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: center;">1</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p>We will leverage this paper<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> but use the dataset (<code>brandsma</code> object in the <code>mice</code> package) mentioned by this source<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Multilevel Model Notation - Establishing the commonalities</p></div><div id="fn4"><p><sup>4</sup>&nbsp;https://stefvanbuuren.name/fimd/sec-threeformulations.html</p></div></div><div class="cell">
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 4,106
 Columns: 4
@@ -385,7 +285,199 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
  (Other):3447                                                     </code></pre>
 </div>
 </div>
-<p>We will concentrate on four variables:</p>
+<p>So according to this source<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> there are three notational systems: 1. level notation 2. composite notation 3. matrix notation</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;https://stefvanbuuren.name/fimd/sec-threeformulations.html</p></div></div><p>… which is consistent with what I’m seeing in this other paper.</p>
+<p>There is also <a href="https://datalorax.github.io/equatiomatic/">this source</a> which is about turning formula into latex equations.</p>
+<section id="level-notation" class="level2">
+<h2 class="anchored" data-anchor-id="level-notation">Level Notation</h2>
+<ul>
+<li>Introduced by Bryk and Raudenbush 1992</li>
+<li>formulate a multilevel model as a <strong>system of two equations</strong>, one at level-1, and two at level-2: (Here I am substituting all the <span class="math inline">\(c\)</span>s with all the <span class="math inline">\(j\)</span>s in the original system) <span class="math display">\[\begin{align}
+\texttt{lpo}_{ij} &amp;= \beta_{0j} + \beta_{1j}\texttt{sex}_{ij} + \epsilon_{ij} \\
+\beta_{0j} &amp;= \gamma_{00} + \gamma_{01} \texttt{den}_j + u_{0j} \\
+\beta_{1j} &amp;= \gamma_{10}
+\end{align}
+\]</span></li>
+</ul>
+<p>where <span class="math inline">\(\texttt{lpo}_{ij}\)</span> is the test score of pupile <span class="math inline">\(i\)</span> in school <span class="math inline">\(j\)</span>. Note here that the subscripts distinguish the level-1 and level-2 variables.</p>
+</section>
+<section id="composite-notation" class="level2">
+<h2 class="anchored" data-anchor-id="composite-notation">Composite Notation</h2>
+<p>We can also substitute the level-2 models into level-1 model and result in the following single predictive equation:</p>
+<p><span class="math display">\[
+\texttt{lpo}_{ij} = \beta_0 + \beta_1 \text{sex}_{ij} + \beta_2 \texttt{den}_j + u_{0j} + \epsilon_{ij}
+\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(lpo <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> den <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> sch), <span class="at">data =</span> df)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>m1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: lpo ~ 1 + sex + den + (1 | sch)
+   Data: df
+REML criterion at convergence: 25717.17
+Random effects:
+ Groups   Name        Std.Dev.
+ sch      (Intercept) 3.962   
+ Residual             7.858   
+Number of obs: 3648, groups:  sch, 198
+Fixed Effects:
+(Intercept)         sex1         den2         den3         den4  
+     38.068        2.273        3.276        1.143        4.593  </code></pre>
+</div>
+</div>
+<p>We can also use the equatiomatic package to double check:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_eq</span>(m1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<p><span class="math display">\[
+\begin{aligned}
+  \operatorname{lpo}_{i}  &amp;\sim N \left(\alpha_{j[i]} + \beta_{1}(\operatorname{sex}_{\operatorname{1}}), \sigma^2 \right) \\
+    \alpha_{j}  &amp;\sim N \left(\gamma_{0}^{\alpha} + \gamma_{1}^{\alpha}(\operatorname{den}_{\operatorname{2}}) + \gamma_{2}^{\alpha}(\operatorname{den}_{\operatorname{3}}) + \gamma_{3}^{\alpha}(\operatorname{den}_{\operatorname{4}}), \sigma^2_{\alpha_{j}} \right)
+    \text{, for sch j = 1,} \dots \text{,J}
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+<p>And the version with the actual coefficient:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_eq</span>(m1, <span class="at">use_coefs =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<p><span class="math display">\[
+\begin{aligned}
+  \operatorname{\widehat{lpo}}_{i}  &amp;\sim N \left(38.07_{\alpha_{j[i]}} + 2.27_{\beta_{1}}(\operatorname{sex}_{\operatorname{1}}), \sigma^2 \right) \\
+    \alpha_{j}  &amp;\sim N \left(3.28_{\gamma_{1}^{\alpha}}(\operatorname{den}_{\operatorname{2}}) + 1.14_{\gamma_{2}^{\alpha}}(\operatorname{den}_{\operatorname{3}}) + 4.59_{\gamma_{3}^{\alpha}}(\operatorname{den}_{\operatorname{4}}), 3.96 \right)
+    \text{, for sch j = 1,} \dots \text{,J}
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="matrix-notation" class="level2">
+<h2 class="anchored" data-anchor-id="matrix-notation">Matrix Notation</h2>
+<p>Still the same model can be written in matrix notation as</p>
+<p><span class="math display">\[
+y_j = X_j \beta + Z_j u_j + \epsilon_j
+\]</span></p>
+<p>where <span class="math inline">\(y_j = \texttt{lpo}_j\)</span> is a column vector containing the scores in cluster <span class="math inline">\(j\)</span>, where <span class="math inline">\(X_j = (1, \texttt{den}_j, \texttt{sec}_j)\)</span> is the design matrix, a</p>
+</section>
+<section id="domains-and-preferences" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="domains-and-preferences">Domains and preferences</h2>
+<ul>
+<li>The matrix model formulation is favoured among statisticians<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>The level notation is common in the social sciences, as they separate the roles of level-1 and level-2 variables, which eases interpretation of the model and error structures</li>
+<li>The composite formulation covers the middle ground, for its balance between compactness and clarity, and is used by the introductions into the multilevel analysis for applied researchers
+<ul>
+<li>I think the Bayesian wind is most similar to this</li>
+</ul></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;for example, <a href="https://stats.oarc.ucla.edu/other/mult-pkg/introduction-to-linear-mixed-models/">this blog posts</a> uses the matrix notation</p></div></div><hr>
+</section>
+<section id="which-of-these-map-best-to-lme4-and-brms-syntax" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="which-of-these-map-best-to-lme4-and-brms-syntax">Which of these map best to <code>lme4</code> and <code>brms</code> syntax?</h2>
+<p>The composite notation maps best to <code>lme4</code> and <code>brms</code> syntax.</p>
+<p>What about the syntax? Xiaoying provides some lead here but it’s like Wilkinson-Rogers -&gt; Wilkinson-Rogers-Pinheiro-Bates (<code>lm(y ~ x + z)</code>) and then Paurl Burkner for the brms syntax (<code>response | aterms ~ pterms + (gterms | group)</code>).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What’s up with all this terminology?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>My mental model of how hierarchical models work is heavily influenced by <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span>. In his book, McElreath said:</p>
+<blockquote class="blockquote">
+<p>I adopt the terminology of <span class="citation" data-cites="gelman2005analysis">Gelman (<a href="#ref-gelman2005analysis" role="doc-biblioref">2005</a>)</span>, who argues that the common term <em>random effects</em> hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly because the terms <em>fixed</em> and <em>random effects</em> mean different things to different statisticians. See pages 20–21 of Gelman’s paper. I fully realize, however, that by trying to spread Gelman’s alternative jargon, I am essentially splitting into a very strong wind.</p>
+</blockquote>
+<p>The TLDR is that there have been a lot of different definitions of fixed and random effects in different contexts, across different disciplines. Gelman chose to sidestep the overloaded terms and define</p>
+<blockquote class="blockquote">
+<p>… effects (or coefficients) in a multilevel model as <em>constant</em> if they are identical for all groups in a population and <em>varying</em> if they are allowed to differ from group to group.</p>
+</blockquote>
+<p>What this implies in terms of how the math notation<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> is that</p>
+<ul>
+<li>Units <span class="math inline">\(i = 1, ..., n\)</span></li>
+<li>Outcome measurements <span class="math inline">\(y = (y_1, ..., y_n)\)</span></li>
+<li>Regression predictors represented by an <span class="math inline">\(n \times k\)</span> matrix <span class="math inline">\(X\)</span></li>
+<li>Groups <span class="math inline">\(j = 1, ..., J\)</span>. This works for a single level of grouping (e.g., students within schools, persons within states, tadpoles within tanks)
+<ul>
+<li>Occasioally use <span class="math inline">\(k = 1, ..., K\)</span> for a second level of grouping (e.g., students within schools within districts)</li>
+</ul></li>
+<li>Index variable <span class="math inline">\(j[i]\)</span> code group membership. For example, if you get <span class="math inline">\(j[35] = 4\)</span> that means the 35th data unit in the data belongs to group 4.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Referring to section 12.1 Notation from <span class="citation" data-cites="gelman2007data">Gelman and Hill (<a href="#ref-gelman2007data" role="doc-biblioref">2007</a>)</span></p></div></div></section>
+<section id="notation-type" class="level1 page-columns page-full">
+<h1>Notation type</h1>
+<ol type="1">
+<li>Composite — “composite form” see Singer 1998</li>
+</ol>
+<ul>
+<li>“essentially the presentation used for mixed effects models”</li>
+<li><span class="math inline">\(\beta\)</span> represent the average effects of variables that are known as <em>fixed effects</em><br>
+</li>
+<li><span class="math inline">\(u\)</span> represents heterogeneity between the groups, typically called <em>random effects</em><br>
+</li>
+<li>closer in structure to the syntax used in SAS, STATA, and R (<code>nlme</code>, <code>lmer</code>)</li>
+</ul>
+<ol start="2" type="1">
+<li>Level</li>
+</ol>
+<ul>
+<li>Bayesian models “naturally related terms through hierarchical structures”</li>
+</ul>
+<ol start="3" type="1">
+<li>Matrix</li>
+</ol>
+<ul>
+<li>the best way to express something succinctly</li>
+<li><span class="math inline">\(\mathbf{y} = X \mathbf{\beta} + Z \mathbf{u} + \mathbf{\epsilon}\)</span></li>
+<li>… where <span class="math inline">\(X_j\)</span> is the <strong>design matrix</strong> for the fixed effects and <span class="math inline">\(Z_j\)</span> is the design matrix for the <strong>random effects</strong>.</li>
+</ul>
+<section id="math-notation-and-design-formula" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="math-notation-and-design-formula">Math notation and design formula</h2>
+<p>According to <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span>, it is a compact form of notation, that are intimately related to a “common matrix algebra description of linear models”. If you’ve run <code>lmer</code> code before you know what something like <code>y ~ 1 + x</code> means.</p>
+<p><a href="https://xiaoyingpu.github.io/">Xiaoying Pu</a> provided a <a href="https://xiaoyingpu.github.io/note/cheat/">cheat sheet</a> for reading/writing R formulas used in <code>lmer</code> and <code>brms</code>.</p>
+<p>In <span class="citation" data-cites="barrRandomEffectsStructure2013">Barr et al. (<a href="#ref-barrRandomEffectsStructure2013" role="doc-biblioref">2013</a>)</span>, the provide a nice table.</p>
+<p>In <span class="citation" data-cites="gaSoftwareFittingMultilevel2013">Ga&amp;amp et al. (<a href="#ref-gaSoftwareFittingMultilevel2013" role="doc-biblioref">2013</a>)</span>, they looked at the software for fitting multilevel models, and they had a nice table<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> about statistical software packages containing modules/functions designed to fix various classes of mixed-effects models. Below I will reproduce this table, but focusing only on the <code>R</code> side of things:</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;Table 26.1</p></div></div><table class="caption-top table">
+<caption><code>R</code> software packages and functions for fitting mixed models.</caption>
+<thead>
+<tr class="header">
+<th><code>R</code> package</th>
+<th style="text-align: left;">Linear Mixed Models <br> <strong>LMM</strong></th>
+<th style="text-align: right;">Generalized Linear Mixed Models <br> <strong>GLMM</strong></th>
+<th style="text-align: center;">Nonlinear Mixed Models <br> <strong>NLMM</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/nlme/index.html"><code>nlme</code></a></td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/lme4/index.html"><code>lme4</code></a></td>
+<td style="text-align: left;">123</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: center;">123</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/brms/index.html"><code>brms</code></a></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>We will leverage this paper<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> but use the dataset (<code>brandsma</code> object in the <code>mice</code> package) mentioned by this source<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;Multilevel Model Notation - Establishing the commonalities</p></div><div id="fn6"><p><sup>6</sup>&nbsp;https://stefvanbuuren.name/fimd/sec-threeformulations.html</p></div></div><p>We will concentrate on four variables:</p>
 <ul>
 <li><code>sch</code>: school number</li>
 <li><code>lpo</code>: language test post, outcome at pupil level.</li>
@@ -397,19 +489,19 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 <h2 class="anchored" data-anchor-id="some-preliminary-checks">Some preliminary checks</h2>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lpo, <span class="at">color =</span> sex)) <span class="sc">+</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lpo, <span class="at">color =</span> den)) <span class="sc">+</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span> </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sex)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lpo, <span class="at">color =</span> sex)) <span class="sc">+</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lpo, <span class="at">color =</span> den)) <span class="sc">+</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sex)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -425,43 +517,14 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 </ul>
 <p><code>TODO</code>: I don’t think the following is correct …</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lmer</span>(lpo <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> den <span class="sc">+</span>  (<span class="dv">1</span> <span class="sc">|</span> den), <span class="at">data =</span> df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Linear mixed model fit by REML ['lmerMod']
-Formula: lpo ~ 1 + den + (1 | den)
-   Data: df
-REML criterion at convergence: 26177.05
-Random effects:
- Groups   Name        Std.Dev.
- den      (Intercept) 2.650   
- Residual             8.752   
-Number of obs: 3648, groups:  den, 4
-Fixed Effects:
-(Intercept)         den2         den3         den4  
-     39.356        3.408        1.461        4.284  </code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lmer(lpo ~ 1 + den +  (1 | den), data = df)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="composite-notation" class="level2">
-<h2 class="anchored" data-anchor-id="composite-notation">Composite Notation</h2>
+<section id="composite-notation-1" class="level2">
+<h2 class="anchored" data-anchor-id="composite-notation-1">Composite Notation</h2>
 <p>The same model can be rewritten as <span class="math display">\[\texttt{lpo}_{ic}=\beta_0 + \beta_1 \texttt{sex}_{ic} + \beta_2 \texttt{den}_c + u_{0c} + \epsilon_{ic}\]</span> Which in Gelman notation, is something like (<code>TODO</code> this is not right …) <span class="math display">\[\texttt{lpo}_{i} = \beta_0 + \beta_1 \texttt{sex}_{\texttt{class}[i]} + \beta_2 \texttt{den}_{j[i]} + u_{0c} + \epsilon_{ic} \]</span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lmer</span>(lpo <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> den <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> den), <span class="at">data =</span> df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Linear mixed model fit by REML ['lmerMod']
-Formula: lpo ~ 1 + sex + den + (1 | 1 + sex + den)
-   Data: df
-REML criterion at convergence: 26111.05
-Random effects:
- Groups   Name        Std.Dev.
- den      (Intercept) 0.4133  
- sex      (Intercept) 1.1522  
- Residual             8.6733  
-Number of obs: 3648, groups:  den, 4; sex, 2
-Fixed Effects:
-(Intercept)         sex1         den2         den3         den4  
-     38.208        2.357        3.393        1.484        4.378  </code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lmer(lpo ~ 1 + sex + den + (1 | 1 + sex + den), data = df)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr>
 <blockquote class="blockquote">

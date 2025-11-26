@@ -1,5 +1,5 @@
 ---
-title: "A Model by Many Names (and Notations)" 
+title: "A Model by Many Names (and Notations and Formulas)" 
 author: 
   name: Sheng Long
 categories: [Statistics]
@@ -9,7 +9,114 @@ reference-location: margin
 draft: true
 ---
 
-Now [this link](https://stefvanbuuren.name/fimd/sec-threeformulations.html) is really helpful. 
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+theme_set(theme_minimal())
+library(lme4)
+library(equatiomatic)
+# install.packages("equatiomatic")
+# install.packages("mice")
+library(mice)
+data("brandsma", package = "mice")
+df <- brandsma %>% select(sch, lpo, sex, den)
+
+df %>% glimpse()
+df %>% summary()
+
+# there is NA data so we filter those out 
+df <- df %>% na.omit()
+df %>% glimpse()
+df %>% summary()
+
+# add a new column of participant id 
+# and make the other things into factors 
+df <- df %>% mutate(sch = as.factor(sch), 
+              sex = as.factor(sex), 
+              den = as.factor(den)) %>% 
+  mutate(pid = 1:nrow(df))
+
+df %>% summary()
+```
+
+So according to this source^[https://stefvanbuuren.name/fimd/sec-threeformulations.html] there are three notational systems: 
+1. level notation 
+2. composite notation 
+3. matrix notation 
+
+... which is consistent with what I'm seeing in this other paper. 
+
+There is also [this source](https://datalorax.github.io/equatiomatic/) which is about turning formula into latex equations. 
+
+## Level Notation 
+
+- Introduced by Bryk and Raudenbush 1992 
+- formulate a multilevel model as a **system of two equations**, one at level-1, and two at level-2: 
+(Here I am substituting all the $c$s with all the $j$s in the original system)
+$$\begin{align}
+\texttt{lpo}_{ij} &= \beta_{0j} + \beta_{1j}\texttt{sex}_{ij} + \epsilon_{ij} \\ 
+\beta_{0j} &= \gamma_{00} + \gamma_{01} \texttt{den}_j + u_{0j} \\ 
+\beta_{1j} &= \gamma_{10} 
+\end{align}
+$$
+
+where $\texttt{lpo}_{ij}$ is the test score of pupile $i$ in school $j$. 
+Note here that the subscripts distinguish the level-1 and level-2 variables. 
+
+## Composite Notation 
+
+We can also substitute the level-2 models into level-1 model and result in the following single predictive equation: 
+
+$$
+\texttt{lpo}_{ij} = \beta_0 + \beta_1 \text{sex}_{ij} + \beta_2 \texttt{den}_j + u_{0j} + \epsilon_{ij} 
+$$
+
+```{r}
+m1 <- lmer(lpo ~ 1 + sex + den + (1 | sch), data = df)
+m1
+```
+
+We can also use the equatiomatic package to double check: 
+
+```{r}
+extract_eq(m1)
+```
+
+And the version with the actual coefficient: 
+
+```{r}
+extract_eq(m1, use_coefs = TRUE)
+```
+
+
+## Matrix Notation 
+
+Still the same model can be written in matrix notation as 
+
+$$
+y_j = X_j \beta + Z_j u_j + \epsilon_j
+$$
+
+where $y_j = \texttt{lpo}_j$ is a column vector containing the scores in cluster $j$, where $X_j = (1, \texttt{den}_j, \texttt{sec}_j)$ is the design matrix, a
+
+## Domains and preferences 
+
+- The matrix model formulation is favoured among statisticians^[for example, [this blog posts](https://stats.oarc.ucla.edu/other/mult-pkg/introduction-to-linear-mixed-models/) uses the matrix notation] 
+- The level notation is common in the social sciences, as they separate the roles of level-1 and level-2 variables, which eases interpretation of the model and error structures 
+- The composite formulation covers the middle ground, for its balance between compactness and clarity, and is used by the introductions into the multilevel analysis for applied researchers 
+  - I think the Bayesian wind is most similar to this 
+
+---
+
+## Which of these map best to `lme4` and `brms` syntax? 
+
+The composite notation maps best to `lme4` and `brms` syntax. 
+
+What about the syntax? Xiaoying provides some lead here but it's like Wilkinson-Rogers -> Wilkinson-Rogers-Pinheiro-Bates (`lm(y ~ x + z)`) and then Paurl Burkner for the brms syntax (`response | aterms ~ pterms + (gterms | group)`). 
+
 
 :::{.callout-note collapse="true"}
 ## What's up with all this terminology? 
@@ -70,37 +177,6 @@ In @gaSoftwareFittingMultilevel2013, they looked at the software for fitting mul
 
 We will leverage this paper^[Multilevel Model Notation - Establishing the commonalities] but use the dataset (`brandsma` object in the `mice` package) mentioned by this source^[https://stefvanbuuren.name/fimd/sec-threeformulations.html]. 
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-
-library(tidyverse)
-theme_set(theme_minimal())
-library(lme4)
-# install.packages("mice")
-library(mice)
-data("brandsma", package = "mice")
-df <- brandsma %>% select(sch, lpo, sex, den)
-
-df %>% glimpse()
-df %>% summary()
-
-# there is NA data so we filter those out 
-df <- df %>% na.omit()
-df %>% glimpse()
-df %>% summary()
-
-# add a new column of participant id 
-# and make the other things into factors 
-df <- df %>% mutate(sch = as.factor(sch), 
-              sex = as.factor(sex), 
-              den = as.factor(den)) %>% 
-  mutate(pid = 1:nrow(df))
-
-df %>% summary()
-```
-
 We will concentrate on four variables: 
 
 - `sch`: school number 
@@ -136,7 +212,7 @@ The model posits that the score of a randomly selected student $i$ in a randomly
 `TODO`: I don't think the following is correct ... 
 
 ```{r}
-lmer(lpo ~ 1 + den +  (1 | den), data = df)
+# lmer(lpo ~ 1 + den +  (1 | den), data = df)
 ```
 
 
@@ -148,7 +224,7 @@ Which in Gelman notation, is something like (`TODO` this is not right ...)
 $$\texttt{lpo}_{i} = \beta_0 + \beta_1 \texttt{sex}_{\texttt{class}[i]} + \beta_2 \texttt{den}_{j[i]} + u_{0c} + \epsilon_{ic} $$
 
 ```{r}
-lmer(lpo ~ 1 + sex + den + (1 | 1 + sex + den), data = df)
+# lmer(lpo ~ 1 + sex + den + (1 | 1 + sex + den), data = df)
 ```
 
 
