@@ -26,25 +26,52 @@ library(equatiomatic)
 library(mice)
 ```
 
-The `trees` dataset: 
+# `TLDR` 
+
+This is a blog post that summarizes the things I found helpful while going through the various mathematical notation systems and `R` syntax for multilevel models^[otherwise known as hierarchical models, mixed models, panel data models, etc.] 
+
+# Linear models and `lm`
+
+We will first start with the **linear models**, where we don't consider the effects of any grouping variable. We will first use the `trees` data set:  
 
 ```{r}
 #| layout-ncol: 2
 
-trees %>% ggplot(aes(x = Girth, y = Height)) + 
+trees %>% ggplot(aes(x = Height, y = Volume)) + 
   geom_point()
 
 trees %>% ggplot(aes(x = Girth, y = Volume, color = Height)) + 
   geom_point()
+
+# trees %>% ggplot(aes(x = log(Girth), y = log(Volume), color = log(Height))) + 
+#   geom_point()
 ```
 
+From the above plot, there seems to be a linear relationship between `Volumne` and `Girth`. We can try to fit a linear model using the `lm` function: 
 
+```{r}
+m1 <- lm(Volume ~ Height + Girth, data = trees)
+m1
+```
 
-# `TLDR` 
+:::{.callout-note collapse="true"}
+In general, we can specify linear models via the **matrix notation** as follows: 
 
-This is a blog post that summarizes the things I found helpful while going through the various mathematical notation systems and `R` syntax for multilevel models^[otherwise known as hierarchical models, panel data models, etc.] 
+$$\mathbf{y} = \mathbf{X}\mathbf{\beta} + \mathbf{e}$$ where $\mathbf{y}$ is the response vector of length $n$, $\mathbf{X}$ is the *design matrix* of size $n \times p$, $\mathbf{\beta}$ is the $p$-vector and $\mathbf{e}$ is the error variable. 
 
-We will use the data set used by [this chapter by Stef van Buuren in *Flexible Imputation of Missing Data*](https://stefvanbuuren.name/fimd/sec-threeformulations.html). This is data on school performance of grade 8 pupils in Dutch schools. There data were collected by Brandsma and Knuver (1989) and were used as the primary examples in Chapters 4 and 5 of Snijders and Bosker (2012). The data contains a mix of both pupil-level measuremetns and school-level measurements. 
+We can also use the [`equatiomatic` package](https://datalorax.github.io/equatiomatic/) to turn `R` fomulae into latex equations: 
+
+```{r}
+extract_eq(m1)
+```
+
+:::
+
+@tanakaSymbolicFormulaeLinear2019 provides a nice graph that connects the dots between the symbolic formulae used in `lm` and its connection to the mathematical equation. 
+
+# Mixed models and `lmer` 
+
+Often times we encounter data with some "grouping" factors, e.g., students' scores from schools from different districts, etc. Here we will use the data set used by [this chapter by Stef van Buuren in *Flexible Imputation of Missing Data*](https://stefvanbuuren.name/fimd/sec-threeformulations.html). This is data on school performance of grade 8 pupils in Dutch schools. There data were collected by Brandsma and Knuver (1989) and were used as the primary examples in Chapters 4 and 5 of Snijders and Bosker (2012). The data contains a mix of both pupil-level measuremetns and school-level measurements. 
 
 ```{r}
 #| code-fold: true
@@ -52,22 +79,15 @@ We will use the data set used by [this chapter by Stef van Buuren in *Flexible I
 data("brandsma", package = "mice")
 df <- brandsma %>% select(sch, lpo, sex, den)
 
-df %>% glimpse()
-df %>% summary()
-
 # there is NA data so we filter those out 
-df <- df %>% na.omit()
-df %>% glimpse()
-df %>% summary()
+df <- df %>% na.omit() %>% 
+# turn the other columns into factors 
+  mutate(sch = as.factor(sch), 
+         sex = as.factor(sex), 
+         den = as.factor(den))
 
-# add a new column of participant id 
-# and make the other things into factors 
-df <- df %>% mutate(sch = as.factor(sch), 
-              sex = as.factor(sex), 
-              den = as.factor(den)) %>% 
-  mutate(pid = 1:nrow(df))
-
-df %>% summary()
+# df %>% glimpse()
+# df %>% summary()
 ```
 
 So according to this source^[https://stefvanbuuren.name/fimd/sec-threeformulations.html] there are three notational systems: 
@@ -77,7 +97,7 @@ So according to this source^[https://stefvanbuuren.name/fimd/sec-threeformulatio
 
 ... which is consistent with what I'm seeing in this other paper. 
 
-There is also [this source](https://datalorax.github.io/equatiomatic/) which is about turning formula into latex equations. 
+
 
 ## Level Notation 
 
