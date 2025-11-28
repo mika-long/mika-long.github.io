@@ -7,12 +7,15 @@ bibliography: models.bib
 date: last-modified
 reference-location: margin
 draft: true
+abstract: | 
+  A deep dive into the various mathematical notation systems and `R` packages for fitting multilevel hierarchical models 
 ---
 
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
+#| label: "loading and setup"
 
 library(tidyverse)
 theme_set(theme_minimal())
@@ -21,6 +24,31 @@ library(equatiomatic)
 # install.packages("equatiomatic")
 # install.packages("mice")
 library(mice)
+```
+
+The `trees` dataset: 
+
+```{r}
+#| layout-ncol: 2
+
+trees %>% ggplot(aes(x = Girth, y = Height)) + 
+  geom_point()
+
+trees %>% ggplot(aes(x = Girth, y = Volume, color = Height)) + 
+  geom_point()
+```
+
+
+
+# `TLDR` 
+
+This is a blog post that summarizes the things I found helpful while going through the various mathematical notation systems and `R` syntax for multilevel models^[otherwise known as hierarchical models, panel data models, etc.] 
+
+We will use the data set used by [this chapter by Stef van Buuren in *Flexible Imputation of Missing Data*](https://stefvanbuuren.name/fimd/sec-threeformulations.html). This is data on school performance of grade 8 pupils in Dutch schools. There data were collected by Brandsma and Knuver (1989) and were used as the primary examples in Chapters 4 and 5 of Snijders and Bosker (2012). The data contains a mix of both pupil-level measuremetns and school-level measurements. 
+
+```{r}
+#| code-fold: true
+
 data("brandsma", package = "mice")
 df <- brandsma %>% select(sch, lpo, sex, den)
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-11-26">
+<meta name="dcterms.date" content="2025-11-27">
 
 <title>A Model by Many Names (and Notations and Formulas) – Sheng Long</title>
 <style>
@@ -226,7 +226,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 26, 2025</p>
+      <p class="date">November 27, 2025</p>
     </div>
   </div>
   
@@ -303,7 +303,7 @@ $ den &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 </section>
 <section id="composite-notation" class="level2">
 <h2 class="anchored" data-anchor-id="composite-notation">Composite Notation</h2>
-<p>We can also substitute the level-2 models into level-1 model and result in the following single predictive equation:</p>
+<p>We can also substitue the level-2 models into level-1 model and result in the following single predictive equation:</p>
 <p><span class="math display">\[
 \texttt{lpo}_{ij} = \beta_0 + \beta_1 \text{sex}_{ij} + \beta_2 \texttt{den}_j + u_{0j} + \epsilon_{ij}
 \]</span></p>
@@ -337,19 +337,7 @@ Fixed Effects:
 \end{aligned}
 \]</span></p>
 </div>
-</div>
-<p>And the version with the actual coefficient:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_eq</span>(m1, <span class="at">use_coefs =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<p><span class="math display">\[
-\begin{aligned}
-  \operatorname{\widehat{lpo}}_{i}  &amp;\sim N \left(38.07_{\alpha_{j[i]}} + 2.27_{\beta_{1}}(\operatorname{sex}_{\operatorname{1}}), \sigma^2 \right) \\
-    \alpha_{j}  &amp;\sim N \left(3.28_{\gamma_{1}^{\alpha}}(\operatorname{den}_{\operatorname{2}}) + 1.14_{\gamma_{2}^{\alpha}}(\operatorname{den}_{\operatorname{3}}) + 4.59_{\gamma_{3}^{\alpha}}(\operatorname{den}_{\operatorname{4}}), 3.96 \right)
-    \text{, for sch j = 1,} \dots \text{,J}
-\end{aligned}
-\]</span></p>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># preview_eq(m1)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="matrix-notation" class="level2">
@@ -498,10 +486,10 @@ y_j = X_j \beta + Z_j u_j + \epsilon_j
 <div class="cell quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="index_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
