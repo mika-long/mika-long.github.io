@@ -1,5 +1,5 @@
 ---
-title: "A Model by Many Names (and Notations and Formulas)" 
+title: "A Model by Many Names (and Notations and Formulae)" 
 author: 
   name: Sheng Long
 categories: [Statistics]
@@ -23,12 +23,22 @@ library(lme4)
 library(equatiomatic)
 # install.packages("equatiomatic")
 # install.packages("mice")
-library(mice)
+# library(mice)
 ```
 
-# `TLDR` 
+:::{.callout-important}
+# TLDR 
 
-This is a blog post that summarizes the things I found helpful while going through the various mathematical notation systems and `R` syntax for multilevel models^[otherwise known as hierarchical models, mixed models, panel data models, etc.] 
+This is a blog post that summarizes the things I found helpful while going through the various mathematical notation systems and `R` syntax for multilevel models. Some quick takeaways: 
+
+- When you're unsure about the syntax, always check the math specification. That will help reveal which things are varying by intercept vs. varying by slope. 
+- If you use `R` (be it `lm`, `lmer`, `glm`, `glmer`, or `brms`), the R formula most closely resembles the **composite notation** 
+- I am a firm believer between the relationships between notation and thinking^[See [Kenneth Iverson's writing]() for more details.], and thus I propose all models follow the Gelman & Hill 2005 and tradition of indexing things, especially in hierarchical contexts 
+- As a firm believer of the effects of notation on thinking^[See [https://www.eecg.utoronto.ca/~jzhu/csc326/readings/iverson.pdf](https://www.eecg.utoronto.ca/~jzhu/csc326/readings/iverson.pdf) for more], I hope that documenting these changes will be helpful.  
+
+:::
+
+For this post we will consider *main effects* only (i.e., no interaction terms). 
 
 # Linear models and `lm`
 
@@ -65,13 +75,20 @@ We can also use the [`equatiomatic` package](https://datalorax.github.io/equatio
 extract_eq(m1)
 ```
 
-:::
-
 @tanakaSymbolicFormulaeLinear2019 provides a nice graph that connects the dots between the symbolic formulae used in `lm` and its connection to the mathematical equation. 
+
+Besides the matrix notational system, there are other two other notation systems for specifying mixed models, **level notation**^[or _hierarchical notation. Some disciplinary traditions might label the middle column the _random coefficient model_ (e.g., Longford, 1993) ] and **composite notation**, which we will see shortly^[https://stefvanbuuren.name/fimd/sec-threeformulations.html]. 
+
+:::
 
 # Mixed models and `lmer` 
 
-Often times we encounter data with some "grouping" factors, e.g., students' scores from schools from different districts, etc. Here we will use the data set used by [this chapter by Stef van Buuren in *Flexible Imputation of Missing Data*](https://stefvanbuuren.name/fimd/sec-threeformulations.html). This is data on school performance of grade 8 pupils in Dutch schools. There data were collected by Brandsma and Knuver (1989) and were used as the primary examples in Chapters 4 and 5 of Snijders and Bosker (2012). The data contains a mix of both pupil-level measuremetns and school-level measurements. 
+Often times we encounter data with some "grouping" factors, e.g., students' scores from schools from different districts, etc. Here we will use the data set used by [this chapter by Stef van Buuren in *Flexible Imputation of Missing Data*](https://stefvanbuuren.name/fimd/sec-threeformulations.html). This is data on school performance of grade 8 pupils in Dutch schools. There data were collected by @brandsma1989effects and were used as the primary examples in Chapters 4 and 5 of @snijders2011multilevel. The data contains a mix of both individual/pupil-level measurements and group/school-level measurements. We will concentrate on four variables: 
+
+- `sch`: school number 
+- `lpo`: language test post, outcome at pupil level.
+- `sex`: sex of pupil (coded `0 - 1`)
+- `den`: school denomination, predictor at school level (coded `1 - 4`)
 
 ```{r}
 #| code-fold: true
@@ -88,22 +105,33 @@ df <- df %>% na.omit() %>%
 
 # df %>% glimpse()
 # df %>% summary()
+df %>% head(5)
 ```
 
-So according to this source^[https://stefvanbuuren.name/fimd/sec-threeformulations.html] there are three notational systems: 
-1. level notation 
-2. composite notation 
-3. matrix notation 
+:::{.callout-note collapse="true"}
+### EDA 
 
-... which is consistent with what I'm seeing in this other paper. 
+```{r}
+#| code-fold: true
+#| layout-ncol: 2
 
+df %>% ggplot(aes(x = lpo, color = sex)) + 
+  geom_density()
 
+df %>% ggplot(aes(x = lpo, color = den)) + 
+  geom_density() + 
+  facet_wrap(~sex)
+```
+:::
+
+We want to create a model that predicts whether the students' performance (`lpo`) is influenced by their (`sex`) and which school they're from. We will start with ... 
 
 ## Level Notation 
 
-- Introduced by Bryk and Raudenbush 1992 
-- formulate a multilevel model as a **system of two equations**, one at level-1, and two at level-2: 
-(Here I am substituting all the $c$s with all the $j$s in the original system)
+- Introduced by @bryk1992hierarchical. 
+- Bayesian models "naturally related terms through hierarchical structures" 
+- Formulates a multilevel model as a **system of two equations**, one at level-1, and two at level-2^[$beta$ reserved for level-1 coefficients and $gamma$ for level-2 coefficients, following what was introduced by Bryk and Raudenbush (1992)]: 
+
 $$\begin{align}
 \texttt{lpo}_{ij} &= \beta_{0j} + \beta_{1j}\texttt{sex}_{ij} + \epsilon_{ij} \\ 
 \beta_{0j} &= \gamma_{00} + \gamma_{01} \texttt{den}_j + u_{0j} \\ 
@@ -111,10 +139,20 @@ $$\begin{align}
 \end{align}
 $$
 
-where $\texttt{lpo}_{ij}$ is the test score of pupile $i$ in school $j$. 
-Note here that the subscripts distinguish the level-1 and level-2 variables. 
+where $\texttt{lpo}_{ij}$ is the test score of pupile $i$ in school $j$. Note here that the subscripts distinguish the level-1 and level-2 variables (in the sense that ...? )
 
 ## Composite Notation 
+
+- Introduced by @singer1998using 
+- "... essentially the presentation used for mixed effects models" 
+- $\beta$ represent the average effects of variables that are known as *fixed effects*  
+- $u$ represents heterogeneity between the groups, typically called *random effects*  
+- In terms of subscripts: 
+  - $j$ is denoting variation at the group level 
+  - $ij$ is denoting variation at the child level (within group) level 
+- closer in structure to the syntax used in SAS, STATA, and R (`nlme`, `lmer`) 
+- See _this paper_ for more details. 
+- "... the model is expressed in a form similar to regression with a complex error structure" 
 
 We can also substitute the level-2 models into level-1 model and result in the following single predictive equation: 
 
@@ -122,33 +160,43 @@ $$
 \texttt{lpo}_{ij} = \beta_0 + \beta_1 \text{sex}_{ij} + \beta_2 \texttt{den}_j + u_{0j} + \epsilon_{ij} 
 $$
 
-```{r}
-m1 <- lmer(lpo ~ 1 + sex + den + (1 | sch), data = df)
-m1
-```
-
-We can also use the equatiomatic package to double check: 
+It's usually assumed that $u_{0j} \sim \mathcal{N}(0, \sigma_u^2)$ and $\epsilon_{ij} \sim \mathcal{N}(0, \sigma_\epsilon^2)$. 
 
 ```{r}
-extract_eq(m1)
+m2 <- lmer(lpo ~ 1 + sex + den + (1 | sch), data = df)
+m2
 ```
 
-And the version with the actual coefficient: 
+:::{.callout-note collapse="false"}
+
+For a quick double check: 
 
 ```{r}
-extract_eq(m1, use_coefs = TRUE)
+extract_eq(m2)
+# version that uses coefficient 
+extract_eq(m2, use_coefs = TRUE)
 ```
 
+Note that the above notation is the @gelman2007data approach, where $j[i]$ indicates group membership of individual $i$. 
+
+:::
 
 ## Matrix Notation 
 
-Still the same model can be written in matrix notation as 
+- the best way to express something succinctly 
+- "... this simpler form makes it possible to focus on other asepcts of the model ... such as estimation, inference, complex covariance structure, model predictions, diagnostics, and missing data." 
+
+
+- $\mathbf{y} = X \mathbf{\beta} + Z \mathbf{u} + \mathbf{\epsilon}$ 
+- ... where $X_j$ is the **design matrix** for the fixed effects and $Z_j$ is the design matrix for the **random effects**.  
+
+Still the same model can be written in matrix notation, just as we have seen before with the linear model. A linear mixed model (LMM) is typically written as: 
 
 $$
 y_j = X_j \beta + Z_j u_j + \epsilon_j
 $$
 
-where $y_j = \texttt{lpo}_j$ is a column vector containing the scores in cluster $j$, where $X_j = (1, \texttt{den}_j, \texttt{sec}_j)$ is the design matrix, a
+where $y_j = \texttt{lpo}_j$ is a column vector containing the scores in cluster $j$, where $X_j = (1, \texttt{den}_j, \texttt{sec}_j)$ is the design matrix. 
 
 ## Domains and preferences 
 
@@ -156,8 +204,22 @@ where $y_j = \texttt{lpo}_j$ is a column vector containing the scores in cluster
 - The level notation is common in the social sciences, as they separate the roles of level-1 and level-2 variables, which eases interpretation of the model and error structures 
 - The composite formulation covers the middle ground, for its balance between compactness and clarity, and is used by the introductions into the multilevel analysis for applied researchers 
   - I think the Bayesian wind is most similar to this 
+- Also more notes: 
+  - Most often we use $i$ as the subscript that denotes the individual row in a dataframe, and use $j$ to indicate the index of something of a grouping variable, like maybe school. You also see sometimes $c$ being used as a subscript, for "cluster". 
+- “Critically, and as we illustrate by example in later sections of this chapter, how one characterizes the random effects --- as controls in a regression model, as part of the dependent error structure or as error terms in a set of sub-model regressions --- is tied to how one formulates the MLM notationally and to how one interprets results in practice.”
+- Gelman notation: "... alternative notation adopted by Gelman and Hill (2007) ... incorporates the group identification using index look-up functions, wherein $j[i]$ (read $j$ of $i$) identifies the group $j$ to which unique index $i$ belongs.
+- “Many variations in notation were introduced in the context of specific sets of research questions within disciplines”
+- “notation can influence one’s perspective on these components^["these components" are "... variance components, which are the parameters governing the stochastic terms in a model"] (and vice versa).”
 
----
+## Mixing notations 
+
+In [this blog post](https://solomonkurz.netlify.app/blog/2021-12-16-use-emmeans-to-include-95-cis-around-your-lme4-based-fitted-lines/) by Solomon Kurz you get a mixture of components, but he mostly specify things in the style of McElreath. 
+
+:::{.callout-caution}
+### Quick note before switching to `brms`
+
+If the model is not necessarily linear or Gaussian, we could use `glm` instead of `lm` and `glmer` instead of `lmer`. 
+:::
 
 ## Which of these map best to `lme4` and `brms` syntax? 
 
@@ -165,6 +227,46 @@ The composite notation maps best to `lme4` and `brms` syntax.
 
 What about the syntax? Xiaoying provides some lead here but it's like Wilkinson-Rogers -> Wilkinson-Rogers-Pinheiro-Bates (`lm(y ~ x + z)`) and then Paurl Burkner for the brms syntax (`response | aterms ~ pterms + (gterms | group)`). 
 
+## Application 
+
+### Data with an obvious sense of hierarchy 
+
+Let's say you don't know what "unconditional means model" mean^[Here's [more reading](https://uk.sagepub.com/sites/default/files/upm-assets/126451_book_item_126451.pdf) on unconditional mean model], but you see its mathematical equation as the following: 
+$$y_{ij} = \beta_0 + u_{0j} + \epsilon_{ij}$$
+
+The model posits that the score of a randomly selected student $i$ in a randomly selected school $j$ can be represented as a sum of: 
+
+- the population mean $\beta_0$ 
+- the effect of being in school $j$: $u_{0j}$
+- the effect of being a particular student in school $j$: $\epsilon_{ij}$ 
+
+(I don't think the above language is the most correct description ... it seems very forced ... )
+
+```{r}
+m3 <- lmer(lpo ~ 1 + (1| sch), data = df)
+m3 
+
+extract_eq(m3)
+```
+
+“Multilevel models contain two forms of stochastic 62 variation, usually called variance components, cap- 63 tured in random effects ($u_{0j}$) and error ($\epsilon_{ij}$ ) terms, the former representing systematic differences between groups (schools) and the latter unexplained, subject-level differences within groups (schools).”
+
+### Data without an obvious sense of hierarchy. 
+
+Let's suppose you're a psycholinguist. You administed some tests to a group of participants, where each participant answerer different item types multiple types. The model is not necessarily "nested" but given that a same participant is sampled multiple times, you can group by individual participants (`Subject`) and you can also group by item types (`Item`). This is the case demonstrated in @barrRandomEffectsStructure2013. They provided a handy table for models and their associated `lmer` syntax, which I will recreate: 
+
+| math | `lm`/`lmer` formula | 
+| ---- | ------------------- | 
+| $Y_{si} = \beta_0 + \beta_1 X_i + e_{si}$ | `lm(Y ~ 1 + X)` | 
+| $Y_{si} = \beta_0 + S_{0s} + \beta_1 X_i + e_{si}$ | `Y ~ 1 + X + (1 | Subject)` | 
+| $Y_{si} = \beta_0 + S_{0s} + (\beta_1 + S_{1s}) X_i + e_{si}$ | `Y ~ 1 + X + (1 + X | Subject)` |
+| $Y_{si} = \beta_0 + S_{0s} + I_{0i} + (\beta_1 + S_{1s}) X_i + e_{si}$ | `Y ~ 1 + X + (1 + X | Subject) + (1 | Item)` |
+| $Y_{si} = \beta_0 + S_{0s} + \beta_1 X_i + e_{si}$ | `Y ~ 1 + X + (1 | Subject) + (1 | Item)` |
+| $Y_{si} = \beta_0 + I_{0i} + (\beta_1 + S_{1s}) X_i + e_{si}$ | `Y ~ 1 + X + (0 + X | Subject) + (1 | Item)` |
+
+Note that the above math notation is not the most conventional. Everything except the last part I don't quite get. 
+
+---
 
 :::{.callout-note collapse="true"}
 ## What's up with all this terminology? 
@@ -188,23 +290,13 @@ What this implies in terms of how the math notation^[Referring to section 12.1 N
 
 :::
 
-# Notation type 
 
-1. Composite --- "composite form" see Singer 1998
-  - "essentially the presentation used for mixed effects models" 
-  - $\beta$ represent the average effects of variables that are known as *fixed effects*  
-  - $u$ represents heterogeneity between the groups, typically called *random effects*  
-  - closer in structure to the syntax used in SAS, STATA, and R (`nlme`, `lmer`) 
-2. Level
-  - Bayesian models "naturally related terms through hierarchical structures" 
-3. Matrix 
-  - the best way to express something succinctly 
-  - $\mathbf{y} = X \mathbf{\beta} + Z \mathbf{u} + \mathbf{\epsilon}$ 
-  - ... where $X_j$ is the **design matrix** for the fixed effects and $Z_j$ is the design matrix for the **random effects**.  
+
+
 
 ## Math notation and design formula 
 
-According to @mcelreath2020statistical, it is a compact form of notation, that are intimately related to a "common matrix algebra description of linear models". If you've run `lmer` code before you know what something like `y ~ 1 + x` means. 
+According to @mcelreath2020statistical, it is a compact form of notation, that are intimately related to a "common matrix algebra description of linear models".  
 
 [Xiaoying Pu](https://xiaoyingpu.github.io/) provided a [cheat sheet](https://xiaoyingpu.github.io/note/cheat/) for reading/writing R formulas used in `lmer` and `brms`. 
 
@@ -220,84 +312,27 @@ In @gaSoftwareFittingMultilevel2013, they looked at the software for fitting mul
 
 : `R` software packages and functions for fitting mixed models. 
 
-
----
-
-We will leverage this paper^[Multilevel Model Notation - Establishing the commonalities] but use the dataset (`brandsma` object in the `mice` package) mentioned by this source^[https://stefvanbuuren.name/fimd/sec-threeformulations.html]. 
-
-We will concentrate on four variables: 
-
-- `sch`: school number 
-- `lpo`: language test post, outcome at pupil level.
-- `sex`: sex of pupil 
-- `den`: school denomination, predictor at school level. 
-
-## Some preliminary checks 
-
-```{r}
-#| code-fold: true
-#| layout-ncol: 2
-
-df %>% ggplot(aes(x = lpo, color = sex)) + 
-  geom_density()
-
-df %>% ggplot(aes(x = lpo, color = den)) + 
-  geom_density() + 
-  facet_wrap(~sex)
-```
-
-
-## Unconditional Means model 
-
-$$y_{ij} = \beta_0 + u_{0j} + \epsilon_{ij}$$
-
-The model posits that the score of a randomly selected student $i$ in a randomly selected school $j$ can be represented as a sum of: 
-
-- the population mean $\beta_0$ 
-- the effect of being in school $j$: $u_{0j}$
-- the effect of being a particular student in school $j$: $\epsilon_{ij}$ 
-
-`TODO`: I don't think the following is correct ... 
-
-```{r}
-# lmer(lpo ~ 1 + den +  (1 | den), data = df)
-```
-
-
-## Composite Notation 
-
-The same model can be rewritten as 
-$$\texttt{lpo}_{ic}=\beta_0 + \beta_1 \texttt{sex}_{ic} + \beta_2 \texttt{den}_c + u_{0c} + \epsilon_{ic}$$
-Which in Gelman notation, is something like (`TODO` this is not right ...)
-$$\texttt{lpo}_{i} = \beta_0 + \beta_1 \texttt{sex}_{\texttt{class}[i]} + \beta_2 \texttt{den}_{j[i]} + u_{0c} + \epsilon_{ic} $$
-
-```{r}
-# lmer(lpo ~ 1 + sex + den + (1 | 1 + sex + den), data = df)
-```
-
-
----
-
 > Multilevel models contain two forms of stochastic variation, usually called variance components, captured in random effects $u_{0j}$ and error $\epsilon_{ij}$ terms, 
 
-<!-- One of the earlier hurdles for me to understand Bayesian statistics was the many names people use to refer to "multi-level models"^[They also go by other names, such as generalized linear mixed models (GLMMs), mixed effects model, ].  -->
+# Why are things so complicated? 
 
-<!-- In @mcelreath2020statistical, on page 415:  -->
+## The many names for multi-level models 
 
-<!-- > Multilevel models go by many different names, and some statisticians use the same names for different specialized variants, while other use them all interchangeably. The most common synonymns for "multilevel" are HIERARCHICAL and MIXED EFFECTS. The type of parameters that appear in multilevel models are most commonly known as RANDOM EFFECTS, which itself can mean very different things to different analysts and in different contexts. And even the innocent term "level" can mean differeng things to different people. There's really no cure for this swamp of vocabulary aside from demanding a mathematical or algorithmic definition of the model. Otherwise, there will always be ambiguity.  -->
+In @mcelreath2020statistical, on page 415: 
 
-<!-- :::{.callout} -->
-<!-- Here McElreath points to footnote 186, in which he further points us to section 6, page 20 of [@gelman2005analysis] for an entertaining list of wildly different definitions of "random effects".  -->
-<!-- ::: -->
+> Multilevel models go by many different names, and some statisticians use the same names for different specialized variants, while other use them all interchangeably. The most common synonymns for "multilevel" are HIERARCHICAL and MIXED EFFECTS. The type of parameters that appear in multilevel models are most commonly known as RANDOM EFFECTS, which itself can mean very different things to different analysts and in different contexts. And even the innocent term "level" can mean differeng things to different people. There's really no cure for this swamp of vocabulary aside from demanding a mathematical or algorithmic definition of the model. Otherwise, there will always be ambiguity.
+ 
+See also the footnote of the [wikipedia article](https://en.wikipedia.org/wiki/Multilevel_model) for multi-level models. 
 
-<!-- Further in footnote 188, @mcelreath2020statistical says  -->
+### And the many names for defining "random effects" 
 
-<!-- > I adopt the terminology of @gelman2005analysis, who argues that the common term _random effects_ hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly becasue the terms _fixed_ and _random_ mean different things to different statisticians. See pages 20 -- 21 of Gelman's paper. I fully realize, however, that by trying to spread Gelman's alternative jargon, I am essentially spitting into a very strong wind.  -->
+:::{.callout}
+Here McElreath points to footnote 186, in which he further points us to section 6, page 20 of [@gelman2005analysis] for an entertaining list of wildly different definitions of "random effects".
+:::
 
-<!-- # But first, what are multi-level models?  -->
+Further in footnote 188, @mcelreath2020statistical says
 
-<!-- ... -->
-
+> I adopt the terminology of @gelman2005analysis, who argues that the common term _random effects_ hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly becasue the terms _fixed_ and _random_ mean different things to different statisticians. See pages 20 -- 21 of Gelman's paper. I fully realize, however, that by trying to spread Gelman's alternative jargon, I am essentially spitting into a very strong wind.
 
 <!-- ## Notations  -->
 
@@ -321,12 +356,6 @@ $$\texttt{lpo}_{i} = \beta_0 + \beta_1 \texttt{sex}_{\texttt{class}[i]} + \beta_
 <!-- The data set can be found at [this website](https://nces.ed.gov/surveys/nels88/).  -->
 
 <!-- The current analysis uses information about gender (`SEX`) as well as whether each school had more than 20% of their population receiving free school lunch (`FSL`[This variable is used as a proxy for whether the s school was serving an economically disadvantaged student population]{.aside}).  -->
-
-<!-- ### Unconditional means model  -->
-
-<!-- $$ y_{ij} = \beta_0 + u_{0j} + \epsilon_{ij} $$  -->
-
-<!-- where $\beta_0$ is the sum of the population mean, $u_{0j}$ is the effect of being in school $j$ and $\epsilon_{ij}$ is the effect of being a particular student $i$ in a particular school $j$.  -->
 
 
 <!-- ### Sources  -->
