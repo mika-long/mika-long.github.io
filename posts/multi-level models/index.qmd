@@ -35,6 +35,7 @@ This is a blog post that summarizes the things I found helpful while going throu
 - If you use `R` (be it `lm`, `lmer`, `glm`, `glmer`, or `brms`), the R formula most closely resembles the **composite notation** 
 - I am a firm believer between the relationships between notation and thinking^[See [Kenneth Iverson's writing]() for more details.], and thus I propose all models follow the Gelman & Hill 2005 and tradition of indexing things, especially in hierarchical contexts 
 - As a firm believer of the effects of notation on thinking^[See [https://www.eecg.utoronto.ca/~jzhu/csc326/readings/iverson.pdf](https://www.eecg.utoronto.ca/~jzhu/csc326/readings/iverson.pdf) for more], I hope that documenting these changes will be helpful.  
+- Given the most recent version of `equitiomatic`, the quickest way to understand the math (for all fitted models, frequentist and bayesian) is to probably see the equation for yourself using the `extract_eq` function. 
 
 :::
 
