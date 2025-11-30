@@ -198,12 +198,10 @@ window.Quarto = {
   <li><a href="#data-with-an-obvious-sense-of-hierarchy" id="toc-data-with-an-obvious-sense-of-hierarchy" class="nav-link" data-scroll-target="#data-with-an-obvious-sense-of-hierarchy">Data with an obvious sense of hierarchy</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#crossed-random-effects" id="toc-crossed-random-effects" class="nav-link" data-scroll-target="#crossed-random-effects">Crossed Random Effects</a>
-  <ul class="collapse">
-  <li><a href="#math-notation-and-design-formula" id="toc-math-notation-and-design-formula" class="nav-link" data-scroll-target="#math-notation-and-design-formula">Math notation and design formula</a></li>
-  </ul></li>
+  <li><a href="#crossed-random-effects" id="toc-crossed-random-effects" class="nav-link" data-scroll-target="#crossed-random-effects">Crossed Random Effects</a></li>
   <li><a href="#why-are-things-so-complicated" id="toc-why-are-things-so-complicated" class="nav-link" data-scroll-target="#why-are-things-so-complicated">Why are things so complicated?</a>
   <ul class="collapse">
+  <li><a href="#math-notation-and-design-formula" id="toc-math-notation-and-design-formula" class="nav-link" data-scroll-target="#math-notation-and-design-formula">Math notation and design formula</a></li>
   <li><a href="#the-many-names-for-multi-level-models" id="toc-the-many-names-for-multi-level-models" class="nav-link" data-scroll-target="#the-many-names-for-multi-level-models">The many names for multi-level models</a>
   <ul class="collapse">
   <li><a href="#and-the-many-names-for-defining-random-effects" id="toc-and-the-many-names-for-defining-random-effects" class="nav-link" data-scroll-target="#and-the-many-names-for-defining-random-effects">And the many names for defining “random effects”</a></li>
@@ -648,7 +646,7 @@ Fixed Effects:
 </section>
 </section>
 </section>
-<section id="crossed-random-effects" class="level1 page-columns page-full">
+<section id="crossed-random-effects" class="level1">
 <h1>Crossed Random Effects</h1>
 <p>Let’s suppose you’re a psycholinguist. You administed some tests to a group of participants, where each participant answerer different item types multiple types. The model is not necessarily “nested” but given that a same participant is sampled multiple times, you can group by individual participants (<code>Subject</code>) and you can also group by item types (<code>Item</code>). This is the case demonstrated in <span class="citation" data-cites="barrRandomEffectsStructure2013">Barr et al. (<a href="#ref-barrRandomEffectsStructure2013" role="doc-biblioref">2013</a>)</span>. Note that <span class="math inline">\(X_i\)</span> is just an indicator variable, of whether the item is type A versus type B (? to be confirmed). <span class="citation" data-cites="barrRandomEffectsStructure2013">Barr et al. (<a href="#ref-barrRandomEffectsStructure2013" role="doc-biblioref">2013</a>)</span> provided a handy table for models and their associated <code>lmer</code> syntax, which I will recreate:</p>
 <table class="caption-top table">
@@ -690,9 +688,11 @@ Fixed Effects:
 </tbody>
 </table>
 <p>Note that the above math notation is not the most conventional. Everything except the last part I don’t quite get.</p>
-<hr>
+</section>
+<section id="why-are-things-so-complicated" class="level1 page-columns page-full">
+<h1>Why are things so complicated?</h1>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -701,7 +701,7 @@ Fixed Effects:
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p>My mental model of how hierarchical models work is heavily influenced by <span class="citation" data-cites="mcelreath2020statistical">McElreath (<a href="#ref-mcelreath2020statistical" role="doc-biblioref">2020</a>)</span>. In his book, McElreath said:</p>
 <blockquote class="blockquote">
@@ -762,11 +762,7 @@ Fixed Effects:
 </tr>
 </tbody>
 </table>
-<p>sp</p>
 </section>
-</section>
-<section id="why-are-things-so-complicated" class="level1">
-<h1>Why are things so complicated?</h1>
 <section id="the-many-names-for-multi-level-models" class="level2">
 <h2 class="anchored" data-anchor-id="the-many-names-for-multi-level-models">The many names for multi-level models</h2>
 <p>See also the footnote of the <a href="https://en.wikipedia.org/wiki/Multilevel_model">wikipedia article</a> for multi-level models.</p>
