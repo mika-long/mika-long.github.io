@@ -41,50 +41,61 @@ This is a blog post that summarizes the things I found helpful while going throu
 
 For this post we will consider *main effects* only (i.e., no interaction terms). 
 
-# Linear models and `lm`
+<!-- # Linear models and `lm` -->
 
-We will first start with the **linear models**, where we don't consider the effects of any grouping variable. We will first use the `trees` data set:  
+<!-- We will first start with the **linear models**, where we don't consider the effects of any grouping variable. We will first use the `trees` data set:   -->
 
-```{r}
-#| layout-ncol: 2
+<!-- ```{r} -->
+<!-- #| layout-ncol: 2 -->
 
-trees %>% ggplot(aes(x = Height, y = Volume)) + 
-  geom_point()
+<!-- trees %>% ggplot(aes(x = Height, y = Volume)) +  -->
+<!--   geom_point() -->
 
-trees %>% ggplot(aes(x = Girth, y = Volume, color = Height)) + 
-  geom_point()
+<!-- trees %>% ggplot(aes(x = Girth, y = Volume, color = Height)) +  -->
+<!--   geom_point() -->
 
-# trees %>% ggplot(aes(x = log(Girth), y = log(Volume), color = log(Height))) + 
-#   geom_point()
-```
+<!-- # trees %>% ggplot(aes(x = log(Girth), y = log(Volume), color = log(Height))) +  -->
+<!-- #   geom_point() -->
+<!-- ``` -->
 
-From the above plot, there seems to be a linear relationship between `Volumne` and `Girth`. We can try to fit a linear model using the `lm` function: 
+<!-- From the above plot, there seems to be a linear relationship between `Volumne` and `Girth`. We can try to fit a linear model using the `lm` function:  -->
 
-```{r}
-m1 <- lm(Volume ~ Height + Girth, data = trees)
-m1
-```
+<!-- ```{r} -->
+<!-- m1 <- lm(Volume ~ Height + Girth, data = trees) -->
+<!-- m1 -->
+<!-- ``` -->
 
-:::{.callout-note collapse="true"}
-In general, we can specify linear models via the **matrix notation** as follows: 
+<!-- :::{.callout-note collapse="true"} -->
+<!-- In general, we can specify linear models via the **matrix notation** as follows:  -->
 
-$$\mathbf{y} = \mathbf{X}\mathbf{\beta} + \mathbf{e}$$ where $\mathbf{y}$ is the response vector of length $n$, $\mathbf{X}$ is the *design matrix* of size $n \times p$, $\mathbf{\beta}$ is the $p$-vector and $\mathbf{e}$ is the error variable. 
+<!-- $$\mathbf{y} = \mathbf{X}\mathbf{\beta} + \mathbf{e}$$ where $\mathbf{y}$ is the response vector of length $n$, $\mathbf{X}$ is the *design matrix* of size $n \times p$, $\mathbf{\beta}$ is the $p$-vector and $\mathbf{e}$ is the error variable.  -->
 
-We can also use the [`equatiomatic` package](https://datalorax.github.io/equatiomatic/) to turn `R` fomulae into latex equations: 
+<!-- We can also use the [`equatiomatic` package](https://datalorax.github.io/equatiomatic/) to turn `R` fomulae into latex equations:  -->
 
-```{r}
-extract_eq(m1)
-```
+<!-- ```{r} -->
+<!-- extract_eq(m1) -->
+<!-- ``` -->
 
-@tanakaSymbolicFormulaeLinear2019 provides a nice graph that connects the dots between the symbolic formulae used in `lm` and its connection to the mathematical equation. 
+<!-- @tanakaSymbolicFormulaeLinear2019 provides a nice graph that connects the dots between the symbolic formulae used in `lm` and its connection to the mathematical equation.  -->
 
-Besides the matrix notational system, there are other two other notation systems for specifying mixed models, **level notation**^[or _hierarchical notation. Some disciplinary traditions might label the middle column the _random coefficient model_ (e.g., Longford, 1993) ] and **composite notation**, which we will see shortly^[https://stefvanbuuren.name/fimd/sec-threeformulations.html]. 
+<!-- Besides the matrix notational system, there are other two other notation systems for specifying mixed models, **level notation**^[or _hierarchical notation. Some disciplinary traditions might label the middle column the _random coefficient model_ (e.g., Longford, 1993) ] and **composite notation**, which we will see shortly^[https://stefvanbuuren.name/fimd/sec-threeformulations.html].  -->
 
-:::
+<!-- ::: -->
 
-# Mixed models and `lmer` 
+# What are multi-level models? 
 
-Often times we encounter data with some "grouping" factors, e.g., students' scores from schools from different districts, etc. Here we will use the data set used by [this chapter by Stef van Buuren in *Flexible Imputation of Missing Data*](https://stefvanbuuren.name/fimd/sec-threeformulations.html). This is data on school performance of grade 8 pupils in Dutch schools. There data were collected by @brandsma1989effects and were used as the primary examples in Chapters 4 and 5 of @snijders2011multilevel. The data contains a mix of both individual/pupil-level measurements and group/school-level measurements. We will concentrate on four variables: 
+@mcelreath2020statistical page 415: 
+
+> Multilevel models go by many different names, and some statisticians use the same names for different specialized variants, while other use them all interchangeably. The most common synonymns for "multilevel" are HIERARCHICAL and MIXED EFFECTS. The type of parameters that appear in multilevel models are most commonly known as RANDOM EFFECTS, which itself can mean very different things to different analysts and in different contexts. And even the innocent term "level" can mean differeng things to different people. There's really no cure for this swamp of vocabulary aside from demanding a mathematical or algorithmic definition of the model. Otherwise, there will always be ambiguity.
+
+@mcelreath2020statistical footnote 188: 
+
+> I adopt the terminology of @gelman2005analysis, who argues that the common term _random effects_ hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly becasue the terms _fixed_ and _random_ mean different things to different statisticians. See pages 20 -- 21 of Gelman's paper. I fully realize, however, that by trying to spread Gelman's alternative jargon, I am essentially spitting into a very strong wind.
+
+
+# Nested structures 
+
+Often times we encounter data with some hierarchical nature, e.g., students' scores from schools from different districts, etc. Here we will use the data set used by [this chapter by Stef van Buuren in *Flexible Imputation of Missing Data*](https://stefvanbuuren.name/fimd/sec-threeformulations.html). This is data on school performance of grade 8 pupils in Dutch schools. There data were collected by @brandsma1989effects and were used as the primary examples in Chapters 4 and 5 of @snijders2011multilevel. The data contains a mix of both individual/pupil-level measurements and group/school-level measurements. We will concentrate on four variables: 
 
 - `sch`: school number 
 - `lpo`: language test post, outcome at pupil level.
@@ -129,9 +140,14 @@ We want to create a model that predicts whether the students' performance (`lpo`
 
 ## Level Notation 
 
+:::{.callout-note collapse="true"}
+### Some facts 
+
 - Introduced by @bryk1992hierarchical. 
-- Bayesian models "naturally related terms through hierarchical structures" 
-- Formulates a multilevel model as a **system of two equations**, one at level-1, and two at level-2^[$beta$ reserved for level-1 coefficients and $gamma$ for level-2 coefficients, following what was introduced by Bryk and Raudenbush (1992)]: 
+- Formulates a multilevel model as a **system of two^[or potentailly more] kinds of equations**, one at level-1, and one at level-2
+  - following what was introduced by @bryk1992hierarchical, usually use $\beta$ for level-1 coefficients and $\gamma$ for level-2 coefficients 
+
+::: 
 
 $$\begin{align}
 \texttt{lpo}_{ij} &= \beta_{0j} + \beta_{1j}\texttt{sex}_{ij} + \epsilon_{ij} \\ 
@@ -140,32 +156,40 @@ $$\begin{align}
 \end{align}
 $$
 
-where $\texttt{lpo}_{ij}$ is the test score of pupile $i$ in school $j$. Note here that the subscripts distinguish the level-1 and level-2 variables (in the sense that ...? )
+where 
+
+- $\texttt{lpo}_{ij}$ is the test score of pupile $i$ in school $j$. 
+- $\beta_{0j}$ denotes the fixed intercept for school $j$, and $\beta_{1j}$ denote the intercept of being a student with a particular gender at school $j$. $\epsilon_{ij}$ is the error. 
+- Further, $\beta_{0j}$ has a fixed intercept ($\gamma_{00}$, the first 0 denotes that we're dealing with $\beta_0$ instead of $\beta_1$ and the second 0 denotes that this is an intercept instead of a slope), a slope for the effect of being in denomination $j$, and some random variance $u_{0j}$ at the ... level ...? 
+- Note here that the subscripts distinguish the level-1 and level-2 variables --- for the first line, we have parameters subscripted by $ij$ while for the later two lines, we only have parameters with $j$ varying. 
 
 ## Composite Notation 
 
+:::{.callout-note collapse="true"}
+# Some facts 
+
 - Introduced by @singer1998using 
 - "... essentially the presentation used for mixed effects models" 
+- "... the model is expressed in a form similar to regression with a complex error structure" 
 - $\beta$ represent the average effects of variables that are known as *fixed effects*  
 - $u$ represents heterogeneity between the groups, typically called *random effects*  
 - In terms of subscripts: 
   - $j$ is denoting variation at the group level 
   - $ij$ is denoting variation at the child level (within group) level 
 - closer in structure to the syntax used in SAS, STATA, and R (`nlme`, `lmer`) 
-- See _this paper_ for more details. 
-- "... the model is expressed in a form similar to regression with a complex error structure" 
+:::
 
-We can also substitute the level-2 models into level-1 model and result in the following single predictive equation: 
+By substituting the level-2 equations into the level-1 equation, we get the following one-line equation: 
 
 $$
-\texttt{lpo}_{ij} = \beta_0 + \beta_1 \text{sex}_{ij} + \beta_2 \texttt{den}_j + u_{0j} + \epsilon_{ij} 
+\texttt{lpo}_{ij} = \beta_0 + \beta_1 \texttt{sex}_{ij} + \beta_2 \texttt{den}_j + u_{0j} + \epsilon_{ij} 
 $$
 
-It's usually assumed that $u_{0j} \sim \mathcal{N}(0, \sigma_u^2)$ and $\epsilon_{ij} \sim \mathcal{N}(0, \sigma_\epsilon^2)$. 
+It's usually assumed that $u_{0j} \sim \mathcal{N}(0, \sigma_u^2)$ and $\epsilon_{ij} \sim \mathcal{N}(0, \sigma_\epsilon^2)$. Note that $\beta_0 = \gamma_{00} + \gamma_{10}$ from the previous model. 
 
 ```{r}
 m2 <- lmer(lpo ~ 1 + sex + den + (1 | sch), data = df)
-m2
+summary(m2)
 ```
 
 :::{.callout-note collapse="false"}
@@ -184,12 +208,17 @@ Note that the above notation is the @gelman2007data approach, where $j[i]$ indic
 
 ## Matrix Notation 
 
+:::{.callout-note collapse="true"}
 - the best way to express something succinctly 
-- "... this simpler form makes it possible to focus on other asepcts of the model ... such as estimation, inference, complex covariance structure, model predictions, diagnostics, and missing data." 
+- "... this simpler form makes it possible to focus on other aspects of the model ... such as estimation, inference, complex covariance structure, model predictions, diagnostics, and missing data." [@scott2013multilevel] 
+::: 
 
+The most common notation is as follows: 
+$$\mathbf{y} = X \mathbf{\beta} + Z \mathbf{u} + \mathbf{\epsilon}$$ 
+where 
 
-- $\mathbf{y} = X \mathbf{\beta} + Z \mathbf{u} + \mathbf{\epsilon}$ 
-- ... where $X_j$ is the **design matrix** for the fixed effects and $Z_j$ is the design matrix for the **random effects**.  
+- $X_j$ is the **design matrix** for the fixed effects
+- $Z_j$ is the design matrix for the **random effects**.  
 
 Still the same model can be written in matrix notation, just as we have seen before with the linear model. A linear mixed model (LMM) is typically written as: 
 
@@ -199,9 +228,11 @@ $$
 
 where $y_j = \texttt{lpo}_j$ is a column vector containing the scores in cluster $j$, where $X_j = (1, \texttt{den}_j, \texttt{sec}_j)$ is the design matrix. 
 
+There are some nice introductions on [this blog](https://stats.oarc.ucla.edu/other/mult-pkg/introduction-to-linear-mixed-models/). 
+
 ## Domains and preferences 
 
-- The matrix model formulation is favoured among statisticians^[for example, [this blog posts](https://stats.oarc.ucla.edu/other/mult-pkg/introduction-to-linear-mixed-models/) uses the matrix notation] 
+- The matrix model formulation is favored among statisticians
 - The level notation is common in the social sciences, as they separate the roles of level-1 and level-2 variables, which eases interpretation of the model and error structures 
 - The composite formulation covers the middle ground, for its balance between compactness and clarity, and is used by the introductions into the multilevel analysis for applied researchers 
   - I think the Bayesian wind is most similar to this 
@@ -222,13 +253,12 @@ In [this blog post](https://solomonkurz.netlify.app/blog/2021-12-16-use-emmeans-
 If the model is not necessarily linear or Gaussian, we could use `glm` instead of `lm` and `glmer` instead of `lmer`. 
 :::
 
-## Which of these map best to `lme4` and `brms` syntax? 
+<!-- ## Which of these map best to `lme4` and `brms` syntax?  -->
 
-The composite notation maps best to `lme4` and `brms` syntax. 
+<!-- The composite notation maps best to `lme4` and `brms` syntax.  -->
 
-What about the syntax? Xiaoying provides some lead here but it's like Wilkinson-Rogers -> Wilkinson-Rogers-Pinheiro-Bates (`lm(y ~ x + z)`) and then Paurl Burkner for the brms syntax (`response | aterms ~ pterms + (gterms | group)`). 
+<!-- What about the syntax? Xiaoying provides some lead here but it's like Wilkinson-Rogers -> Wilkinson-Rogers-Pinheiro-Bates (`lm(y ~ x + z)`) and then Paurl Burkner for the brms syntax (`response | aterms ~ pterms + (gterms | group)`).  -->
 
-## Application 
 
 ### Data with an obvious sense of hierarchy 
 
@@ -250,11 +280,12 @@ m3
 extract_eq(m3)
 ```
 
-“Multilevel models contain two forms of stochastic 62 variation, usually called variance components, cap- 63 tured in random effects ($u_{0j}$) and error ($\epsilon_{ij}$ ) terms, the former representing systematic differences between groups (schools) and the latter unexplained, subject-level differences within groups (schools).”
+“Multilevel models contain two forms of stochastic variation, usually called variance components, captured in random effects ($u_{0j}$) and error ($\epsilon_{ij}$ ) terms, the former representing systematic differences between groups and the latter unexplained, subject-level differences within groups.”
 
-### Data without an obvious sense of hierarchy. 
+# Crossed Random Effects 
 
-Let's suppose you're a psycholinguist. You administed some tests to a group of participants, where each participant answerer different item types multiple types. The model is not necessarily "nested" but given that a same participant is sampled multiple times, you can group by individual participants (`Subject`) and you can also group by item types (`Item`). This is the case demonstrated in @barrRandomEffectsStructure2013. They provided a handy table for models and their associated `lmer` syntax, which I will recreate: 
+Let's suppose you're a psycholinguist. You administed some tests to a group of participants, where each participant answerer different item types multiple types. The model is not necessarily "nested" but given that a same participant is sampled multiple times, you can group by individual participants (`Subject`) and you can also group by item types (`Item`). This is the case demonstrated in @barrRandomEffectsStructure2013. Note that $X_i$ is just an indicator variable, of whether the item is type A versus type B (? to be confirmed). 
+@barrRandomEffectsStructure2013 provided a handy table for models and their associated `lmer` syntax, which I will recreate: 
 
 | math | `lm`/`lmer` formula | 
 | ---- | ------------------- | 
@@ -267,9 +298,10 @@ Let's suppose you're a psycholinguist. You administed some tests to a group of p
 
 Note that the above math notation is not the most conventional. Everything except the last part I don't quite get. 
 
----
 
-:::{.callout-note collapse="true"}
+# Why are things so complicated? 
+
+:::{.callout-note collapse="false"}
 ## What's up with all this terminology? 
 
 My mental model of how hierarchical models work is heavily influenced by @mcelreath2020statistical. In his book, McElreath said: 
@@ -306,22 +338,20 @@ In @barrRandomEffectsStructure2013, the provide a nice table.
 In @gaSoftwareFittingMultilevel2013, they looked at the software for fitting multilevel models, and they had a nice table^[Table 26.1] about statistical software packages containing modules/functions designed to fix various classes of mixed-effects models. Below I will reproduce this table, but focusing only on the `R` side of things: 
 
 | `R` package | Linear Mixed Models <br> **LMM** | Generalized Linear Mixed Models <br> **GLMM** | Nonlinear Mixed Models <br> **NLMM** |
-|---------|:-----|------:|:------:|
-| [`nlme`](https://cran.r-project.org/web/packages/nlme/index.html)      | 12   |    12 |   12   |
-| [`lme4`](https://cran.r-project.org/web/packages/lme4/index.html)     | 123  |   123 |  123   |
-| [`brms`](https://cran.r-project.org/web/packages/brms/index.html)       | 1    |     1 |   1    |
+|---------|-----|------|------|
+| [`nlme`](https://cran.r-project.org/web/packages/nlme/index.html)      | `lme` (1999)   |     |   `nlme` (1999)   |
+| [`lme4`](https://cran.r-project.org/web/packages/lme4/index.html)     | `lmer` (2005)  |   `glmer` (2006) |  `nlmer` (2007)   |
+| [`brms`](https://cran.r-project.org/web/packages/brms/index.html)       | `brm` (2017)   |     `brm` and specify `family = bernoulli()` or some other non-Gaussian family |   `brm` and specify `nl = TRUE`   |
 
 : `R` software packages and functions for fitting mixed models. 
 
-> Multilevel models contain two forms of stochastic variation, usually called variance components, captured in random effects $u_{0j}$ and error $\epsilon_{ij}$ terms, 
 
-# Why are things so complicated? 
+
+
 
 ## The many names for multi-level models 
 
-In @mcelreath2020statistical, on page 415: 
 
-> Multilevel models go by many different names, and some statisticians use the same names for different specialized variants, while other use them all interchangeably. The most common synonymns for "multilevel" are HIERARCHICAL and MIXED EFFECTS. The type of parameters that appear in multilevel models are most commonly known as RANDOM EFFECTS, which itself can mean very different things to different analysts and in different contexts. And even the innocent term "level" can mean differeng things to different people. There's really no cure for this swamp of vocabulary aside from demanding a mathematical or algorithmic definition of the model. Otherwise, there will always be ambiguity.
  
 See also the footnote of the [wikipedia article](https://en.wikipedia.org/wiki/Multilevel_model) for multi-level models. 
 
@@ -331,9 +361,6 @@ See also the footnote of the [wikipedia article](https://en.wikipedia.org/wiki/M
 Here McElreath points to footnote 186, in which he further points us to section 6, page 20 of [@gelman2005analysis] for an entertaining list of wildly different definitions of "random effects".
 :::
 
-Further in footnote 188, @mcelreath2020statistical says
-
-> I adopt the terminology of @gelman2005analysis, who argues that the common term _random effects_ hardly aids with understanding, for most people. Indeed, it seems to encourage misunderstanding, partly becasue the terms _fixed_ and _random_ mean different things to different statisticians. See pages 20 -- 21 of Gelman's paper. I fully realize, however, that by trying to spread Gelman's alternative jargon, I am essentially spitting into a very strong wind.
 
 <!-- ## Notations  -->
 
