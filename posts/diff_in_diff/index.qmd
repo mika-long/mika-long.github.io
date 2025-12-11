@@ -1,0 +1,72 @@
+---
+title: "(Bayesian) difference in differneces"
+author: 
+  name: Sheng Long
+categories: [Statistics]
+date: last-modified
+draft: true 
+format:
+  html: 
+    reference-location: margin
+    toc: true 
+    code-overflow: wrap 
+description: "Some notes on difference in differences."
+---
+
+Some related readings: 
+- [_The Causal Mixtape_](https://mixtape.scunning.com/09-difference_in_differences)
+    - does not feel enough hands on ... 
+    - Econ data is rarely available and even less so introduced in Quarto ... 
+- [Course material by Andrew Heiss](https://evalsp21.classes.andrewheiss.com/example/diff-in-diff/) 
+    - does feel hands on, as he provides a dataset ... 
+
+# Some notes 
+
+- natural experiments: naturally occuring variation in some treatment variable that affects only some units over time 
+    - social scientist often rely on natural experimetns that mimic important elements of randomized experiments 
+    - exmaples include natural experiment caused by army enlistment (can't find the exact source but I remember hearing this from a professor from my college)
+    - also: John Snow's Cholera Hypothesis^[a $2 times 2$ DD design]
+
+- key assumption with DD design: **no time-variant subject specific unobservables**, i.e., the parallel trend assumption. 
+
+## David Card's classic minimum wage study 
+
+... referring to Card and Krueger (1994). 
+
+> ... Beautiful pictures displaying the "first stage" effect of the intervention on the treatment are crucial in the rhetori of causal inference, and few have done it as well as Card and Krueger. 
+
+# Some practice 
+
+```{r}
+library(tidyverse)
+theme_set(theme_minimal())
+
+df <- wooldridge::injury %>% as_tibble(.) %>% 
+    rename(duration = durat, 
+    log_duration = ldurat,
+    after_1980 = afchnge) %>% 
+    # just use observations from kentuck 
+    filter(ky == 1)
+
+df
+```
+
+## EDA 
+
+What is the distribution of unemployment benefits across high and low earners? 
+
+```{r}
+ggplot(df, aes(x = duration)) + 
+    geom_histogram() + 
+    facet_wrap(~after_1980)
+```
+
+As one can see the duration is highly skewed. Might want to transform it to a log scale. 
+
+```{r}
+ggplot(df, aes(x = log(duration))) + 
+    geom_histogram() + 
+    facet_wrap(~after_1980)
+```
+
+Doesn't seem to be too much of a difference in-between ... 
