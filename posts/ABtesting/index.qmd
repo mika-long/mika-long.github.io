@@ -15,12 +15,12 @@ description: "Some notes on A/B Testing, the frequentist way and the Bayesian wa
 
 ```{r}
 #| echo: false
+#| warning: false 
 
 library(tidyverse)
 library(ggplot2)
 theme_set(theme_minimal())
 ```
-
 
 # The Peeking Problem 
 
@@ -143,3 +143,29 @@ total_sim_df %>% ggplot(aes(x = day, y = value, group=exp_id, color = ever_sig))
 
 Hmm the above graph looks a bit weird ... 
 
+Anyways, the promise that the frequentist paradigm is making is that it helps control the type I error. When executed correctly. Bayesians don't help with this. 
+
+If we do want to do things correctly and not let's say, run an experiment for an indefinite amount of time, another thing to do is to implement (frequentist) sequential Bayesian testing correctly. 
+
+# Bayesian A/B testing with an example. 
+
+:::{.callout-note collapse="true"}
+## Sources
+- (https://www.kaggle.com/code/laurinbrechter/bayesian-a-b-testing/input) from Kaggle that uses PyMC. 
+- [this paper](https://arxiv.org/pdf/2307.14628) by people at Apple. 
+- [this blog post](https://www.countbayesie.com/blog/2015/4/25/bayesian-ab-testing)
+:::
+
+### Beta distribution 
+
+```{ojs}
+//| panel: sidebar
+viewof mu = Inputs.range([-10, 10], {value: 0, step: 0.1, label: "Location (mu)"})
+viewof sigma = Inputs.range([0.1, 10], {value: 1, step: 0.1, label: "Scale (sigma)"})
+viewof lambda_val = Inputs.range([-5, 5], {value: 0, step: 0.1, label: "Skew (lambda)"})
+viewof nu = Inputs.range([1, 100], {value: 10, step: 1, label: "Degrees of Freedom (nu)"})
+``` 
+
+# Some reflections 
+
+I think the real thing underlying all of this is that they each contain their baked in assumptions, and it is important that we know which assumptions to use and which not to use. 
