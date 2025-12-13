@@ -1,0 +1,34 @@
+---
+title: "Bayesian and Frequentist A/B Testing"
+author: 
+  name: Sheng Long
+categories: [Statistics]
+date: last-modified
+draft: true 
+format:
+  html: 
+    reference-location: margin
+    toc: true 
+    code-overflow: wrap 
+description: "Some notes on A/B Testing, the frequentist way and the Bayesian way, as well as their differences."
+---
+
+## This is a test for tabset 
+
+:::{.panel-tabset}
+## R 
+
+```{r}
+x <- rnorm(0, 1, 20)
+print(x)
+```
+
+## Python 
+
+```{python}
+import numpy as np 
+rng = np.random.default_rng()
+x = rng.normal(0, 1, 20)
+print(x)
+```
+:::
