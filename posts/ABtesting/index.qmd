@@ -151,10 +151,14 @@ If we do want to do things correctly and not let's say, run an experiment for an
 
 :::{.callout-note collapse="true"}
 ## Sources
-- (https://www.kaggle.com/code/laurinbrechter/bayesian-a-b-testing/input) from Kaggle that uses PyMC. 
+- [this blogpost](https://www.kaggle.com/code/laurinbrechter/bayesian-a-b-testing/input) from Kaggle that uses PyMC. 
+- [Another blogpost from Kaggle](https://www.kaggle.com/code/cstorm3000/bayesian-a-b-testing-from-scratch) that does not use PyMC ...? but uses `statsmodels` instead (and `plotnine` ...? did not know `plotnine` is a thing for 6 years ago ...)
 - [this paper](https://arxiv.org/pdf/2307.14628) by people at Apple. 
 - [this blog post](https://www.countbayesie.com/blog/2015/4/25/bayesian-ab-testing)
+- [this official tutorial](https://www.pymc.io/projects/examples/en/latest/causal_inference/bayesian_ab_testing_introduction.html) from PyMC. 
 :::
+
+If you look at the first formula for [binary outcomes](https://www.evanmiller.org/bayesian-ab-testing.html#notes), it says that when the prior is uninformative (i.e., uniform, alpha = beta = 1), then the updated posterior is ...? So in a sense, a beta distribution is a very special kind of distribution^[[conjugate prior](https://en.wikipedia.org/wiki/Conjugate_prior)] that allows closed-form calculations of updated posterior I believe ... 
 
 ### Beta distribution 
 
