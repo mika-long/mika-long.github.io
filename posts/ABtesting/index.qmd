@@ -150,7 +150,9 @@ If we do want to do things correctly and not let's say, run an experiment for an
 :::{.callout-note}
 ## Does Bayesian A/B Testing solve the problem of peeking^[aka "optional stopping"]? 
 
-The short answer is no. See explanations [here](https://www.alexmolas.com/2025/10/30/bayesian-ab-test-peeking.html) and [here](). 
+The short answer is no. See explanations [here](https://www.alexmolas.com/2025/10/30/bayesian-ab-test-peeking.html) and [here](http://varianceexplained.org/r/bayesian-ab-testing/). 
+
+There is also this [research paper](https://alexdeng.github.io/public/files/continuousMonitoring.pdf) on optional stopping in Bayesian testing. 
 :::
 
 # Bayesian A/B testing with an example. 
