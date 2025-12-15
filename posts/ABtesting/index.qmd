@@ -147,6 +147,12 @@ Anyways, the promise that the frequentist paradigm is making is that it helps co
 
 If we do want to do things correctly and not let's say, run an experiment for an indefinite amount of time, another thing to do is to implement (frequentist) sequential Bayesian testing correctly. 
 
+:::{.callout-note}
+## Does Bayesian A/B Testing solve the problem of peeking^[aka "optional stopping"]? 
+
+The short answer is no. See explanations [here](https://www.alexmolas.com/2025/10/30/bayesian-ab-test-peeking.html) and [here](). 
+:::
+
 # Bayesian A/B testing with an example. 
 
 :::{.callout-note collapse="true"}
