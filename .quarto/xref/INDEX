@@ -58,5 +58,11 @@
   },
   "posts/diff_in_diff/index.qmd": {
     "index.html": "a98dde24"
+  },
+  "posts/pymc-hierarchical/index.ipynb": {
+    "index.html": "c63a1e2b"
+  },
+  "posts/ABtesting/index.qmd": {
+    "index.html": "11dcfba9"
   }
 }

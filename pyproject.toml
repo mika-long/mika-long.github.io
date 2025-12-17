@@ -9,6 +9,7 @@ dependencies = [
     "arviz>=0.22.0",
     "ipykernel>=7.1.0",
     "numpy>=2.3.5",
+    "pandas>=2.3.3",
     "polars>=1.36.1",
     "pymc>=5.26.1",
     "seaborn>=0.13.2",

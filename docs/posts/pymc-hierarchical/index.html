@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sheng Long">
+<meta name="dcterms.date" content="2025-12-17">
+<meta name="keywords" content="statistics">
+
+<title>Hierarchical Modeling with PyMC – Sheng Long</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2f1d5595274720d733f4ffbbd914babc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../grad_cv.pdf"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#no-pooling" id="toc-no-pooling" class="nav-link active" data-scroll-target="#no-pooling">No pooling</a></li>
+  <li><a href="#with-pooling" id="toc-with-pooling" class="nav-link" data-scroll-target="#with-pooling">With pooling</a></li>
+  <li><a href="#model-comparison" id="toc-model-comparison" class="nav-link" data-scroll-target="#model-comparison">Model comparison</a></li>
+  <li><a href="#more-complex-model-multilevel-chimpanzees" id="toc-more-complex-model-multilevel-chimpanzees" class="nav-link" data-scroll-target="#more-complex-model-multilevel-chimpanzees">More complex model — multilevel Chimpanzees</a>
+  <ul class="collapse">
+  <li><a href="#dealing-with-divergent-transitions" id="toc-dealing-with-divergent-transitions" class="nav-link" data-scroll-target="#dealing-with-divergent-transitions">Dealing with divergent transitions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Hierarchical Modeling with PyMC</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sheng Long </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Updated</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 17, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>Implemented some hierarchical modelling related examples in <em>Statistical Rethinking</em> with <code>PyMC</code>.</p>
+  </div>
+</div>
+
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>statistics</p>
+  </div>
+</div>
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>TLDR
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>In order to figure out how to actually deploy fitted Bayesian models and integrate with the (broader) community of python users, here’s an attempt to work through <code>PyMC</code> syntax to figure out how to fit hierarchical Bayesian models using the examples from <em>Statistical Rethinking</em>.</p>
+</div>
+</div>
+</div>
+<p>We will use the tadpole survival in ponds dataset used in McElreath’s <em>Statistical Rethinking</em> textbook. The <code>reedfrogs.csv</code> is obtained from <a href="https://github.com/rmcelreath/rethinking/blob/master/data/reedfrogs.csv">here</a>. One can follow along the original textbook starting from <em>Chapter 13.1 Example: Multilevel tadpoles</em>.</p>
+<div id="eccd6c00" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>az.style.use(<span class="st">"arviz-docgrid"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="eefea80c" class="cell" data-execution_count="94">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in data </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"reedfrogs.csv"</span>, delimiter<span class="op">=</span><span class="st">";"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df.info()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 48 entries, 0 to 47
+Data columns (total 5 columns):
+ #   Column    Non-Null Count  Dtype  
+---  ------    --------------  -----  
+ 0   density   48 non-null     int64  
+ 1   pred      48 non-null     object 
+ 2   size      48 non-null     object 
+ 3   surv      48 non-null     int64  
+ 4   propsurv  48 non-null     float64
+dtypes: float64(1), int64(2), object(2)
+memory usage: 2.0+ KB</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">density</th>
+<th data-quarto-table-cell-role="th">pred</th>
+<th data-quarto-table-cell-role="th">size</th>
+<th data-quarto-table-cell-role="th">surv</th>
+<th data-quarto-table-cell-role="th">propsurv</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>10</td>
+<td>no</td>
+<td>big</td>
+<td>9</td>
+<td>0.9</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>10</td>
+<td>no</td>
+<td>big</td>
+<td>10</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>10</td>
+<td>no</td>
+<td>big</td>
+<td>7</td>
+<td>0.7</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>10</td>
+<td>no</td>
+<td>big</td>
+<td>10</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>10</td>
+<td>no</td>
+<td>small</td>
+<td>9</td>
+<td>0.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="d1df2de6" class="cell" data-execution_count="101">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df.sort_values(by<span class="op">=</span><span class="st">'density'</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(x <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">49</span>)], y <span class="op">=</span> df[<span class="st">'propsurv'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We will focus on the number surviving (<code>surv</code>) out of an intial count (<code>density</code>).</p>
+<section id="no-pooling" class="level1">
+<h1>No pooling</h1>
+<p>Math model:</p>
+<p><span class="math display">\[
+\begin{align}
+\texttt{surv}_i &amp;\sim \text{Binomial}(\texttt{density}_i, p_i) \\
+\text{logit}(p_i) &amp;= \alpha_{i} \\
+\alpha_j &amp;\sim \mathcal{N}(0, 1.5), j \in [48]
+\end{align}
+\]</span></p>
+<div id="95638938" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># corresponds to R code 13.2</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_1:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    alpha <span class="op">=</span> pm.Normal(<span class="st">"alpha"</span>, <span class="dv">0</span>, <span class="fl">1.5</span>, shape <span class="op">=</span> <span class="bu">len</span>(df))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># link </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    p_survived <span class="op">=</span> pm.Deterministic(<span class="st">"p_survived"</span>, pm.math.invlogit(alpha))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># likelihood </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    survived <span class="op">=</span> pm.Binomial(<span class="st">"survived"</span>, n<span class="op">=</span>df.density, p<span class="op">=</span>p_survived, observed<span class="op">=</span>df.surv)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    model_1_trace <span class="op">=</span> pm.sample()</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    model_1_trace <span class="op">=</span> pm.compute_log_likelihood(model_1_trace)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># posterior predictive check </span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    pm.sample_posterior_predictive(model_1_trace, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="3e4b46a3" class="cell" data-execution_count="91">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check output </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>az.summary(model_1_trace)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">sd</th>
+<th data-quarto-table-cell-role="th">hdi_3%</th>
+<th data-quarto-table-cell-role="th">hdi_97%</th>
+<th data-quarto-table-cell-role="th">mcse_mean</th>
+<th data-quarto-table-cell-role="th">mcse_sd</th>
+<th data-quarto-table-cell-role="th">ess_bulk</th>
+<th data-quarto-table-cell-role="th">ess_tail</th>
+<th data-quarto-table-cell-role="th">r_hat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alpha[0]</th>
+<td>1.721</td>
+<td>0.755</td>
+<td>0.320</td>
+<td>3.100</td>
+<td>0.008</td>
+<td>0.014</td>
+<td>8866.0</td>
+<td>2812.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alpha[1]</th>
+<td>2.400</td>
+<td>0.894</td>
+<td>0.815</td>
+<td>4.131</td>
+<td>0.011</td>
+<td>0.017</td>
+<td>7600.0</td>
+<td>2746.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alpha[2]</th>
+<td>0.746</td>
+<td>0.618</td>
+<td>-0.469</td>
+<td>1.847</td>
+<td>0.007</td>
+<td>0.012</td>
+<td>8869.0</td>
+<td>2820.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alpha[3]</th>
+<td>2.382</td>
+<td>0.887</td>
+<td>0.795</td>
+<td>4.096</td>
+<td>0.010</td>
+<td>0.019</td>
+<td>9025.0</td>
+<td>2466.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alpha[4]</th>
+<td>1.737</td>
+<td>0.787</td>
+<td>0.282</td>
+<td>3.234</td>
+<td>0.009</td>
+<td>0.015</td>
+<td>7840.0</td>
+<td>2479.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">p_survived[43]</th>
+<td>0.405</td>
+<td>0.079</td>
+<td>0.263</td>
+<td>0.556</td>
+<td>0.001</td>
+<td>0.001</td>
+<td>8347.0</td>
+<td>2943.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">p_survived[44]</th>
+<td>0.621</td>
+<td>0.080</td>
+<td>0.470</td>
+<td>0.769</td>
+<td>0.001</td>
+<td>0.002</td>
+<td>9117.0</td>
+<td>2699.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">p_survived[45]</th>
+<td>0.351</td>
+<td>0.078</td>
+<td>0.202</td>
+<td>0.498</td>
+<td>0.001</td>
+<td>0.001</td>
+<td>8229.0</td>
+<td>2453.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">p_survived[46]</th>
+<td>0.860</td>
+<td>0.055</td>
+<td>0.752</td>
+<td>0.948</td>
+<td>0.001</td>
+<td>0.001</td>
+<td>7756.0</td>
+<td>2918.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">p_survived[47]</th>
+<td>0.486</td>
+<td>0.083</td>
+<td>0.336</td>
+<td>0.642</td>
+<td>0.001</td>
+<td>0.002</td>
+<td>8102.0</td>
+<td>2411.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>96 rows × 9 columns</p>
+</div>
+</div>
+</div>
+<div id="52fef30d" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(model_1_trace)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>array([[&lt;Axes: title={'center': 'alpha'}&gt;, &lt;Axes: title={'center': 'alpha'}&gt;],
+       [&lt;Axes: title={'center': 'p_survived'}&gt;, &lt;Axes: title={'center': 'p_survived'}&gt;]], dtype=object)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="32f5955d" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pp check </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(model_1_trace, num_pp_samples<span class="op">=</span><span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="with-pooling" class="level1">
+<h1>With pooling</h1>
+<p>Math model: <span class="math display">\[
+\begin{align}
+\texttt{surv}_i &amp;\sim \text{Binomial}(N_i, p_i) \\
+\text{logit}(p_i) &amp;\sim \alpha_{\text{TANK}[i]} \\
+\alpha_j &amp;\sim \mathcal{N}(\bar{\alpha}, \sigma), j \in [48] \\
+\bar{\alpha} &amp;\sim \mathcal{N}(0, 1.5) \\
+\sigma &amp;\sim \text{Exponential}(1)
+\end{align}
+\]</span></p>
+<div id="8370e73c" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># corresponds to R code 13.3</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_2:</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># hyperprior </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pm.Exponential(<span class="st">"sigma"</span>, <span class="dv">1</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    alpha_bar <span class="op">=</span> pm.Normal(<span class="st">"alpha_bar"</span>, <span class="dv">0</span>, <span class="fl">1.5</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    alpha <span class="op">=</span> pm.Normal(<span class="st">"alpha"</span>, mu<span class="op">=</span>alpha_bar, sigma<span class="op">=</span>sigma, shape<span class="op">=</span><span class="bu">len</span>(df))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># link </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    p_survived <span class="op">=</span> pm.Deterministic(<span class="st">"p_survived"</span>, pm.math.invlogit(alpha))</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># likelihood </span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    survived <span class="op">=</span> pm.Binomial(<span class="st">"survived"</span>, n<span class="op">=</span>df.density, p<span class="op">=</span>p_survived, observed<span class="op">=</span>df.surv)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    model_2_trace <span class="op">=</span> pm.sample()</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    model_2_trace <span class="op">=</span> pm.compute_log_likelihood(model_2_trace)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># posterior predictive check </span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    pm.sample_posterior_predictive(model_2_trace, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="43280438" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check posterior fit </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>az.summary(model_2_trace, round_to<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">sd</th>
+<th data-quarto-table-cell-role="th">hdi_3%</th>
+<th data-quarto-table-cell-role="th">hdi_97%</th>
+<th data-quarto-table-cell-role="th">mcse_mean</th>
+<th data-quarto-table-cell-role="th">mcse_sd</th>
+<th data-quarto-table-cell-role="th">ess_bulk</th>
+<th data-quarto-table-cell-role="th">ess_tail</th>
+<th data-quarto-table-cell-role="th">r_hat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alpha_bar</th>
+<td>1.35</td>
+<td>0.26</td>
+<td>0.88</td>
+<td>1.85</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>5063.43</td>
+<td>3030.24</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alpha[0]</th>
+<td>2.13</td>
+<td>0.89</td>
+<td>0.46</td>
+<td>3.78</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>7276.89</td>
+<td>2643.59</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alpha[1]</th>
+<td>3.10</td>
+<td>1.12</td>
+<td>1.12</td>
+<td>5.18</td>
+<td>0.02</td>
+<td>0.02</td>
+<td>5023.20</td>
+<td>2541.04</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alpha[2]</th>
+<td>0.99</td>
+<td>0.67</td>
+<td>-0.20</td>
+<td>2.27</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>7794.92</td>
+<td>2864.81</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alpha[3]</th>
+<td>3.09</td>
+<td>1.13</td>
+<td>1.09</td>
+<td>5.27</td>
+<td>0.02</td>
+<td>0.02</td>
+<td>4801.68</td>
+<td>2156.00</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">p_survived[43]</th>
+<td>0.42</td>
+<td>0.08</td>
+<td>0.27</td>
+<td>0.57</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>5566.55</td>
+<td>2445.12</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">p_survived[44]</th>
+<td>0.64</td>
+<td>0.08</td>
+<td>0.48</td>
+<td>0.78</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>7655.68</td>
+<td>2726.25</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">p_survived[45]</th>
+<td>0.36</td>
+<td>0.08</td>
+<td>0.22</td>
+<td>0.51</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>8198.61</td>
+<td>2725.24</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">p_survived[46]</th>
+<td>0.88</td>
+<td>0.05</td>
+<td>0.78</td>
+<td>0.97</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>5496.54</td>
+<td>2647.30</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">p_survived[47]</th>
+<td>0.50</td>
+<td>0.08</td>
+<td>0.34</td>
+<td>0.65</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>8799.54</td>
+<td>3138.66</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>98 rows × 9 columns</p>
+</div>
+</div>
+</div>
+<div id="3d511891" class="cell" data-execution_count="46">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(model_2_trace)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<pre><code>array([[&lt;Axes: title={'center': 'alpha_bar'}&gt;,
+        &lt;Axes: title={'center': 'alpha_bar'}&gt;],
+       [&lt;Axes: title={'center': 'alpha'}&gt;,
+        &lt;Axes: title={'center': 'alpha'}&gt;],
+       [&lt;Axes: title={'center': 'sigma'}&gt;,
+        &lt;Axes: title={'center': 'sigma'}&gt;],
+       [&lt;Axes: title={'center': 'p_survived'}&gt;,
+        &lt;Axes: title={'center': 'p_survived'}&gt;]], dtype=object)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-11-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="525c82c9" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pp check </span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(model_2_trace, num_pp_samples<span class="op">=</span><span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="4a3a74b4" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> -- figure out how to plot ecdf </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="model-comparison" class="level1">
+<h1>Model comparison</h1>
+<div id="84482a6b" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>az.compare({<span class="st">'unpooled'</span>: model_1_trace, <span class="st">'pooled'</span>: model_2_trace})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">rank</th>
+<th data-quarto-table-cell-role="th">elpd_loo</th>
+<th data-quarto-table-cell-role="th">p_loo</th>
+<th data-quarto-table-cell-role="th">elpd_diff</th>
+<th data-quarto-table-cell-role="th">weight</th>
+<th data-quarto-table-cell-role="th">se</th>
+<th data-quarto-table-cell-role="th">dse</th>
+<th data-quarto-table-cell-role="th">warning</th>
+<th data-quarto-table-cell-role="th">scale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">pooled</th>
+<td>0</td>
+<td>-111.604519</td>
+<td>32.480297</td>
+<td>0.000000</td>
+<td>1.0</td>
+<td>4.253222</td>
+<td>0.00000</td>
+<td>True</td>
+<td>log</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">unpooled</th>
+<td>1</td>
+<td>-120.496778</td>
+<td>38.884615</td>
+<td>8.892259</td>
+<td>0.0</td>
+<td>2.424403</td>
+<td>2.83376</td>
+<td>True</td>
+<td>log</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Observe that the <code>pooled</code> model is better than the <code>unpooled</code> model.</p>
+<hr>
+</section>
+<section id="more-complex-model-multilevel-chimpanzees" class="level1">
+<h1>More complex model — multilevel Chimpanzees</h1>
+<p>The tadpole example is “easy” as it does not involve complex grouping, as each row is its own group. Next we will explore the chimpanzee dataset for something a bit more complex to demonstrate the power of the <code>PyMC</code> syntax.</p>
+<p>The chimpanzee data is obtained from <a href="">here</a>. The example we’re looking at is <em>13.3.1 Multilevel chimpanzees</em>. We will create a new column, <strong>treatment</strong>, that is a combination of <code>prosoc_left</code> and <code>condition</code>.</p>
+<p>Here’s the math model: <span class="math display">\[
+\begin{align}
+\texttt{pulled\_left}_i &amp;\sim \text{Binomial}(1, p_i) \\
+\text{logit}(p_i) &amp;= \alpha_{\texttt{actor}[i]} + \gamma_{\texttt{block}[i]} + \beta_{\text{TREATMENT}[i]} \\
+\beta_j &amp;\sim \mathcal{N}(0, 0.5), j \in [4] \\
+\alpha_j &amp;\sim \mathcal{N}(\bar{\alpha}, \sigma_\alpha), j \in [7] \\
+\gamma_j &amp;\sim \mathcal{N}(0, \sigma_\gamma), j \in [6] \\
+\bar{\alpha} &amp;\sim \mathcal{N}(0, 1.5) \\
+\sigma_\alpha &amp;\sim \text{Exponential}(1) \\
+\sigma_\gamma &amp;\sim \text{Exponential}(1)
+\end{align}
+\]</span></p>
+<div id="7f1d8832" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the data </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"chimpanzees.csv"</span>, delimiter<span class="op">=</span><span class="st">";"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new treatment column </span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'treatment'</span>] <span class="op">=</span> df[<span class="st">'condition'</span>].astype(<span class="bu">str</span>) <span class="op">+</span> <span class="st">"_"</span> <span class="op">+</span> df[<span class="st">'prosoc_left'</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>df.info()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 504 entries, 0 to 503
+Data columns (total 9 columns):
+ #   Column        Non-Null Count  Dtype  
+---  ------        --------------  -----  
+ 0   actor         504 non-null    int64  
+ 1   recipient     252 non-null    float64
+ 2   condition     504 non-null    int64  
+ 3   block         504 non-null    int64  
+ 4   trial         504 non-null    int64  
+ 5   prosoc_left   504 non-null    int64  
+ 6   chose_prosoc  504 non-null    int64  
+ 7   pulled_left   504 non-null    int64  
+ 8   treatment     504 non-null    object 
+dtypes: float64(1), int64(7), object(1)
+memory usage: 35.6+ KB</code></pre>
+</div>
+</div>
+<div id="52252921" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># factorize to get 0-based indices </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>actor_idx, actors <span class="op">=</span> pd.factorize(df[<span class="st">'actor'</span>], sort<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>block_idx, blocks <span class="op">=</span> pd.factorize(df[<span class="st">'block'</span>], sort<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>treat_idx, treatments <span class="op">=</span> pd.factorize(df[<span class="st">'treatment'</span>], sort<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="3d3149ea" class="cell" data-execution_count="80">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define and fit model </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> chimp_model:</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    chimp_model.add_coord(<span class="st">"actors"</span>, actors)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    chimp_model.add_coord(<span class="st">"blocks"</span>, blocks)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    chimp_model.add_coord(<span class="st">"treatments"</span>, treatments)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># hyperpriors </span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    a_bar <span class="op">=</span> pm.Normal(<span class="st">"a_bar"</span>, <span class="dv">0</span>, <span class="fl">1.5</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    sigma_a <span class="op">=</span> pm.Exponential(<span class="st">"sigma_a"</span>, <span class="dv">1</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    sigma_gamma <span class="op">=</span> pm.Exponential(<span class="st">"sigma_gamma"</span>, <span class="dv">1</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior </span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    alpha <span class="op">=</span> pm.Normal(<span class="st">"alpha"</span>, mu<span class="op">=</span>a_bar, sigma<span class="op">=</span>sigma_a, dims<span class="op">=</span><span class="st">"actors"</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    gamma <span class="op">=</span> pm.Normal(<span class="st">"gamma"</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span>sigma_gamma, dims<span class="op">=</span><span class="st">"blocks"</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> pm.Normal(<span class="st">"beta"</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">0.5</span>, dims<span class="op">=</span><span class="st">"treatments"</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># link </span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> alpha[actor_idx] <span class="op">+</span> gamma[block_idx] <span class="op">+</span> beta[treat_idx] </span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># likelihood </span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    obs <span class="op">=</span> pm.Bernoulli(<span class="st">"obs"</span>, logit_p<span class="op">=</span>logits, observed<span class="op">=</span>df[<span class="st">'pulled_left'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="d26ada6c" class="cell" data-execution_count="79">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> chimp_model: </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    chimp_model_trace <span class="op">=</span> pm.sample(draws<span class="op">=</span><span class="dv">1000</span>, tune<span class="op">=</span><span class="dv">1000</span>, progressbar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    chimp_model_trace <span class="op">=</span> pm.compute_log_likelihood(chimp_model_trace)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># posterior predictive check </span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    pm.sample_posterior_predictive(chimp_model_trace, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [a_bar, sigma_a, sigma_gamma, alpha, gamma, beta]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+There were 23 divergences after tuning. Increase `target_accept` or reparameterize.
+The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>Computing ... <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-magenta-fg">100%</span> 0:00:00:--:--
+
+</pre>
+</div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sampling: [obs]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>Sampling ... <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-magenta-fg">100%</span> 0:00:00 / 0:00:00━━━━━━━ <span class="ansi-magenta-fg"> 58%</span> 0:00:01 / 0:00:00
+
+</pre>
+</div>
+</div>
+</div>
+<p>The above model will give you a warning about “22 divergences after tuning”, which is similar to what the textbook says. For now we will ignore this and proceed to exmaine some of the outputs here:</p>
+<div id="cabe5059" class="cell" data-execution_count="41">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>az.summary(chimp_model_trace)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">sd</th>
+<th data-quarto-table-cell-role="th">hdi_3%</th>
+<th data-quarto-table-cell-role="th">hdi_97%</th>
+<th data-quarto-table-cell-role="th">mcse_mean</th>
+<th data-quarto-table-cell-role="th">mcse_sd</th>
+<th data-quarto-table-cell-role="th">ess_bulk</th>
+<th data-quarto-table-cell-role="th">ess_tail</th>
+<th data-quarto-table-cell-role="th">r_hat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">a_bar</th>
+<td>0.598</td>
+<td>0.764</td>
+<td>-0.835</td>
+<td>2.057</td>
+<td>0.017</td>
+<td>0.016</td>
+<td>1967.0</td>
+<td>1814.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alpha[1]</th>
+<td>-0.340</td>
+<td>0.364</td>
+<td>-1.054</td>
+<td>0.320</td>
+<td>0.011</td>
+<td>0.006</td>
+<td>1144.0</td>
+<td>1904.0</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alpha[2]</th>
+<td>4.750</td>
+<td>1.377</td>
+<td>2.580</td>
+<td>7.257</td>
+<td>0.038</td>
+<td>0.058</td>
+<td>1669.0</td>
+<td>1533.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alpha[3]</th>
+<td>-0.646</td>
+<td>0.369</td>
+<td>-1.369</td>
+<td>0.010</td>
+<td>0.012</td>
+<td>0.006</td>
+<td>1022.0</td>
+<td>1674.0</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alpha[4]</th>
+<td>-0.647</td>
+<td>0.367</td>
+<td>-1.343</td>
+<td>0.044</td>
+<td>0.012</td>
+<td>0.006</td>
+<td>1016.0</td>
+<td>1991.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alpha[5]</th>
+<td>-0.339</td>
+<td>0.362</td>
+<td>-1.034</td>
+<td>0.316</td>
+<td>0.012</td>
+<td>0.006</td>
+<td>936.0</td>
+<td>1930.0</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alpha[6]</th>
+<td>0.599</td>
+<td>0.368</td>
+<td>-0.091</td>
+<td>1.292</td>
+<td>0.012</td>
+<td>0.006</td>
+<td>932.0</td>
+<td>1861.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alpha[7]</th>
+<td>2.134</td>
+<td>0.463</td>
+<td>1.321</td>
+<td>3.009</td>
+<td>0.013</td>
+<td>0.007</td>
+<td>1263.0</td>
+<td>1845.0</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">gamma[1]</th>
+<td>-0.185</td>
+<td>0.224</td>
+<td>-0.612</td>
+<td>0.167</td>
+<td>0.006</td>
+<td>0.007</td>
+<td>1506.0</td>
+<td>1752.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">gamma[2]</th>
+<td>0.039</td>
+<td>0.192</td>
+<td>-0.314</td>
+<td>0.417</td>
+<td>0.004</td>
+<td>0.006</td>
+<td>2188.0</td>
+<td>1945.0</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">gamma[3]</th>
+<td>0.055</td>
+<td>0.190</td>
+<td>-0.269</td>
+<td>0.459</td>
+<td>0.004</td>
+<td>0.006</td>
+<td>2312.0</td>
+<td>1953.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">gamma[4]</th>
+<td>0.008</td>
+<td>0.188</td>
+<td>-0.350</td>
+<td>0.375</td>
+<td>0.004</td>
+<td>0.007</td>
+<td>2185.0</td>
+<td>1671.0</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">gamma[5]</th>
+<td>-0.037</td>
+<td>0.198</td>
+<td>-0.439</td>
+<td>0.332</td>
+<td>0.004</td>
+<td>0.006</td>
+<td>2412.0</td>
+<td>1605.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">gamma[6]</th>
+<td>0.116</td>
+<td>0.199</td>
+<td>-0.190</td>
+<td>0.545</td>
+<td>0.005</td>
+<td>0.006</td>
+<td>2028.0</td>
+<td>1946.0</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">beta[0_0]</th>
+<td>-0.146</td>
+<td>0.296</td>
+<td>-0.720</td>
+<td>0.380</td>
+<td>0.009</td>
+<td>0.004</td>
+<td>1047.0</td>
+<td>1902.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">beta[0_1]</th>
+<td>0.382</td>
+<td>0.296</td>
+<td>-0.192</td>
+<td>0.923</td>
+<td>0.009</td>
+<td>0.005</td>
+<td>1040.0</td>
+<td>1949.0</td>
+<td>1.01</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">beta[1_0]</th>
+<td>-0.490</td>
+<td>0.296</td>
+<td>-1.022</td>
+<td>0.084</td>
+<td>0.009</td>
+<td>0.005</td>
+<td>1023.0</td>
+<td>1604.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">beta[1_1]</th>
+<td>0.265</td>
+<td>0.296</td>
+<td>-0.303</td>
+<td>0.807</td>
+<td>0.009</td>
+<td>0.005</td>
+<td>1025.0</td>
+<td>2168.0</td>
+<td>1.01</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">sigma_a</th>
+<td>2.045</td>
+<td>0.682</td>
+<td>1.046</td>
+<td>3.378</td>
+<td>0.019</td>
+<td>0.022</td>
+<td>1650.0</td>
+<td>1385.0</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">sigma_gamma</th>
+<td>0.231</td>
+<td>0.173</td>
+<td>0.032</td>
+<td>0.531</td>
+<td>0.006</td>
+<td>0.006</td>
+<td>513.0</td>
+<td>555.0</td>
+<td>1.01</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="9079af52" class="cell" data-execution_count="108">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(chimp_model_trace, figsize<span class="op">=</span>(<span class="dv">4</span>,<span class="dv">4</span>), combined<span class="op">=</span><span class="va">True</span>, hdi_prob<span class="op">=</span><span class="fl">0.89</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>array([&lt;Axes: title={'center': '89.0% HDI'}&gt;], dtype=object)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-20-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="dealing-with-divergent-transitions" class="level3">
+<h3 class="anchored" data-anchor-id="dealing-with-divergent-transitions">Dealing with divergent transitions</h3>
+<p>The first trick is to increase the target acceptance rate. In <code>stan</code> related code, this is done by pushing <code>adapt_delta = 0.95</code> to <code>adapt_delta=0.99</code>.</p>
+<div id="8ef232d8" class="cell" data-execution_count="81">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> chimp_model: </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    chimp_model_trace <span class="op">=</span> pm.sample(progressbar<span class="op">=</span><span class="va">False</span>, target_accept<span class="op">=</span><span class="fl">0.99</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># chimp_model_trace = pm.compute_log_likelihood(chimp_model_trace)</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># posterior predictive check </span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># pm.sample_posterior_predictive(chimp_model_trace, extend_inferencedata=True)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [a_bar, sigma_a, sigma_gamma, alpha, gamma, beta]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 8 seconds.
+There were 78 divergences after tuning. Increase `target_accept` or reparameterize.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details</code></pre>
+</div>
+</div>
+<p>This doesn’t seem to solve our problem, so we will turn to the second trick: <strong>reparameterization</strong>.</p>
+<div id="7ee29979" class="cell" data-execution_count="82">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R code 13.29 </span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># define and fit model </span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> chimp_model_2:</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    chimp_model_2.add_coord(<span class="st">"actors"</span>, actors)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    chimp_model_2.add_coord(<span class="st">"blocks"</span>, blocks)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    chimp_model_2.add_coord(<span class="st">"treatments"</span>, treatments)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># hyperpriors </span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    a_bar <span class="op">=</span> pm.Normal(<span class="st">"a_bar"</span>, <span class="dv">0</span>, <span class="fl">1.5</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    sigma_a <span class="op">=</span> pm.Exponential(<span class="st">"sigma_a"</span>, <span class="dv">1</span>)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    sigma_gamma <span class="op">=</span> pm.Exponential(<span class="st">"sigma_gamma"</span>, <span class="dv">1</span>)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior </span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> pm.Normal(<span class="st">"z"</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>, dims<span class="op">=</span><span class="st">"actors"</span>)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> pm.Normal(<span class="st">"x"</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>, dims<span class="op">=</span><span class="st">"blocks"</span>)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> pm.Normal(<span class="st">"beta"</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">0.5</span>, dims<span class="op">=</span><span class="st">"treatments"</span>)</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># link </span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> a_bar <span class="op">+</span> z[actor_idx] <span class="op">*</span> sigma_a <span class="op">+</span> x[block_idx] <span class="op">*</span> sigma_gamma <span class="op">+</span> beta[treat_idx] </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># likelihood </span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    obs <span class="op">=</span> pm.Bernoulli(<span class="st">"obs"</span>, logit_p<span class="op">=</span>logits, observed<span class="op">=</span>df[<span class="st">'pulled_left'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="1271da99" class="cell" data-execution_count="83">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> chimp_model_2: </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    chimp_model_2_trace <span class="op">=</span> pm.sample(draws<span class="op">=</span><span class="dv">1000</span>, tune<span class="op">=</span><span class="dv">1000</span>, progressbar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    chimp_model_2_trace <span class="op">=</span> pm.compute_log_likelihood(chimp_model_2_trace)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># posterior predictive check </span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    pm.sample_posterior_predictive(chimp_model_2_trace, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [a_bar, sigma_a, sigma_gamma, z, x, beta]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>Computing ... <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-magenta-fg">100%</span> 0:00:00:--:--
+
+</pre>
+</div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sampling: [obs]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre>Sampling ... <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-magenta-fg">100%</span> 0:00:00 / 0:00:00━━━━━━━━━━━━━━ <span class="ansi-magenta-fg"> 50%</span> 0:00:01 / 0:00:00
+
+</pre>
+</div>
+</div>
+</div>
+<p>No divergent transitions!</p>
+<div id="a384ab34" class="cell" data-execution_count="84">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>az.summary(chimp_model_2_trace)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">sd</th>
+<th data-quarto-table-cell-role="th">hdi_3%</th>
+<th data-quarto-table-cell-role="th">hdi_97%</th>
+<th data-quarto-table-cell-role="th">mcse_mean</th>
+<th data-quarto-table-cell-role="th">mcse_sd</th>
+<th data-quarto-table-cell-role="th">ess_bulk</th>
+<th data-quarto-table-cell-role="th">ess_tail</th>
+<th data-quarto-table-cell-role="th">r_hat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">a_bar</th>
+<td>0.601</td>
+<td>0.715</td>
+<td>-0.685</td>
+<td>2.010</td>
+<td>0.022</td>
+<td>0.018</td>
+<td>1114.0</td>
+<td>1269.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">z[1]</th>
+<td>-0.505</td>
+<td>0.376</td>
+<td>-1.231</td>
+<td>0.173</td>
+<td>0.011</td>
+<td>0.007</td>
+<td>1261.0</td>
+<td>2055.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">z[2]</th>
+<td>2.118</td>
+<td>0.659</td>
+<td>0.947</td>
+<td>3.357</td>
+<td>0.015</td>
+<td>0.010</td>
+<td>1853.0</td>
+<td>2265.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">z[3]</th>
+<td>-0.671</td>
+<td>0.390</td>
+<td>-1.401</td>
+<td>0.060</td>
+<td>0.011</td>
+<td>0.007</td>
+<td>1207.0</td>
+<td>1608.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">z[4]</th>
+<td>-0.667</td>
+<td>0.389</td>
+<td>-1.415</td>
+<td>0.017</td>
+<td>0.011</td>
+<td>0.006</td>
+<td>1204.0</td>
+<td>1867.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">z[5]</th>
+<td>-0.511</td>
+<td>0.373</td>
+<td>-1.184</td>
+<td>0.205</td>
+<td>0.011</td>
+<td>0.006</td>
+<td>1218.0</td>
+<td>1828.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">z[6]</th>
+<td>-0.007</td>
+<td>0.354</td>
+<td>-0.632</td>
+<td>0.685</td>
+<td>0.010</td>
+<td>0.006</td>
+<td>1277.0</td>
+<td>1956.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">z[7]</th>
+<td>0.809</td>
+<td>0.462</td>
+<td>-0.019</td>
+<td>1.713</td>
+<td>0.012</td>
+<td>0.009</td>
+<td>1450.0</td>
+<td>1409.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">x[1]</th>
+<td>-0.647</td>
+<td>0.872</td>
+<td>-2.348</td>
+<td>0.954</td>
+<td>0.015</td>
+<td>0.015</td>
+<td>3455.0</td>
+<td>3043.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">x[2]</th>
+<td>0.146</td>
+<td>0.859</td>
+<td>-1.548</td>
+<td>1.737</td>
+<td>0.014</td>
+<td>0.016</td>
+<td>3701.0</td>
+<td>2187.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">x[3]</th>
+<td>0.201</td>
+<td>0.838</td>
+<td>-1.358</td>
+<td>1.839</td>
+<td>0.013</td>
+<td>0.016</td>
+<td>4106.0</td>
+<td>2465.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">x[4]</th>
+<td>0.040</td>
+<td>0.853</td>
+<td>-1.706</td>
+<td>1.560</td>
+<td>0.014</td>
+<td>0.015</td>
+<td>3760.0</td>
+<td>2614.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">x[5]</th>
+<td>-0.128</td>
+<td>0.868</td>
+<td>-1.750</td>
+<td>1.506</td>
+<td>0.014</td>
+<td>0.015</td>
+<td>4087.0</td>
+<td>2769.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">x[6]</th>
+<td>0.473</td>
+<td>0.883</td>
+<td>-1.293</td>
+<td>2.065</td>
+<td>0.014</td>
+<td>0.015</td>
+<td>3779.0</td>
+<td>2687.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">beta[0_0]</th>
+<td>-0.132</td>
+<td>0.305</td>
+<td>-0.709</td>
+<td>0.452</td>
+<td>0.006</td>
+<td>0.005</td>
+<td>2412.0</td>
+<td>2240.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">beta[0_1]</th>
+<td>0.399</td>
+<td>0.304</td>
+<td>-0.181</td>
+<td>0.956</td>
+<td>0.006</td>
+<td>0.004</td>
+<td>2635.0</td>
+<td>2679.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">beta[1_0]</th>
+<td>-0.480</td>
+<td>0.306</td>
+<td>-1.057</td>
+<td>0.076</td>
+<td>0.006</td>
+<td>0.004</td>
+<td>2255.0</td>
+<td>2672.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">beta[1_1]</th>
+<td>0.285</td>
+<td>0.302</td>
+<td>-0.302</td>
+<td>0.825</td>
+<td>0.006</td>
+<td>0.004</td>
+<td>2409.0</td>
+<td>2812.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">sigma_a</th>
+<td>2.045</td>
+<td>0.662</td>
+<td>0.951</td>
+<td>3.243</td>
+<td>0.020</td>
+<td>0.019</td>
+<td>1180.0</td>
+<td>1467.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">sigma_gamma</th>
+<td>0.202</td>
+<td>0.169</td>
+<td>0.000</td>
+<td>0.488</td>
+<td>0.004</td>
+<td>0.004</td>
+<td>1427.0</td>
+<td>1912.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="e248dafd" class="cell" data-execution_count="87">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(chimp_model_2_trace, num_pp_samples<span class="op">=</span><span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-25-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="3ab35b2a" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(chimp_model_2_trace, figsize<span class="op">=</span>(<span class="dv">4</span>,<span class="dv">6</span>), combined<span class="op">=</span><span class="va">True</span>, hdi_prob<span class="op">=</span><span class="fl">0.89</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>array([&lt;Axes: title={'center': '89.0% HDI'}&gt;], dtype=object)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-26-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2024 Sheng Long</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>This website is built with <i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i>, <i class="fa-brands fa-github" title="Github" aria-label="github"></i>, <a href="https://quarto.org/">Quarto</a>, <a href="https://github.com/quarto-ext/fontawesome">fontawesome</a>, <a href="https://iconify.design/">iconify.design</a>, and <a href="http://faviconer.com/icon/latest">faviconer</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
