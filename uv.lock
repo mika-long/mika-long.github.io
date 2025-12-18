@@ -354,6 +354,18 @@ wheels = [
 ]
 
 [[package]]
+name = "importlib-metadata"
+version = "8.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "zipp" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/76/66/650a33bd90f786193e4de4b3ad86ea60b53c89b669a5c7be931fac31cdb0/importlib_metadata-8.7.0.tar.gz", hash = "sha256:d13b81ad223b890aa16c5471f2ac3056cf76c5f10f82d6f9292f0b415f389000", size = 56641, upload-time = "2025-04-27T15:29:01.736Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/20/b0/36bd937216ec521246249be3bf9855081de4c5e06a0c9b4219dbeda50373/importlib_metadata-8.7.0-py3-none-any.whl", hash = "sha256:e5dd1551894c77868a30651cef00984d50e1002d06942a7101d34870c5f02afd", size = 27656, upload-time = "2025-04-27T15:29:00.214Z" },
+]
+
+[[package]]
 name = "ipykernel"
 version = "7.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -707,6 +719,7 @@ dependencies = [
     { name = "polars" },
     { name = "pymc" },
     { name = "seaborn" },
+    { name = "watermark" },
 ]
 
 [package.metadata]
@@ -719,6 +732,7 @@ requires-dist = [
     { name = "polars", specifier = ">=1.36.1" },
     { name = "pymc", specifier = ">=5.26.1" },
     { name = "seaborn", specifier = ">=0.13.2" },
+    { name = "watermark", specifier = ">=2.5.1" },
 ]
 
 [[package]]
@@ -1425,6 +1439,21 @@ wheels = [
 ]
 
 [[package]]
+name = "watermark"
+version = "2.5.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "importlib-metadata" },
+    { name = "ipython" },
+    { name = "setuptools" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/68/21/07feaf12db051aaa3e795adf7738c7358f5cabcf09f48d3921699a0ee06e/watermark-2.5.1.tar.gz", hash = "sha256:19a807f504ce02b791a7ce8950df85515ffc876cacd37a84130ea23a0e1a783a", size = 11282, upload-time = "2025-12-14T18:09:29.902Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a0/30/b4550fc7c426a27585744930b348044bad98d6e8b4ace91afe427a5abad7/watermark-2.5.1-py2.py3-none-any.whl", hash = "sha256:8d3f70c243afed8e10a2cf258c8744e61ef1215caa8d7862bc985e443219509d", size = 8205, upload-time = "2025-12-14T18:09:28.441Z" },
+    { url = "https://files.pythonhosted.org/packages/d1/26/d010a3229e936372b01b30f55c740fb4ca5afebedf2c8377381d4029aba0/watermark-2.5.1-py3-none-any.whl", hash = "sha256:c20c998eb09b2a97723644ec438aa3fb25d2a3fb5cee4b5453d2a012d6d2818b", size = 7846, upload-time = "2025-12-14T18:09:29.247Z" },
+]
+
+[[package]]
 name = "wcwidth"
 version = "0.2.14"
 source = { registry = "https://pypi.org/simple" }
@@ -1459,4 +1488,13 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f1/10/ef474494a7f2102ec4c02352c723fa282c6237b600565eb82ee354291211/xarray_einstats-0.9.1.tar.gz", hash = "sha256:39b373deed43592c41d3fbf8863af62e19e01c1ae553ae5ff059a8df78d995c6", size = 33327, upload-time = "2025-06-18T15:53:28.499Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/17/8b/ed2f0f49385c3d7739cd4699954add26e8f09a372a0c3f04f2bde32fcea2/xarray_einstats-0.9.1-py3-none-any.whl", hash = "sha256:777339524e85d066f2ef9ed1e3a3fb63aead4c1065fd1406f30dfa4de58ce063", size = 39043, upload-time = "2025-06-18T15:53:24.088Z" },
+]
+
+[[package]]
+name = "zipp"
+version = "3.23.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e3/02/0f2892c661036d50ede074e376733dca2ae7c6eb617489437771209d4180/zipp-3.23.0.tar.gz", hash = "sha256:a07157588a12518c9d4034df3fbbee09c814741a33ff63c05fa29d26a2404166", size = 25547, upload-time = "2025-06-08T17:06:39.4Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2e/54/647ade08bf0db230bfea292f893923872fd20be6ac6f53b2b936ba839d75/zipp-3.23.0-py3-none-any.whl", hash = "sha256:071652d6115ed432f5ce1d34c336c0adfd6a884660d1e9712a256d3d3bd4b14e", size = 10276, upload-time = "2025-06-08T17:06:38.034Z" },
 ]
