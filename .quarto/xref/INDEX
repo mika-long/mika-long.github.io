@@ -64,5 +64,8 @@
   },
   "posts/ABtesting/index.qmd": {
     "index.html": "11dcfba9"
+  },
+  "posts/pymc-plot/index.ipynb": {
+    "index.html": "c5af90fe"
   }
 }
