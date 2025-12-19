@@ -1,0 +1,111 @@
+---
+title: "Hierarchical modeling with PyMC and brms" 
+author: "Sheng Long" 
+date: "12/19/2025"
+draft: true 
+---
+
+:::{.callout-note collapse="true"}
+# TLDR
+
+In order to figure out how to actually deploy fitted Bayesian models and integrate with the (broader) community of python users, here's an attempt to work through `PyMC` syntax to figure out how to fit hierarchical Bayesian models using the examples from *Statistical Rethinking*. 
+
+## Biggest change compared to `brms`
+
+Coming from a `brms` background, the first thing to notice about `PyMC` is that a lot of the implied data processing done by `brms` will now require manual code when using `PyMC`. In other words, before one could assume that `brms` will take care of things such as creating dummy variables and index variables when the dataframe specified which columns are categorical vs numerical, in `PyMC`, this step is **manual**. One also needs to do things such reparameterization **manually**. 
+
+:::
+
+# Tadpole survival
+
+We will use the tadpole survival in ponds dataset used in McElreath's *Statistical Rethinking* textbook. The `reedfrogs.csv` is obtained from [here](https://github.com/rmcelreath/rethinking/blob/master/data/reedfrogs.csv). One can follow along the original textbook starting from *Chapter 13.1 Example: Multilevel tadpoles*. 
+
+First we load the necessary libraries and data: 
+
+:::{.panel-tabset}
+# R 
+
+```{r}
+#| warning: false 
+
+library(tidyverse)
+library(ggplot2)
+library(brms)
+theme_set(theme_minimal())
+
+df <- read.csv2("reedfrogs.csv") %>% as_tibble(.)
+df %>% head(5)
+```
+
+# Python 
+
+```{python}
+import pandas as pd
+import pymc as pm
+import arviz as az
+az.style.use("arviz-docgrid")
+
+df = pd.read_csv("reedfrogs.csv", delimiter=";")
+df.head(5)
+```
+
+:::
+
+We will focus on the number surviving (`surv`) out of an intial count (`density`). 
+
+## No pooling 
+
+Math model: 
+
+$$
+\begin{align}
+\texttt{surv}_i &\sim \text{Binomial}(\texttt{density}_i, p_i) \\ 
+\text{logit}(p_i) &= \alpha_{i} \\ 
+\alpha_j &\sim \mathcal{N}(0, 1.5), j \in [48]
+\end{align}
+$$
+
+:::{.panel-tabset}
+# R 
+```{r}
+# TODO -- specify BRMS model 
+```
+
+# Python 
+
+```{python}
+#| output: false 
+# corresponds to R code 13.2
+with pm.Model() as model_1:
+    # prior 
+    alpha = pm.Normal("alpha", 0, 1.5, shape = len(df))
+    # link 
+    p_survived = pm.Deterministic("p_survived", pm.math.invlogit(alpha))
+    # likelihood 
+    survived = pm.Binomial("survived", n=df.density, p=p_survived, observed=df.surv)
+
+    model_1_trace = pm.sample()
+    model_1_trace = pm.compute_log_likelihood(model_1_trace)
+    # posterior predictive check 
+    pm.sample_posterior_predictive(model_1_trace, extend_inferencedata=True)
+```
+
+:::
+
+We can check the fitted model's summary statistics: 
+
+:::{.panel-tabset}
+
+# R 
+```{r}
+# TODO 
+```
+
+# Python 
+```{python}
+# check output 
+az.summary(model_1_trace)
+```
+
+:::
+

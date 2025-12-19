@@ -67,5 +67,8 @@
   },
   "posts/pymc-plot/index.ipynb": {
     "index.html": "c5af90fe"
+  },
+  "posts/pymc-hierarchical/index.qmd": {
+    "index.html": "5be5369b"
   }
 }
