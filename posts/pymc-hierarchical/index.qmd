@@ -28,12 +28,14 @@ First we load the necessary libraries and data:
 ```{r}
 #| warning: false 
 
+set.seed(51)
 library(tidyverse)
 library(ggplot2)
 library(brms)
+library(here)
 theme_set(theme_minimal())
 
-df <- read.csv2("reedfrogs.csv") %>% as_tibble(.)
+df <- read.csv2(here("posts", "pymc-hierarchical", "reedfrogs.csv")) %>% as_tibble(.)
 df %>% head(5)
 ```
 
@@ -43,9 +45,10 @@ df %>% head(5)
 import pandas as pd
 import pymc as pm
 import arviz as az
+from pyprojroot.here import here 
 az.style.use("arviz-docgrid")
 
-df = pd.read_csv("reedfrogs.csv", delimiter=";")
+df = pd.read_csv(here("posts/pymc-hierarchical/reedfrogs.csv"), delimiter=";")
 df.head(5)
 ```
 
@@ -55,20 +58,46 @@ We will focus on the number surviving (`surv`) out of an intial count (`density`
 
 ## No pooling 
 
+:::{.callout-tip}
+Note that for this particular example, each row is its own tank. 
+:::
+
 Math model: 
 
 $$
 \begin{align}
 \texttt{surv}_i &\sim \text{Binomial}(\texttt{density}_i, p_i) \\ 
-\text{logit}(p_i) &= \alpha_{i} \\ 
+\text{logit}(p_i) &= \alpha_{\text{TANK}[i]} \\ 
 \alpha_j &\sim \mathcal{N}(0, 1.5), j \in [48]
 \end{align}
 $$
 
 :::{.panel-tabset}
 # R 
+
+We use the `bf` function in `brms` to set up the model formula: 
+
 ```{r}
-# TODO -- specify BRMS model 
+df <- df %>% mutate(tank = 1:nrow(.)) 
+
+# specify formula 
+formula <- bf(surv | trials(density) ~ 0 + factor(tank))
+```
+
+We can use `get_prior` to check the default prior that `brms` has given the model: 
+
+```{r}
+get_prior(formula, family = binomial, data=df)
+```
+
+Next let us specify the prior and fit the model: 
+
+```{r}
+m1_r <- brm(formula, 
+    family = binomial, data = df, 
+    prior = prior(normal(0, 1.5), class = b), 
+    cores = parallel::detectCores(), 
+)
 ```
 
 # Python 
