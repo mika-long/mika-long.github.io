@@ -97,6 +97,7 @@ m1_r <- brm(formula,
     family = binomial, data = df, 
     prior = prior(normal(0, 1.5), class = b), 
     cores = parallel::detectCores(), 
+    file = here("posts", "pymc-hierarchical", "m1_r.rds")
 )
 ```
 
@@ -104,6 +105,7 @@ m1_r <- brm(formula,
 
 ```{python}
 #| output: false 
+#| eval: false 
 # corresponds to R code 13.2
 with pm.Model() as model_1:
     # prior 
@@ -121,20 +123,44 @@ with pm.Model() as model_1:
 
 :::
 
+---
+
+We could also do prior predictive checks: 
+
+... 
+
+--- 
+
 We can check the fitted model's summary statistics: 
 
 :::{.panel-tabset}
 
 # R 
 ```{r}
-# TODO 
+summary(m1_r)
 ```
 
 # Python 
 ```{python}
+#| eval: false 
 # check output 
 az.summary(model_1_trace)
 ```
 
+:::
+
+We can also plot the posterior distribution as well as the trace plot: 
+
+:::{.panel-tabset}
+# R 
+```{r}
+plot(m1_r)
+```
+
+# Python 
+
+```{python}
+# TODO 
+```
 :::
 
