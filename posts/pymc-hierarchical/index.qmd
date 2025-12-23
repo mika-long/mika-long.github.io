@@ -2,17 +2,26 @@
 title: "Hierarchical modeling with PyMC and brms" 
 author: "Sheng Long" 
 date: "12/19/2025"
-draft: true 
+draft: false 
+html: 
+    toc: true 
+    toc-depth: 2 
+cache: true 
 ---
 
-:::{.callout-note collapse="true"}
+:::{.callout-note collapse="false"}
 # TLDR
 
-In order to figure out how to actually deploy fitted Bayesian models and integrate with the (broader) community of python users, here's an attempt to work through `PyMC` syntax to figure out how to fit hierarchical Bayesian models using the examples from *Statistical Rethinking*. 
+To bridge the gap between R-based research and Python-based deployment, I compared an end-to-end Bayesian workflow using `PyMC` + `ArviZ` against the `brms` + `tidybayes` + `ggplot2` stack. To make my examples concrete, I utilized the reedfrog and chimpanzee examples from McElreath's *Statistical Rethinking*. 
 
-## Biggest change compared to `brms`
+Certain things stood out to me: 
 
-Coming from a `brms` background, the first thing to notice about `PyMC` is that a lot of the implied data processing done by `brms` will now require manual code when using `PyMC`. In other words, before one could assume that `brms` will take care of things such as creating dummy variables and index variables when the dataframe specified which columns are categorical vs numerical, in `PyMC`, this step is **manual**. One also needs to do things such reparameterization **manually**. 
+- `brms` abstracts away the "boilerplate" (e.g., dummy coding, index variables, non-centered parameterization) that one still needs to implement manually in `PyMC`.  
+- Nevertheless, `PyMC` forces users to explicitly define the data generating process starting from the hyperpriors, and shares a closer resemblance to the underlying mathematical equations of the model. `brms` on the other hand, folds a lot of writing intos its formula, which could take a while to get used to, and does not make the process of specifying priors easy. It also makes specifying multilevel models easier. 
+- `arviz` introduces a more *sematic* way of handling data (via `xarray` and `InferenceData`), but the `R` ecosystem remains the superior option for visualizing data in tidy format. Grammar of Graphics makes the process of creating custom prior and posterior plots intuitive. 
+    - `arviz` is also currently undergoing some refactoring changes (per [this article](https://python.arviz.org/en/v0.22.0/user_guide/migration_guide.html)), and some of the plotting functions don't quite produce the results that those who are familiar with `bayesplot` would expect them to look like. So technically one also need to look into [`arviz-plots`](https://python.arviz.org/projects/plots/en/latest/) in addition to the base `arviz`. [`plotnine`](https://plotnine.org/), while powerful and uses grammar of graphics, does not support `tidybayes` geoms as of now. 
+
+All this is to say, for a researcher used to `R`’s high-level abstractions, the Python transition currently feels [very painful]{.mark} --- the potential for production integration is definitely there^[e.g., via [pymc.ModelBuilder](https://www.pymc.io/projects/examples/en/latest/howto/model_builder.html)], but the developer experience is significantly more high-friction. 
 
 :::
 
@@ -27,12 +36,15 @@ First we load the necessary libraries and data:
 
 ```{r}
 #| warning: false 
+#| label: r-setup 
 
 set.seed(51)
 library(tidyverse)
 library(ggplot2)
 library(brms)
 library(here)
+library(bayesplot)
+library(tidybayes)
 theme_set(theme_minimal())
 
 df <- read.csv2(here("posts", "pymc-hierarchical", "reedfrogs.csv")) %>% as_tibble(.)
@@ -42,9 +54,14 @@ df %>% head(5)
 # Python 
 
 ```{python}
+#| label: python-setup 
 import pandas as pd
+import os 
+os.environ["PYTENSOR_FLAGS"] = "cxx="
 import pymc as pm
+import pytensor
 import arviz as az
+import arviz_plots as azp 
 from pyprojroot.here import here 
 az.style.use("arviz-docgrid")
 
@@ -72,6 +89,8 @@ $$
 \end{align}
 $$
 
+The first step is to specify the model, specify the priors, and perform a **prior predictive check**: 
+
 :::{.panel-tabset}
 # R 
 
@@ -90,9 +109,78 @@ We can use `get_prior` to check the default prior that `brms` has given the mode
 get_prior(formula, family = binomial, data=df)
 ```
 
-Next let us specify the prior and fit the model: 
+Next let us specify the prior and do a **prior predictive check**: 
 
 ```{r}
+#| output: false 
+#| label: r-prior-predictive 
+m1_prior <- brm(formula, data = df, family = binomial, 
+            prior = prior(normal(0, 1.5)), 
+            cores = parallel::detectCores(), 
+            file = here("posts", "pymc-hierarchical", "m1_prior.rds"),
+            sample_prior = "only")
+```
+
+```{r}
+pp_check(m1_prior, ndraws=100, type="dens_overlay")
+# pp_check(m1_prior, ndraws=100, type="ecdf_overlay")
+```
+
+The default type for `pp_check` in bayesplot is `dens_overlay`. 
+
+# Python 
+
+```{python}
+#| output: false 
+#| warning: false 
+#| label: python-prior-predictive 
+
+# define the model 
+with pm.Model() as model_1:
+    # prior 
+    alpha = pm.Normal("alpha", 0, 1.5, shape = len(df))
+    # link 
+    p_survived = pm.Deterministic("p_survived", pm.math.invlogit(alpha))
+    # likelihood 
+    survived = pm.Binomial("survived", n=df.density, p=p_survived, observed=df.surv)
+
+prior_idata = pm.sample_prior_predictive(model=model_1, draws=100, random_seed=51)
+prior_idata
+```
+
+```{python}
+#| layout-ncol: 3 
+#| warning: false 
+az.plot_ppc(prior_idata, group="prior", num_pp_samples=100, observed=True, kind="kde", random_seed=51, mean=False)
+azp.plot_ppc_dist(prior_idata, group="prior_predictive", num_samples=100)
+azp.plot_ppc_rootogram(prior_idata, group="prior_predictive")
+```
+
+The first plot, plotted using [`az.plot_ppc`](https://python.arviz.org/en/stable/api/generated/arviz.plot_ppc.html) is a bit problematic, as it does not appear smoothed as most KDE plots should be. 
+
+The second plot, plotted using [`az.plot_ppc_dist`](https://python.arviz.org/projects/plots/en/latest/api/generated/arviz_plots.plot_ppc_dist.html) will raise a user warning that it "detects at least one discrete variable" and would then proceed to suggest us to plot using a variant specific for discrete data. There is no option to pass in "observed" to highlight the observed data. 
+
+The third plot, plotted using [`az.plot_ppc_rootogram`](https://python.arviz.org/projects/plots/en/latest/api/generated/arviz_plots.plot_ppc_rootogram.html) does not raise any errors. 
+
+We could turn the data into more tidy format: 
+
+```{python}
+prior_idata.to_dataframe().head(5)
+```
+
+:::
+
+<!-- Observe that the prior predictive plot, plotted using [`pp_check`](https://mc-stan.org/rstanarm/reference/pp_check.stanreg.html) is *continuous* while the one plotted using [`plot_ppc`](https://python.arviz.org/en/stable/api/generated/arviz.plot_ppc.html#arviz.plot_ppc) is *discrete*.  -->
+
+
+Next step is to fit the actual model^[Note that the following corresponds to `R code 13.2` in *Statistical Rethinking*]: 
+
+:::{.panel-tabset}
+# R 
+
+```{r}
+#| output: false 
+#| label: r-reedfrog-fit 
 m1_r <- brm(formula, 
     family = binomial, data = df, 
     prior = prior(normal(0, 1.5), class = b), 
@@ -104,32 +192,15 @@ m1_r <- brm(formula,
 # Python 
 
 ```{python}
-#| output: false 
-#| eval: false 
-# corresponds to R code 13.2
-with pm.Model() as model_1:
-    # prior 
-    alpha = pm.Normal("alpha", 0, 1.5, shape = len(df))
-    # link 
-    p_survived = pm.Deterministic("p_survived", pm.math.invlogit(alpha))
-    # likelihood 
-    survived = pm.Binomial("survived", n=df.density, p=p_survived, observed=df.surv)
-
-    model_1_trace = pm.sample()
+#| label: python-reedfrog-fit 
+with model_1: 
+    model_1_trace = pm.sample(random_seed=51, progressbar=False, nuts_sampler="numpyro")
     model_1_trace = pm.compute_log_likelihood(model_1_trace)
     # posterior predictive check 
-    pm.sample_posterior_predictive(model_1_trace, extend_inferencedata=True)
+    pm.sample_posterior_predictive(model_1_trace, extend_inferencedata=True, random_seed=51)
 ```
 
 :::
-
----
-
-We could also do prior predictive checks: 
-
-... 
-
---- 
 
 We can check the fitted model's summary statistics: 
 
@@ -137,13 +208,13 @@ We can check the fitted model's summary statistics:
 
 # R 
 ```{r}
+#| label: r-reedfrog-summary 
 summary(m1_r)
 ```
 
 # Python 
 ```{python}
-#| eval: false 
-# check output 
+#| label: python-reedfrog-summary 
 az.summary(model_1_trace)
 ```
 
@@ -154,18 +225,266 @@ We can also plot the posterior distribution as well as the trace plot:
 :::{.panel-tabset}
 # R 
 ```{r}
-plot(m1_r)
+plot(m1_r, variable = variables(m1_r)[1:5])
+```
 
-library(bayesplot)
-library(tidybayes)
+# Python 
 
+```{python}
+# Pass only the first 5 names to plot_trace
+az.plot_trace(model_1_trace, combined=True, var_names="alpha")
+```
+:::
+
+Or something like the "forest plot": 
+
+:::{.panel-tabset}
+# R 
+
+```{r}
 m1_r %>% as_draws_df(.) %>% mcmc_intervals(regex_pars = "b_.*")
 ```
 
 # Python 
 
 ```{python}
-# TODO 
+az.plot_forest(model_1_trace, kind='forestplot', combined=True, var_names="alpha", hdi_prob=0.95)
 ```
 :::
 
+Note that [`mcmc_intervals`](https://mc-stan.org/bayesplot/reference/MCMC-intervals.html) plots the "central (quantile-based) posterior interval estimates from MCMC draws", while [`plot_forest`](https://python.arviz.org/en/stable/api/generated/arviz.plot_forest.html) displays the **credible intervals**, where "the central points are the estimated posterior median, the thick lines are the central quantiles, and the thin lines represent the $100 \times (hdi_prob)\%$ highest density interval". The former is about **equal-tailed intervals (ETI)** while the later is about **highest density intervals (HDI)**. The difference between ETI and HDI is negligable between symmetric distribtuions (e.g., Gaussian Normal), but it becomes big when the posterior distributions are *skewed*. For most common purposes, such as writing about posterior distribtuions in academic journals, most people use ETI because it's conceptually easier to explain. 
+
+We can also perform a **posterior predictive check**: 
+
+:::{.panel-tabset}
+# R 
+
+```{r}
+pp_check(m1_r, ndraws = 100)
+```
+
+Observe that this is a much better fit than the prior predictive check. 
+
+# Python 
+
+```{python}
+#| warning: false 
+# az.plot_ppc(model_1_trace, num_pp_samples=100)   
+azp.plot_ppc_dist(model_1_trace, group="posterior_predictive", num_samples=100)
+```
+:::
+
+### Note on plotting
+
+We can also go beyond the default plots in `bayesplot` and construct our own plots using `ggplot2` and `tidybayes`. To do that, we first need to get the posterior draws in a tidy format to make it easier for plotting. Observe that the default `as_data_frame` function does not return the data in tidy format: 
+
+```{r}
+m1_r %>% as_data_frame(.) %>% head(5)
+```
+
+We can use the `spread_draws` function: 
+
+```{r}
+#| cache: true 
+m1_r %>% spread_draws(`b_factortank.*`, regex = TRUE) %>% 
+    # plot the top 5 for now 
+    select(1:8) %>% 
+    pivot_longer(4:8) %>% 
+    ggplot(aes(y = name, x = value)) + 
+    stat_halfeye()
+```
+
+
+## With Pooling 
+
+Math model: 
+$$
+\begin{align}
+\texttt{surv}_i &\sim \text{Binomial}(N_i, p_i) \\ 
+\text{logit}(p_i) &\sim \alpha_{\text{TANK}[i]} \\ 
+\alpha_j &\sim \mathcal{N}(\bar{\alpha}, \sigma), j \in [48] \\ 
+\bar{\alpha} &\sim \mathcal{N}(0, 1.5) \\ 
+\sigma &\sim \text{Exponential}(1) 
+\end{align}
+$$
+
+Here we will skip the prior predictive part and directly go into the model building part^[Note that the following corresponds to R code 13.3 in *Statistical Rethinking*]: 
+
+:::{.panel-tabset}
+# R 
+
+```{r}
+m2 <- brm(data = df, family = binomial, 
+    formula =  bf(surv | trials(density) ~ 1 + (1 | tank)), 
+    prior = c(prior(normal(0, 1.5), class = Intercept), 
+              prior(exponential(1), class = sd)), 
+    cores = 4, 
+    seed = 51, 
+    file="m2.rds"
+)
+```
+
+# Python 
+
+```{python}
+#| output: false 
+with pm.Model() as model_2:
+    # hyperprior 
+    sigma = pm.Exponential("sigma", 1)
+    alpha_bar = pm.Normal("alpha_bar", 0, 1.5)
+    # prior 
+    alpha = pm.Normal("alpha", mu=alpha_bar, sigma=sigma, shape=len(df))
+    # link 
+    p_survived = pm.Deterministic("p_survived", pm.math.invlogit(alpha))
+    # likelihood 
+    survived = pm.Binomial("survived", n=df.density, p=p_survived, observed=df.surv)
+
+    model_2_trace = pm.sample(progressbar=False, nuts_sampler="numpyro")
+    model_2_trace = pm.compute_log_likelihood(model_2_trace)
+    # posterior predictive check 
+    pm.sample_posterior_predictive(model_2_trace, extend_inferencedata=True)
+
+```
+:::
+
+We can check the summary: 
+
+:::{.panel-tabset}
+# R 
+... 
+
+# Python 
+
+```{python}
+az.summary(model_2_trace)
+```
+:::
+
+## Model comparison 
+
+Now that we have two models for the tadpole dataset, we can compare them using ...: 
+
+:::{.panel-tabset}
+# R 
+
+```{r}
+#| eval: false 
+loo(m1, m2)
+```
+
+# Python 
+
+```{python}
+#| warning: false 
+az.compare({'unpooled': model_1_trace, 'pooled': model_2_trace})
+```
+:::
+
+# Multilevel Chimpanzees 
+
+Next we will explore the chimpanzee dataset for something a bit more complex to demonstrate the power of the `PyMC` syntax. The chimpanzee data is obtained from [here](). The example we're looking at is *13.3.1 Multilevel chimpanzees*. We will create a new column, **treatment**, that is a combination of `prosoc_left` and `condition`. 
+
+Here's the math model: 
+$$
+\begin{align}
+\texttt{pulled\_left}_i &\sim \text{Binomial}(1, p_i) \\ 
+\text{logit}(p_i) &= \alpha_{\texttt{actor}[i]} + \gamma_{\texttt{block}[i]} + \beta_{\texttt{treatment}[i]} \\
+\beta_j &\sim \mathcal{N}(0, 0.5), j \in [4] \\
+\alpha_j &\sim \mathcal{N}(\bar{\alpha}, \sigma_\alpha), j \in [7] \\ 
+\gamma_j &\sim \mathcal{N}(0, \sigma_\gamma), j \in [6] \\ 
+\bar{\alpha} &\sim \mathcal{N}(0, 1.5) \\ 
+\sigma_\alpha &\sim \text{Exponential}(1) \\ 
+\sigma_\gamma &\sim \text{Exponential}(1)
+\end{align}
+$$
+
+:::{.panel-tabset}
+# R 
+
+```{r}
+df <- read.csv2(here("posts", "pymc-hierarchical", "chimpanzees.csv"), sep = ";") %>% as_tibble(.) %>% 
+    mutate(treatment = paste0(as.character(condition), "_", as.character(prosoc_left)))
+
+df %>% head(5)
+```
+
+# Python 
+
+```{python}
+# read in the data 
+df = pd.read_csv(here("posts/pymc-hierarchical/chimpanzees.csv"), delimiter=";")
+# create a new treatment column 
+df['treatment'] = df['condition'].astype(str) + "_" + df['prosoc_left'].astype(str)
+
+df.head(5)
+```
+:::
+
+Define and fit the model: 
+
+:::{.panel-tabset}
+# R 
+
+```{r}
+# TODO 
+```
+
+# Python 
+
+```{python}
+coords = {
+    'actor': df.actor.unique(), 
+    'block': df.block.unique(),
+    'treatment': df.treatment.unique(),
+}
+actor_idx, actor_codes = pd.factorize(df['actor'])
+block_idx, block_codes = pd.factorize(df['block'])
+treat_idx, treat_codes = pd.factorize(df['treatment'])
+```
+
+```{python}
+# define and fit model 
+with pm.Model(coords=coords) as chimp_model:
+    # hyperpriors 
+    a_bar = pm.Normal("a_bar", 0, 1.5)
+    sigma_a = pm.Exponential("sigma_a", 1)
+    sigma_gamma = pm.Exponential("sigma_gamma", 1)
+    # prior 
+    alpha = pm.Normal("alpha", mu=a_bar, sigma=sigma_a, dims="actor")
+    gamma = pm.Normal("gamma", mu=0, sigma=sigma_gamma, dims="block")
+    beta = pm.Normal("beta", mu=0, sigma=0.5, dims="treatment")
+    # link 
+    logits = alpha[actor_idx] + gamma[block_idx] + beta[treat_idx] 
+    # likelihood 
+    obs = pm.Bernoulli("obs", logit_p=logits, observed=df['pulled_left'])
+```
+
+```{python}
+with chimp_model: 
+    chimp_model_trace = pm.sample(draws=1000, tune=1000, progressbar=False, nuts_sampler="numpyro")
+    chimp_model_trace = pm.compute_log_likelihood(chimp_model_trace, progressbar=False)
+    # posterior predictive check 
+    pm.sample_posterior_predictive(chimp_model_trace, extend_inferencedata=True, progressbar=False)
+```
+:::
+
+Check the fitted model: 
+
+:::{.panel-tabset}
+# R 
+
+```{r}
+
+```
+
+# Python 
+
+```{python}
+az.summary(chimp_model_trace)
+```
+
+```{python}
+az.plot_forest(chimp_model_trace, kind='forestplot', combined=True, var_names="alpha", hdi_prob=0.95)
+```
+
+:::

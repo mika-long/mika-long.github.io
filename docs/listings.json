@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/pymc-hierarchical/index.html",
       "/posts/poisson-disk/index.html",
       "/posts/sgt and st/index.html",
       "/posts/job-stat-track/index.html",

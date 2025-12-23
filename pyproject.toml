@@ -7,11 +7,13 @@ requires-python = ">=3.13"
 dependencies = [
     "altair>=6.0.0",
     "arviz>=0.22.0",
+    "arviz-plots>=0.7.0",
     "arviz-stats[xarray]>=0.7.0",
     "ipykernel>=7.1.0",
     "jax>=0.8.2",
     "jaxlib>=0.8.2",
     "jupyter>=1.1.1",
+    "jupyter-cache>=1.0.1",
     "nbformat>=5.10.4",
     "numpy>=2.3.5",
     "numpyro>=0.19.0",
