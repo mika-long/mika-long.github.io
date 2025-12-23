@@ -6,7 +6,7 @@ draft: false
 html: 
     toc: true 
     toc-depth: 3
-cache: true 
+cache: false 
 ---
 
 :::{.callout-note collapse="false"}
@@ -31,7 +31,7 @@ We will use the tadpole survival in ponds dataset used in McElreath's *Statistic
 
 First we load the necessary libraries and data: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -46,7 +46,9 @@ library(here)
 library(bayesplot)
 library(tidybayes)
 theme_set(theme_minimal())
+```
 
+```{r}
 df <- read.csv2(here("posts", "pymc-hierarchical", "reedfrogs.csv")) %>% as_tibble(.)
 df %>% head(5)
 ```
@@ -64,7 +66,9 @@ import arviz as az
 import arviz_plots as azp 
 from pyprojroot.here import here 
 az.style.use("arviz-docgrid")
+```
 
+```{python}
 df = pd.read_csv(here("posts/pymc-hierarchical/reedfrogs.csv"), delimiter=";")
 df.head(5)
 ```
@@ -91,7 +95,7 @@ $$
 
 The first step is to specify the model, specify the priors, and perform a **prior predictive check**: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 We use the `bf` function in `brms` to set up the model formula: 
@@ -178,7 +182,7 @@ prior_idata.to_dataframe().head(5)
 
 Next step is to fit the actual model^[Note that the following corresponds to `R code 13.2` in *Statistical Rethinking*]: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -207,7 +211,7 @@ with model_1:
 
 We can check the fitted model's summary statistics: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 
 # R 
 ```{r}
@@ -225,7 +229,7 @@ az.summary(model_1_trace)
 
 We can also plot the posterior distribution as well as the trace plot: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 ```{r}
 plot(m1, variable = variables(m1)[1:5])
@@ -241,7 +245,7 @@ az.plot_trace(model_1_trace, combined=True, var_names="alpha")
 
 Or something like the "forest plot": 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -259,7 +263,7 @@ Note that [`mcmc_intervals`](https://mc-stan.org/bayesplot/reference/MCMC-interv
 
 We can also perform a **posterior predictive check**: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -313,7 +317,7 @@ $$
 
 Here we will skip the prior predictive part and directly go into the model building part^[Note that the following corresponds to R code 13.3 in *Statistical Rethinking*]: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -358,7 +362,7 @@ with pm.Model() as model_2:
 
 We can check the summary as well as the traces: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -378,7 +382,7 @@ az.summary(model_2_trace)
 
 Now that we have two models for the tadpole dataset, we can compare them using ...
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ... the `loo` package in `R`: 
@@ -414,7 +418,7 @@ $$
 \end{align}
 $$
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -434,11 +438,12 @@ df['treatment'] = df['condition'].astype(str) + "_" + df['prosoc_left'].astype(s
 
 df.head(5)
 ```
+
 :::
 
 Define and fit the model: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -496,6 +501,7 @@ with pm.Model(coords=coords) as chimp_model:
     logits = alpha[actor_idx] + gamma[block_idx] + beta[treat_idx] 
     # likelihood 
     obs = pm.Bernoulli("obs", logit_p=logits, observed=df['pulled_left'])
+
 ```
 
 ```{python}
@@ -505,11 +511,38 @@ with chimp_model:
     # posterior predictive check 
     pm.sample_posterior_predictive(chimp_model_trace, extend_inferencedata=True, progressbar=False)
 ```
+
+The above would produce some warning about divergences, which is to be expected, given than we have not implemeneted non-centered parameterization. The actual correct model would be the following: 
+
+```{python}
+with pm.Model(coords=coords) as chimp_model_2:
+    # hyperpriors 
+    a_bar = pm.Normal("a_bar", 0, 1.5)
+    sigma_a = pm.Exponential("sigma_a", 1)
+    sigma_gamma = pm.Exponential("sigma_gamma", 1)
+    # prior 
+    z = pm.Normal("z", mu=0, sigma=1, dims="actor")
+    x = pm.Normal("x", mu=0, sigma=1, dims="block")
+    beta = pm.Normal("beta", mu=0, sigma=0.5, dims="treatment")
+    # link 
+    logits = a_bar + z[actor_idx] * sigma_a + x[block_idx] * sigma_gamma + beta[treat_idx] 
+    # likelihood 
+    obs = pm.Bernoulli("obs", logit_p=logits, observed=df['pulled_left'])
+```
+
+```{python}
+with chimp_model_2: 
+    chimp_model_trace = pm.sample(draws=1000, tune=1000, progressbar=False, nuts_sampler="numpyro")
+    chimp_model_trace = pm.compute_log_likelihood(chimp_model_trace, progressbar=False)
+    # posterior predictive check 
+    pm.sample_posterior_predictive(chimp_model_trace, extend_inferencedata=True, progressbar=False)
+```
+
 :::
 
-Check the fitted model: 
+Examine the fitted model: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -523,15 +556,11 @@ plot(m3)
 az.summary(chimp_model_trace)
 ```
 
-```{python}
-az.plot_forest(chimp_model_trace, kind='forestplot', combined=True, var_names="alpha", hdi_prob=0.95)
-```
-
 :::
 
-Check the forest plots: 
+Check the forest plots, i.e., posterior coefficient plots: 
 
-:::{.panel-tabset}
+:::{.panel-tabset group="language"}
 # R 
 
 ```{r}
@@ -544,7 +573,29 @@ m3 %>% mcmc_areas(regex_pars = "^b_.*")
 # Python 
 
 ```{python}
+#| layout-ncol: 2 
+az.plot_forest(chimp_model_trace, kind='forestplot', combined=True, hdi_prob=0.95)
+az.plot_forest(chimp_model_trace, kind='ridgeplot', combined=True, hdi_prob=0.95)
+```
 
+:::
+
+Perform a posterior predictive check: 
+
+:::{.panel-tabset group="language"}
+# R 
+
+```{r}
+#| layout-ncol: 3
+pp_check(m3, ndraws = 100)
+pp_check(m3, ndraws = 100, type="ecdf_overlay")
+pp_check(m3, ndraws = 100, type="pit_ecdf")
+```
+
+# Python 
+
+```{python}
+azp.plot_ppc_dist(chimp_model_trace, group="posterior_predictive", num_samples=100)
 ```
 
 :::
