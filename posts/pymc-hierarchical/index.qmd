@@ -402,7 +402,7 @@ az.compare({'unpooled': model_1_trace, 'pooled': model_2_trace})
 
 # Multilevel Chimpanzees 
 
-Next we will explore the chimpanzee dataset for something a bit more complex to demonstrate the power of the `PyMC` syntax. The chimpanzee data is obtained from [here](). The example we're looking at is *13.3.1 Multilevel chimpanzees*. We will create a new column, **treatment**, that is a combination of `prosoc_left` and `condition`. 
+Next we will explore the chimpanzee dataset for something a bit more complex to demonstrate the power of the `PyMC` syntax. The chimpanzee data is obtained from [here](https://github.com/rmcelreath/rethinking/blob/master/data/chimpanzees.csv). The example we're looking at is *13.3.1 Multilevel chimpanzees*. We will create a new column, **treatment**, that is a combination of `prosoc_left` and `condition`. 
 
 Here's the math model: 
 $$
