@@ -5,7 +5,7 @@ date: "12/19/2025"
 draft: false 
 html: 
     toc: true 
-    toc-depth: 2 
+    toc-depth: 3
 cache: true 
 ---
 
@@ -17,7 +17,7 @@ To bridge the gap between R-based research and Python-based deployment, I compar
 Certain things stood out to me: 
 
 - `brms` abstracts away the "boilerplate" (e.g., dummy coding, index variables, non-centered parameterization) that one still needs to implement manually in `PyMC`.  
-- Nevertheless, `PyMC` forces users to explicitly define the data generating process starting from the hyperpriors, and shares a closer resemblance to the underlying mathematical equations of the model. `brms` on the other hand, folds a lot of writing intos its formula, which could take a while to get used to, and does not make the process of specifying priors easy. It also makes specifying multilevel models easier. 
+- Nevertheless, `PyMC` forces users to explicitly define the data generating process starting from the hyperpriors, and shares a closer resemblance to the underlying mathematical equations of the model. `brms` on the other hand, folds a lot of writing intos its formula, which could take a while to get used to, and does not make the process of specifying priors easy. `PyMC` also makes specifying multilevel models easier. 
 - `arviz` introduces a more *sematic* way of handling data (via `xarray` and `InferenceData`), but the `R` ecosystem remains the superior option for visualizing data in tidy format. Grammar of Graphics makes the process of creating custom prior and posterior plots intuitive. 
     - `arviz` is also currently undergoing some refactoring changes (per [this article](https://python.arviz.org/en/v0.22.0/user_guide/migration_guide.html)), and some of the plotting functions don't quite produce the results that those who are familiar with `bayesplot` would expect them to look like. So technically one also need to look into [`arviz-plots`](https://python.arviz.org/projects/plots/en/latest/) in addition to the base `arviz`. [`plotnine`](https://plotnine.org/), while powerful and uses grammar of graphics, does not support `tidybayes` geoms as of now. 
 
@@ -122,11 +122,14 @@ m1_prior <- brm(formula, data = df, family = binomial,
 ```
 
 ```{r}
+#| layout-ncol: 2 
+
 pp_check(m1_prior, ndraws=100, type="dens_overlay")
-# pp_check(m1_prior, ndraws=100, type="ecdf_overlay")
+pp_check(m1_prior, ndraws=100, type="ecdf_overlay")
 ```
 
-The default type for `pp_check` in bayesplot is `dens_overlay`. 
+In the above graphs, $y$ stands for observed data, while $y_{rep}$ stands for replicated data. 
+The default type for `pp_check` in bayesplot is `dens_overlay`, which uses KDE to smooth the data (i.e., probability density for $y$) into a continuous curve. `ecdf_overlay` refers to the empirical cumulative distribution function. We can use these to check whether the prior is "in the ballpark" of the domain knowledge before the actual model fitting. For more on when certain visualization types are appropriate for visual predictive checks in Bayesian workflow, see [this paper](https://arxiv.org/abs/2503.01509https://arxiv.org/abs/2503.01509) for more details. 
 
 # Python 
 
@@ -181,11 +184,11 @@ Next step is to fit the actual model^[Note that the following corresponds to `R 
 ```{r}
 #| output: false 
 #| label: r-reedfrog-fit 
-m1_r <- brm(formula, 
+m1 <- brm(formula, 
     family = binomial, data = df, 
     prior = prior(normal(0, 1.5), class = b), 
     cores = parallel::detectCores(), 
-    file = here("posts", "pymc-hierarchical", "m1_r.rds") # prevents re-running the fitting process when quarto compiles  
+    file = here("posts", "pymc-hierarchical", "m1.rds") # prevents re-running the fitting process when quarto compiles  
 )
 ```
 
@@ -209,7 +212,7 @@ We can check the fitted model's summary statistics:
 # R 
 ```{r}
 #| label: r-reedfrog-summary 
-summary(m1_r)
+summary(m1)
 ```
 
 # Python 
@@ -225,7 +228,7 @@ We can also plot the posterior distribution as well as the trace plot:
 :::{.panel-tabset}
 # R 
 ```{r}
-plot(m1_r, variable = variables(m1_r)[1:5])
+plot(m1, variable = variables(m1)[1:5])
 ```
 
 # Python 
@@ -242,7 +245,7 @@ Or something like the "forest plot":
 # R 
 
 ```{r}
-m1_r %>% as_draws_df(.) %>% mcmc_intervals(regex_pars = "b_.*")
+m1 %>% as_draws_df(.) %>% mcmc_intervals(regex_pars = "b_.*")
 ```
 
 # Python 
@@ -260,10 +263,10 @@ We can also perform a **posterior predictive check**:
 # R 
 
 ```{r}
-pp_check(m1_r, ndraws = 100)
+#| layout-ncol: 2
+pp_check(m1, ndraws = 100)
+pp_check(m1, ndraws = 100, type="ecdf_overlay")
 ```
-
-Observe that this is a much better fit than the prior predictive check. 
 
 # Python 
 
@@ -272,28 +275,28 @@ Observe that this is a much better fit than the prior predictive check.
 # az.plot_ppc(model_1_trace, num_pp_samples=100)   
 azp.plot_ppc_dist(model_1_trace, group="posterior_predictive", num_samples=100)
 ```
+
 :::
 
 ### Note on plotting
 
-We can also go beyond the default plots in `bayesplot` and construct our own plots using `ggplot2` and `tidybayes`. To do that, we first need to get the posterior draws in a tidy format to make it easier for plotting. Observe that the default `as_data_frame` function does not return the data in tidy format: 
+We can also go beyond the default plots in `bayesplot` and construct our own plots using `ggplot2` and `tidybayes`. To do that, we first need to get the posterior draws in a tidy format to make it easier for plotting. Observe that the default `as_data_frame` function does not tell us information related to the chain and draw: 
 
 ```{r}
-m1_r %>% as_data_frame(.) %>% head(5)
+m1 %>% as_tibble(.)
 ```
 
-We can use the `spread_draws` function: 
+`spread_draws`, on the other hand, does provide this information: 
 
 ```{r}
 #| cache: true 
-m1_r %>% spread_draws(`b_factortank.*`, regex = TRUE) %>% 
+m1 %>% spread_draws(`b_factortank.*`, regex = TRUE) %>% 
     # plot the top 5 for now 
     select(1:8) %>% 
     pivot_longer(4:8) %>% 
     ggplot(aes(y = name, x = value)) + 
     stat_halfeye()
 ```
-
 
 ## With Pooling 
 
@@ -314,14 +317,20 @@ Here we will skip the prior predictive part and directly go into the model build
 # R 
 
 ```{r}
+#| output: false 
 m2 <- brm(data = df, family = binomial, 
     formula =  bf(surv | trials(density) ~ 1 + (1 | tank)), 
     prior = c(prior(normal(0, 1.5), class = Intercept), 
               prior(exponential(1), class = sd)), 
-    cores = 4, 
+    cores = parallel::detectCores(), 
     seed = 51, 
-    file="m2.rds"
+    file=here("posts", "pymc-hierarchical", "m2.rds")
 )
+```
+
+To get a sense of the default priors that `brms` gave us: 
+```{r}
+get_prior(bf(surv | trials(density) ~ 1 + (1 | tank)), family=binomial, data = df)
 ```
 
 # Python 
@@ -347,28 +356,35 @@ with pm.Model() as model_2:
 ```
 :::
 
-We can check the summary: 
+We can check the summary as well as the traces: 
 
 :::{.panel-tabset}
 # R 
-... 
+
+```{r}
+summary(m2)
+plot(m2)
+```
 
 # Python 
 
 ```{python}
 az.summary(model_2_trace)
 ```
+
 :::
 
 ## Model comparison 
 
-Now that we have two models for the tadpole dataset, we can compare them using ...: 
+Now that we have two models for the tadpole dataset, we can compare them using ...
 
 :::{.panel-tabset}
 # R 
 
-```{r}
-#| eval: false 
+... the `loo` package in `R`: 
+
+```{r} 
+#| warning: false 
 loo(m1, m2)
 ```
 
@@ -426,7 +442,30 @@ Define and fit the model:
 # R 
 
 ```{r}
-# TODO 
+#| output: false 
+m3 <- brm(data = df, 
+      family = binomial,
+      bf(pulled_left | trials(1) ~ a + b,
+         a ~ 1 + (1 | actor) + (1 | block), 
+         b ~ 0 + treatment,
+         nl = TRUE),
+      prior = c(prior(normal(0, 0.5), nlpar = b),
+                prior(normal(0, 1.5), class = b, coef = Intercept, nlpar = a),
+                prior(exponential(1), class = sd, group = actor, nlpar = a),
+                prior(exponential(1), class = sd, group = block, nlpar = a)),
+      cores = parallel::detectCores(), 
+      seed = 51,
+      file = here("posts", "pymc-hierarchical", "m3.rds")
+      )
+```
+
+Note here that we are using the *non-linear* way of specifying the formula^[See [this vignette](https://cran.r-project.org/web/packages/brms/vignettes/brms_nonlinear.html) for more on fitting non-linear models with `brms`], and again we can use `get_prior` to get a sense of how to specify the priors: 
+
+```{r}
+get_prior(bf(pulled_left | trials(1) ~ a + b,
+         a ~ 1 + (1 | actor) + (1 | block), 
+         b ~ 0 + treatment,
+         nl = TRUE), family = binomial, data = df)
 ```
 
 # Python 
@@ -474,7 +513,8 @@ Check the fitted model:
 # R 
 
 ```{r}
-
+summary(m3)
+plot(m3)
 ```
 
 # Python 
@@ -485,6 +525,26 @@ az.summary(chimp_model_trace)
 
 ```{python}
 az.plot_forest(chimp_model_trace, kind='forestplot', combined=True, var_names="alpha", hdi_prob=0.95)
+```
+
+:::
+
+Check the forest plots: 
+
+:::{.panel-tabset}
+# R 
+
+```{r}
+#| layout-ncol: 2
+
+m3 %>% mcmc_intervals(regex_pars = "^b_.*")
+m3 %>% mcmc_areas(regex_pars = "^b_.*")
+```
+
+# Python 
+
+```{python}
+
 ```
 
 :::
