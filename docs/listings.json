@@ -2,7 +2,6 @@
   {
     "listing": "/posts.html",
     "items": [
-      "/posts/pymc-custom-dist/index.html",
       "/posts/stat_pdfs/index.html",
       "/posts/pymc-hierarchical/index.html",
       "/posts/sdt/index.html",
