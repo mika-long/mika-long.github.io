@@ -70,5 +70,14 @@
   },
   "posts/pymc-hierarchical/index.qmd": {
     "index.html": "5be5369b"
+  },
+  "posts/stat_pdfs/index.qmd": {
+    "index.html": "7ed05f43"
+  },
+  "posts/sdt/index.ipynb": {
+    "index.html": "45013b48"
+  },
+  "posts/pymc-custom-dist/index.ipynb": {
+    "index.html": "a55d4083"
   }
 }

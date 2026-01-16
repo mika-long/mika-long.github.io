@@ -1,0 +1,197 @@
+---
+title: "PDFs and CDFs of statistical distributions" 
+author: 
+  name: Sheng Long
+categories: [Statistics]
+date: last-modified
+reference-location: margin
+code-fold: true 
+---
+
+:::{.callout-note}
+# TLDR 
+
+Playing with [Observable JS](https://quarto.org/docs/interactive/ojs/) to see how different parameters affect PDF and CDFs of interest. 
+:::
+
+## Beta distribution 
+
+The Beta distribution is defined by two parameters: $\alpha \in [1, \infty)$ and $\beta \in [1, \infty)$. Its PDF can be expressed as 
+$$
+f(x; \alpha, \beta) = \frac{x^{\alpha-1}(1-x)^{\beta - 1}}{B((\alpha, \beta))} = x^{\alpha - 1}(1-x)^{\beta-1} \times \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) + \Gamma(\beta)}
+$$
+where $\Gamma(\cdot)$ is the Gamma function. 
+
+```{ojs}
+//| code-fold: true 
+viewof alpha = Inputs.range([1, 20], {label: 'alpha', step: 0.1})
+
+viewof beta = Inputs.range([1, 20], {label: 'beta', step: 0.1})
+```
+
+```{ojs}
+//| code-fold: true 
+// import third party libries 
+beta_pdf = (await import("https://esm.sh/@stdlib/stats-base-dists-beta-pdf?bundle")).default
+
+beta_cdf = (await import("https://esm.sh/@stdlib/stats-base-dists-beta-cdf?bundle")).default
+
+linspace = (await import("https://esm.sh/@stdlib/array-linspace?bundle")).default
+```
+
+
+```{ojs}
+// define a function for generating plot data 
+
+function get_data(x, alpha, beta) {
+  var i;
+  var points = [];
+  
+  for ( i = 0; i < x.length; i++ ) {
+    	points.push({x: x[i], pdf_y: beta_pdf(x[i], alpha, beta), cdf_y: beta_cdf(x[i], alpha, beta)});
+  	}
+  	return points;
+}
+```
+
+```{ojs}
+//| code-fold: true 
+x = linspace(0.0, 1.0, 100)
+plot_data = get_data(x, alpha, beta);
+
+p1 = Plot.plot({
+  x: { 
+    domain: [0, 1] 
+  },
+  title: "Beta PDF", 
+  marks: [
+    Plot.line(plot_data, {x: "x", y: "pdf_y"})
+  ]
+})
+
+p2 = Plot.plot({
+  x: { 
+    domain: [0, 1] 
+  },
+  title: "Beta CDF", 
+  marks: [
+    Plot.line(plot_data, {x: "x", y: "cdf_y"})
+  ]
+})
+
+// Assuming plot1 and plot2 are defined variables holding your charts
+html`
+  <div style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start;">
+    <div style="flex: 1;">
+      ${p1}
+    </div>
+    <div style="flex: 1;">
+      ${p2}
+    </div>
+  </div>
+`
+```
+
+## Gumbel distribution 
+
+The [Gumbel distribution](https://en.wikipedia.org/wiki/Gumbel_distribution) is a particular case of the generalized extreme value distribution. 
+
+```{ojs}
+viewof gumbel_mu = Inputs.range([-5, 10], {label: "mu", step: 0.1})
+viewof gumbel_beta = Inputs.range([0, 10], {label: "beta", step: 0.1})
+```
+
+```{ojs}
+gumbel_pdf = (await import("https://esm.sh/@stdlib/stats-base-dists-gumbel-pdf")).default
+gumbel_cdf = (await import("https://esm.sh/@stdlib/stats-base-dists-gumbel-cdf")).default
+
+function get_gumbel_data(x, mu, beta) {
+  var i;
+  var points = [];
+  
+  for ( i = 0; i < x.length; i++ ) {
+    	points.push({x: x[i], 
+        pdf_y: gumbel_pdf(x[i], mu, gumbel_beta), 
+        cdf_y: gumbel_cdf(x[i], mu, gumbel_beta)
+        });
+  	}
+  	return points;
+}
+
+plot_gumbel_data = get_gumbel_data(x, gumbel_mu, gumbel_beta)
+```
+
+```{ojs}
+gumbel_plt1 = Plot.plot({
+  title: "Gumbel PDF", 
+  marks: [
+    Plot.line(plot_gumbel_data, {x: "x", y: "pdf_y"})
+  ]
+})
+
+gumbel_plt2 = Plot.plot({
+  title: "Gumbel CDF", 
+  marks: [
+    Plot.line(plot_gumbel_data, {x: "x", y: "cdf_y"})
+  ]
+})
+
+html`<div style="display: flex"> ${gumbel_plt1} ${gumbel_plt2}</div>`
+```
+
+## Weibull distribution 
+
+The [Weibull distribution](https://en.wikipedia.org/wiki/Weibull_distribution), with shape parameter $k \in (0, \infty)$ and scale parameter $\lambda \in (0, + \infty)$. Its pdf is defined as 
+
+$$
+f(x; \lambda, k) = 
+\begin{cases}
+\frac{k}{\lambda}(\frac{x}{\lambda})^{k-1} e^{-(x/\lambda)^k}, & x \geq 0, \\ 
+0, & x < 0 
+\end{cases}
+$$
+
+```{ojs}
+viewof weibull_lambda = Inputs.range([0, 20], {label: "lambda", step: 0.1})
+viewof weibull_k = Inputs.range([0, 20], {label: "k", step: 0.1})
+```
+
+```{ojs}
+weibull_pdf = (await import("https://esm.sh/@stdlib/stats-base-dists-weibull-pdf?bundle")).default
+weibull_cdf = (await import("https://esm.sh/@stdlib/stats-base-dists-weibull-cdf?bundle")).default
+```
+
+```{ojs}
+function get_weibull_data(x, k, lambda) {
+  var i;
+  var points = [];
+  
+  for ( i = 0; i < x.length; i++ ) {
+    	points.push({x: x[i], 
+        pdf_y: weibull_pdf(x[i], k, lambda), 
+        cdf_y: weibull_cdf(x[i], k, lambda)
+        });
+  	}
+  	return points;
+}
+
+plot_weibull_data = get_weibull_data(x, weibull_k, weibull_lambda)
+```
+
+```{ojs}
+weibull_plt1 = Plot.plot({
+  title: "Weibull PDF", 
+  marks: [
+    Plot.line(plot_weibull_data, {x: "x", y: "pdf_y"})
+  ]
+})
+
+weibull_plt2 = Plot.plot({
+  title: "Weibull CDF", 
+  marks: [
+    Plot.line(plot_weibull_data, {x: "x", y: "cdf_y"})
+  ]
+})
+
+html`<div style="display: flex"> ${weibull_plt1} ${weibull_plt2}</div>`
+```
