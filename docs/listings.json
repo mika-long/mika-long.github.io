@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/national_park_vists/index.html",
       "/posts/stat_pdfs/index.html",
       "/posts/pymc-hierarchical/index.html",
       "/posts/sdt/index.html",

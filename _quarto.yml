@@ -31,3 +31,7 @@ format:
     toc: false
     mainfont: Noto Sans
     page-layout: full
+
+author: 
+  - name: Sheng Long
+    orcid: 0009-0000-9752-5898

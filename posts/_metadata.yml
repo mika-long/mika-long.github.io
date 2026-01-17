@@ -11,9 +11,6 @@ draft-mode: visible
 language:
   title-block-published: "Updated"
 
-author: 
-  name: Sheng Long
-
 code-overflow: wrap
 
 format:

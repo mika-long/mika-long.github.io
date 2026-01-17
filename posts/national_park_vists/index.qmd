@@ -1,19 +1,8 @@
 ---
 title: "US National Park Visits"
-author: 
-  - name: "Sheng Long"
-    orcid: 0009-0000-9752-5898
-citation: 
-  url: https://mika-long.com/posts/national%20park%20vists/
-license: "CC BY" 
 date: last-modified
-categories: [fun]
-draft: true 
-format: 
-  html: 
-    code-fold: true
-    reference-location: margin
-    citation-location: margin
+categories: [misc, vis]
+draft: false
 execute: 
   cache: true 
 ---
@@ -28,14 +17,17 @@ library(ggplot2)
 library(glue)
 library(gganimate)
 
-library(extrafont)
-font_import()
-loadfonts()
+# format: 
+#   html: 
+#     code-fold: true
+#     reference-location: margin
+#     citation-location: margin
 ```
 
-As part of [International Love Data Week](https://www.icpsr.umich.edu/web/about/cms/3799), I participated in the [Northwestern Visualization Contest](https://www.northwestern.edu/provost/about/ir/love-data/2025/data-viz-championship.html)^[sadly didn't get placed QwQ]. I was not quite satisfied with the submission I produced, so I worked on it some more (creating both an `R` package for the NPS API wrapper and a more [interactive view](https://mika-long.github.io/national_park/) of the data.)
+As part of [2025 International Love Data Week](https://www.icpsr.umich.edu/web/about/cms/3799), I participated in the [Northwestern Visualization Contest](https://www.northwestern.edu/provost/about/ir/love-data/2025/data-viz-championship.html). There's also something implemented in `SveltePlot` [here](https://mika-long.github.io/national_park/). 
 
 ```{r}
+#| code-fold: true 
 # set custom theme 
 # selected_months <- c("Jan", "Mar", "Jun", "Sep", "Dec")
 selected_months <- c("J", "M", "J", "S", "D")
@@ -207,12 +199,12 @@ There are a lot of things happening at the same time ... What if I want to ident
 
 ## Final submission 
 
-:::{.fullwidth}
+:::{.column-page-inset}
 ![](submission.png)
 :::
 
-# Conclusions 
+<!-- # Conclusions 
 
-The national park services provide a rich set of publicly available data and interesting APIs. One could stay in the relam of `R` and use packages like [`leaflet`](https://rstudio.github.io/leaflet/) to plot things like locations of national parks. The National Park Service also has its official [API](https://www.nps.gov/subjects/developer/guides.htm) as well as tools that allow for map making ([NPMap.js](https://home1.nps.gov/maps/tools/npmap.js/)) and even icons designed specifically for NPS^[https://github.com/nationalparkservice/symbol-library]? I am very pleasantly surprised to have found all this information.  
+The national park services provide a rich set of publicly available data and interesting APIs. One could stay in the relam of `R` and use packages like [`leaflet`](https://rstudio.github.io/leaflet/) to plot things like locations of national parks. The National Park Service also has its official [API](https://www.nps.gov/subjects/developer/guides.htm) as well as tools that allow for map making ([NPMap.js](https://home1.nps.gov/maps/tools/npmap.js/)) and even icons designed specifically for NPS^[https://github.com/nationalparkservice/symbol-library]? I am very pleasantly surprised to have found all this information.   -->
 
 
