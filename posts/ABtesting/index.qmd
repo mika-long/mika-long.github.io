@@ -11,6 +11,7 @@ format:
 description: "Some notes on A/B Testing, the frequentist and Bayesian approaches, and their differences."
 ---
 
+
 :::{.callout-note}
 # TLDR 
 
@@ -73,14 +74,39 @@ for (d in 1:20) {
 
 ```{r}
 #| code-fold: true 
+#| echo: false 
+#| output: false 
+
 df <- p_values_cum %>% as_tibble() %>% 
   mutate(day = 1:20)
 
 df %>% ggplot(aes(x = day, y = value)) + 
   geom_line() + 
   geom_point() + 
-  geom_hline(yintercept = 0.05, color = "red")
+  geom_hline(yintercept = 0.05, color = "red", linetype="dashed") + 
+  ylim(0, 1) + xlim(1, 20) + labs(y = "")
+
+# turn this into ojs compatiable 
+ojs_define(day_data = df)
 ``` 
+
+```{ojs}
+//| code-fold: true 
+Plot.plot({
+  y: {grid: true},
+  marks: [
+    Plot.ruleY([0.05], {stroke: "red", strokeDasharray: "5,5"}), 
+    Plot.line(transpose(day_data), 
+      {x: "day", y: "value"}, 
+      { stroke: "black" },
+    ), 
+    Plot.dot(transpose(day_data), 
+    {x: "day", y: "value"}, 
+    { fill: "black" },
+    )
+  ]}
+)
+```
 
 If we _peeked_ at the p-value during the data collection process, before the 20-days run up, and then decided to stop collecting data on day 3 or day 4, then we probably would never realize that in the long run, the p-value is not statistically significant. 
 
@@ -91,9 +117,13 @@ We can repeat the above experiment for 100 times:
 ```{r}
 #| code-fold: true 
 # define function for simulation 
+
+clicks_A_all <- matrix(rbinom(20 * 100, size = 10000, prob = 0.001), nrow=100, ncol=20)
+clicks_B_all <- matrix(rbinom(20 * 100, size = 10000, prob = 0.001), nrow=100, ncol=20)
+
 sim_one_day <- function(i){
   # simulate daily clicks 
-  clicks_A_daily <- rbinom(20, size = 10000, prob = 0.001)
+  clicks_A_daily <- rbinom(20 * 100, size = 10000, prob = 0.001)
   clicks_B_daily <- rbinom(20, size = 10000, prob = 0.001)
   # calculate cumulative clicks 
   clicks_A_cum <- cumsum(clicks_A_daily)
@@ -148,17 +178,25 @@ total_sim_df %>% ggplot(aes(x = day, y = value, group=exp_id, color = ever_sig))
   geom_hline(yintercept = 0.05, color = "red")
 ```
 
+Note that the above example is adapted from [how not to run an A/B test]. 
+
 Anyways, the promise that the frequentist paradigm is making is that it helps control the type I error. When executed correctly. Bayesians don't help with this. 
 
 If we do want to do things correctly and not let's say, run an experiment for an indefinite amount of time, another thing to do is to implement (frequentist) sequential Bayesian testing correctly. 
 
-:::{.callout-note}
-## Does Bayesian A/B Testing solve the problem of peeking^[aka "optional stopping"]? 
 
-The short answer is no. See explanations [here](https://www.alexmolas.com/2025/10/30/bayesian-ab-test-peeking.html) and [here](http://varianceexplained.org/r/bayesian-ab-testing/). 
+# Does Bayesian A/B Testing solve the problem of peeking^[aka "optional stopping"]? 
+
+The short answer is *not necessarily*. See explanations [here](https://www.alexmolas.com/2025/10/30/bayesian-ab-test-peeking.html) and [here](http://varianceexplained.org/r/bayesian-ab-testing/). 
+
+```{r}
+# code-fold: true 
+# test to see if this is right ... 
+chisq.test(matrix(c(127, 5734 - 127, 
+  174, 5851 - 174), nrow=2, byrow= TRUE))
+```
 
 There is also this [research paper](https://alexdeng.github.io/public/files/continuousMonitoring.pdf) on optional stopping in Bayesian testing. 
-:::
 
 # Bayesian A/B testing with an example. 
 
