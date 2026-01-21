@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sheng Long">
-<meta name="dcterms.date" content="2025-12-15">
-<meta name="description" content="Some notes on A/B Testing, the frequentist way and the Bayesian way, as well as their differences.">
+<meta name="dcterms.date" content="2026-01-20">
+<meta name="description" content="Some notes on A/B Testing, the frequentist and Bayesian approaches, and their differences.">
 
 <title>Bayesian and Frequentist A/B Testing – Sheng Long</title>
 <style>
@@ -72,7 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-2f1d5595274720d733f4ffbbd914babc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -136,10 +136,6 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    </a>
-  </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -195,7 +191,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    Some notes on A/B Testing, the frequentist way and the Bayesian way, as well as their differences.
+    Some notes on A/B Testing, the frequentist and Bayesian approaches, and their differences.
   </div>
 </div>
 
@@ -205,14 +201,14 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Sheng Long </p>
+             <p>Sheng Long <a href="https://orcid.org/0009-0000-9752-5898" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 15, 2025</p>
+      <p class="date">January 20, 2026</p>
     </div>
   </div>
   
@@ -224,12 +220,30 @@ window.Quarto = {
 </header>
 
 
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>TLDR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sources for inspiration:</p>
+<ul>
+<li><a href="http://varianceexplained.org/r/bayesian-ab-testing/">Is Bayesian A/B Testing immune to peeking? Not exactly</a></li>
+<li><a href="https://www.evanmiller.org/how-not-to-run-an-ab-test.html">How Not to Run an A/B Test</a></li>
+</ul>
+</div>
+</div>
 <section id="the-peeking-problem" class="level1 page-columns page-full">
 <h1>The Peeking Problem</h1>
-<p>Sources: - <a href="http://varianceexplained.org/r/bayesian-ab-testing/">Is Bayesian A/B Testing immune to peeking? Not exactly</a> - <a href="https://www.evanmiller.org/how-not-to-run-an-ab-test.html">How Not to Run an A/B Test</a></p>
-<p>Say you are a data scientist running an A/B test on a new feature. Let’s say you run this experiment for 20 days, and on each day get 10,000 samples. Further, suppose that the groundtruth is that for both version A and version B, the clickthrough rate<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is 0.1%. We can simulate the total number of clicks during a single day as following a Binomial distribution.</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;A typical definition for Clickthrough rate (CTR) is clicks <span class="math inline">\(\div\)</span> impressions (number of times the ad is shown). See <a href="https://support.google.com/google-ads/answer/2615875?hl=en#:~:text=Clickthrough%20rate%20(CTR)%20is%20a%20ratio%20that,*%20Ads%2C%20listings%2C%20and%20keywords%20are%20performing">this page</a> for details. </p></div></div><p>Let’s say we use the Chi-squared two sample proportion test.</p>
+<p>Say you are a data scientist running an A/B test on a new feature. Let’s say you run this experiment for 20 days, and on each day get 10,000 samples. Further, suppose that the groundtruth is that for both version A and version B, the clickthrough rate<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is 0.1%. We can simulate the total number of clicks during a single day as following a Binomial distribution <span class="math inline">\(B(n = 10000, p = 0.001)\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;A typical definition for Clickthrough rate (CTR) is clicks <span class="math inline">\(\div\)</span> impressions (number of times the ad is shown). See <a href="https://support.google.com/google-ads/answer/2615875?hl=en#:~:text=Clickthrough%20rate%20(CTR)%20is%20a%20ratio%20that,*%20Ads%2C%20listings%2C%20and%20keywords%20are%20performing">this page</a> for details. </p></div><div id="fn2"><p><sup>2</sup>&nbsp;… for simplicity assume the 20 Binomial distributions are independent from each other</p></div></div><p>Let’s say we use the Chi-squared two sample proportion test.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set random seed </span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">57</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate daily clicks </span></span>
@@ -262,8 +276,11 @@ window.Quarto = {
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># p_values_cum</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> p_values_cum <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -271,6 +288,7 @@ window.Quarto = {
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.05</span>, <span class="at">color =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -279,7 +297,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>If we simply decided to stop collecting data on day 3 or day 4, then we probably would never realize that in the long run, the p-value is indeed not statistically significant.</p>
+<p>If we <em>peeked</em> at the p-value during the data collection process, before the 20-days run up, and then decided to stop collecting data on day 3 or day 4, then we probably would never realize that in the long run, the p-value is not statistically significant.</p>
+<hr>
 <p>We can repeat the above experiment for 100 times:</p>
 <div class="cell">
 <details class="code-fold">
@@ -333,7 +352,7 @@ approximation may be incorrect</code></pre>
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>total_sim_df <span class="ot">&lt;-</span> total_sim_df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(exp_id) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ever_sig =</span> <span class="fu">any</span>(value <span class="sc">&lt;=</span> <span class="fl">0.5</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ever_sig =</span> <span class="fu">any</span>(value <span class="sc">&lt;=</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>(.)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>total_sim_df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(ever_sig) <span class="sc">%&gt;%</span> <span class="fu">count</span>(.)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -343,8 +362,8 @@ approximation may be incorrect</code></pre>
 # Groups:   ever_sig [2]
   ever_sig     n
   &lt;lgl&gt;    &lt;int&gt;
-1 FALSE       20
-2 TRUE      1980</code></pre>
+1 FALSE     1560
+2 TRUE       440</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
@@ -365,7 +384,6 @@ approximation may be incorrect</code></pre>
 </div>
 </div>
 </div>
-<p>Hmm the above graph looks a bit weird …</p>
 <p>Anyways, the promise that the frequentist paradigm is making is that it helps control the type I error. When executed correctly. Bayesians don’t help with this.</p>
 <p>If we do want to do things correctly and not let’s say, run an experiment for an indefinite amount of time, another thing to do is to implement (frequentist) sequential Bayesian testing correctly.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -374,7 +392,7 @@ approximation may be incorrect</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Does Bayesian A/B Testing solve the problem of peeking<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>?
+<span class="screen-reader-only">Note</span>Does Bayesian A/B Testing solve the problem of peeking<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>?
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -382,11 +400,11 @@ approximation may be incorrect</code></pre>
 <p>There is also this <a href="https://alexdeng.github.io/public/files/continuousMonitoring.pdf">research paper</a> on optional stopping in Bayesian testing.</p>
 </div>
 </div>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;aka “optional stopping”</p></div></div></section>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;aka “optional stopping”</p></div></div></section>
 <section id="bayesian-ab-testing-with-an-example." class="level1 page-columns page-full">
 <h1>Bayesian A/B testing with an example.</h1>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -395,7 +413,7 @@ approximation may be incorrect</code></pre>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><a href="https://www.kaggle.com/code/laurinbrechter/bayesian-a-b-testing/input">this blogpost</a> from Kaggle that uses PyMC.</li>
@@ -407,14 +425,14 @@ approximation may be incorrect</code></pre>
 </div>
 </div>
 </div>
-<p>If you look at the first formula for <a href="https://www.evanmiller.org/bayesian-ab-testing.html#notes">binary outcomes</a>, it says that when the prior is uninformative (i.e., uniform, alpha = beta = 1), then the updated posterior is …? So in a sense, a beta distribution is a very special kind of distribution<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> that allows closed-form calculations of updated posterior I believe …</p>
-<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;<a href="https://en.wikipedia.org/wiki/Conjugate_prior">conjugate prior</a></p></div></div><section id="beta-distribution" class="level3">
+<p>If you look at the first formula for <a href="https://www.evanmiller.org/bayesian-ab-testing.html#notes">binary outcomes</a>, it says that when the prior is uninformative (i.e., uniform, alpha = beta = 1), then the updated posterior is …? So in a sense, a beta distribution is a very special kind of distribution<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> that allows closed-form calculations of updated posterior I believe …</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;<a href="https://en.wikipedia.org/wiki/Conjugate_prior">conjugate prior</a></p></div></div><section id="beta-distribution" class="level3">
 <h3 class="anchored" data-anchor-id="beta-distribution">Beta distribution</h3>
 <div class="cell card bg-light p-2 g-col-24 g-col-lg-7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-startfrom="175" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 174;"><span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a>viewof mu <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">10</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Location (mu)"</span>})</span>
-<span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a>viewof sigma <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Scale (sigma)"</span>})</span>
-<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a>viewof lambda_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Skew (lambda)"</span>})</span>
-<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a>viewof nu <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Degrees of Freedom (nu)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-startfrom="180" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 179;"><span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a>viewof mu <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">10</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Location (mu)"</span>})</span>
+<span id="cb8-181"><a href="#cb8-181" aria-hidden="true" tabindex="-1"></a>viewof sigma <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Scale (sigma)"</span>})</span>
+<span id="cb8-182"><a href="#cb8-182" aria-hidden="true" tabindex="-1"></a>viewof lambda_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Skew (lambda)"</span>})</span>
+<span id="cb8-183"><a href="#cb8-183" aria-hidden="true" tabindex="-1"></a>viewof nu <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Degrees of Freedom (nu)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">

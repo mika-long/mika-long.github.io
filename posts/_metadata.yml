@@ -18,3 +18,7 @@ format:
     reference-location: margin
     toc: true 
     code-overflow: wrap 
+
+author: 
+- name: Sheng Long
+  orcid: 0009-0000-9752-5898

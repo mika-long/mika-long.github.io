@@ -1,7 +1,5 @@
 ---
 title: "Bayesian and Frequentist A/B Testing"
-author: 
-  name: Sheng Long
 categories: [Statistics]
 date: last-modified
 draft: true 
@@ -10,8 +8,17 @@ format:
     reference-location: margin
     toc: true 
     code-overflow: wrap 
-description: "Some notes on A/B Testing, the frequentist way and the Bayesian way, as well as their differences."
+description: "Some notes on A/B Testing, the frequentist and Bayesian approaches, and their differences."
 ---
+
+:::{.callout-note}
+# TLDR 
+
+Sources for inspiration: 
+
+- [Is Bayesian A/B Testing immune to peeking? Not exactly](http://varianceexplained.org/r/bayesian-ab-testing/)
+- [How Not to Run an A/B Test](https://www.evanmiller.org/how-not-to-run-an-ab-test.html) 
+:::
 
 ```{r}
 #| echo: false
@@ -24,15 +31,12 @@ theme_set(theme_minimal())
 
 # The Peeking Problem 
 
-Sources: 
-- [Is Bayesian A/B Testing immune to peeking? Not exactly](http://varianceexplained.org/r/bayesian-ab-testing/)
-- [How Not to Run an A/B Test](https://www.evanmiller.org/how-not-to-run-an-ab-test.html) 
-
-Say you are a data scientist running an A/B test on a new feature. Let's say you run this experiment for 20 days, and on each day get 10,000 samples. Further, suppose that the groundtruth is that for both version A and version B, the clickthrough rate^[A typical definition for Clickthrough rate (CTR) is clicks $\div$ impressions (number of times the ad is shown). See [this page](https://support.google.com/google-ads/answer/2615875?hl=en#:~:text=Clickthrough%20rate%20(CTR)%20is%20a%20ratio%20that,*%20Ads%2C%20listings%2C%20and%20keywords%20are%20performing) for details. ] is 0.1%. We can simulate the total number of clicks during a single day as following a Binomial distribution. 
+Say you are a data scientist running an A/B test on a new feature. Let's say you run this experiment for 20 days, and on each day get 10,000 samples. Further, suppose that the groundtruth is that for both version A and version B, the clickthrough rate^[A typical definition for Clickthrough rate (CTR) is clicks $\div$ impressions (number of times the ad is shown). See [this page](https://support.google.com/google-ads/answer/2615875?hl=en#:~:text=Clickthrough%20rate%20(CTR)%20is%20a%20ratio%20that,*%20Ads%2C%20listings%2C%20and%20keywords%20are%20performing) for details. ] is 0.1%. We can simulate the total number of clicks during a single day as following a Binomial distribution $B(n = 10000, p = 0.001)$^[... for simplicity assume the 20 Binomial distributions are independent from each other]. 
 
 Let's say we use the Chi-squared two sample proportion test. 
 
 ```{r}
+#| code-fold: true 
 # set random seed 
 set.seed(57)
 # simulate daily clicks 
@@ -68,6 +72,7 @@ for (d in 1:20) {
 ```
 
 ```{r}
+#| code-fold: true 
 df <- p_values_cum %>% as_tibble() %>% 
   mutate(day = 1:20)
 
@@ -77,7 +82,9 @@ df %>% ggplot(aes(x = day, y = value)) +
   geom_hline(yintercept = 0.05, color = "red")
 ``` 
 
-If we simply decided to stop collecting data on day 3 or day 4, then we probably would never realize that in the long run, the p-value is indeed not statistically significant. 
+If we _peeked_ at the p-value during the data collection process, before the 20-days run up, and then decided to stop collecting data on day 3 or day 4, then we probably would never realize that in the long run, the p-value is not statistically significant. 
+
+---
 
 We can repeat the above experiment for 100 times: 
 
@@ -126,7 +133,7 @@ for (i in 1:100){
 }
 
 total_sim_df <- total_sim_df %>% group_by(exp_id) %>% 
-  mutate(ever_sig = any(value <= 0.5)) %>% 
+  mutate(ever_sig = any(value <= 0.05)) %>% 
   ungroup(.)
 
 total_sim_df %>% group_by(ever_sig) %>% count(.)
@@ -140,8 +147,6 @@ total_sim_df %>% ggplot(aes(x = day, y = value, group=exp_id, color = ever_sig))
     ) +
   geom_hline(yintercept = 0.05, color = "red")
 ```
-
-Hmm the above graph looks a bit weird ... 
 
 Anyways, the promise that the frequentist paradigm is making is that it helps control the type I error. When executed correctly. Bayesians don't help with this. 
 
