@@ -23,6 +23,8 @@ Certain things stood out to me:
 
 All this is to say, for a researcher used to `R`’s high-level abstractions, the Python transition currently feels [very painful]{.mark} --- the potential for production integration is definitely there^[e.g., via [pymc.ModelBuilder](https://www.pymc.io/projects/examples/en/latest/howto/model_builder.html)], but the developer experience is significantly more high-friction. 
 
+I also recommend reading [this post](https://discourse.mc-stan.org/t/how-to-translate-between-pymc-and-stan/38574 and [this post](https://discourse.pymc.io/t/a-detailed-comparison-between-pymc-and-stan-syntax-and-approaches-to-modelling/16430) for people interested in the differences (as well as how to trasnlate) between `PyMC` and `Stan`. 
+
 :::
 
 # Tadpole survival
