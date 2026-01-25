@@ -17,6 +17,8 @@ website:
         href: grad_cv.pdf
       - href: posts.qmd
         text: Notes
+      - text: "Vis 📊"
+        href: https://mika-long.github.io/vis-gallery/
     
   page-footer: 
     background: light 

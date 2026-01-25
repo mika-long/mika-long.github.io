@@ -24,7 +24,11 @@ library(gganimate)
 #     citation-location: margin
 ```
 
-As part of [2025 International Love Data Week](https://www.icpsr.umich.edu/web/about/cms/3799), I participated in the [Northwestern Visualization Contest](https://www.northwestern.edu/provost/about/ir/love-data/2025/data-viz-championship.html). There's also something implemented in `SveltePlot` [here](https://mika-long.github.io/national_park/). 
+As part of [2025 International Love Data Week](https://www.icpsr.umich.edu/web/about/cms/3799), I participated in the [Northwestern Visualization Contest](https://www.northwestern.edu/provost/about/ir/love-data/2025/data-viz-championship.html).
+
+:::{.callout-note appearance="simple"}
+About a year later I tried plotting using different visualizations with `Sveltplot` [here](https://mika-long.github.io/vis-gallery/national-park/).
+:::
 
 ```{r}
 #| code-fold: true 
