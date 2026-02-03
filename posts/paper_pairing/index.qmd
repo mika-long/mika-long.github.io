@@ -1,0 +1,32 @@
+---
+title: "Paper Pairings"
+categories: [Misc]
+date: last-modified
+draft: true 
+format:
+  html: 
+    reference-location: margin
+    toc: true 
+    code-overflow: wrap 
+description: "Papers that read well in pairs/groups (and why)."
+---
+
+:::{.callout-warning}
+This is a file under constant modifcation. Here I am listing a series of papers that I've enjoyred reading in pairs/groups. 
+:::
+
+## Theories and models of graph comprehension 
+
+- Amy Rae Fox 
+- Cleveland and McGill 
+
+## Where do we get the information? How do we get a sense of the value of information? 
+
+- See or Recall? 
+- Charles' paper example 
+- The Rational Agent Benchmark for Data Visualization 
+
+## Evidence for memorization 
+- The Illusion-Illusion: Vision Language Models See Illusions Where There are None
+- Vision language models are blind: Failing to translate detailed visual features into words 
+- Vision Language Models are Biased 
