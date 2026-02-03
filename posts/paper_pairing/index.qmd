@@ -12,7 +12,7 @@ description: "Papers that read well in pairs/groups (and why)."
 ---
 
 :::{.callout-warning}
-This is a file under constant modifcation. Here I am listing a series of papers that I've enjoyred reading in pairs/groups. 
+This is a file under constant modifcation. Here I am listing a series of papers that I've enjoyred reading in pairs/groups. Just like how effective wine pairing elevates dining by balancing flavors, I believe reading certian papers in proximity to each other might shed new lights and insights. 
 :::
 
 ## Theories and models of graph comprehension 
