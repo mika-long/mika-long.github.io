@@ -30,10 +30,6 @@ I am a final-year Ph.D. candidate at [Northwestern University](https://www.north
 
 Before joining Northwestern, I was a student at [William & Mary](https://www.wm.edu/), where I majored in Computer Science and Economics.
 
-:::{.callout-important appearance="simple"}
-{{<fa fish-fins>}} **I am on the job market!** I am seeking full-time roles where I can tackle data-driven problems and help build the future of human-AI collaboration. I welcome you to [view my CV](grad_cv.pdf) and [connect on LinkedIn []{.mdi--linkedin} ](https://www.linkedin.com/in/sheng-long/). 
-:::
-
 ## Research
 
 My research focuses on developing theoretical frameworks and empirical tools to better understand how people reason about and interact with abstract visual information. I had also worked on questions that involve more economics and fairness concerns previously.
@@ -42,8 +38,12 @@ My research focuses on developing theoretical frameworks and empirical tools to 
 
 [\* indicates equal contribution]{.aside style="color: #D3D3D3"}
 
+- **Visual Decoding Operators: Towards a Compositional Theory of Visualization Perception**\
+   *Sheng Long*, [Remco Chang](https://www.cs.tufts.edu/~remco/){.author-link}, [Eugene Wu](https://www.eugenewu.net/){.author-link}, [Alex Kale](https://people.cs.uchicago.edu/~kalea/){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}\
+   [{{<fa scroll>}} Paper](https://arxiv.org/abs/2604.02220){.paper-link} 
+
 -   **LoopLens: Supporting Search as Creation in Loop-Based Music Composition**\
-    *Sheng Long*, Atsuya Kobayashi, Kei Tateno\
+    *Sheng Long*, [Atsuya Kobayashi](https://atsukoba.com/){.author-link}, Kei Tateno\
     [{{<fa music>}} Paper](https://arxiv.org/abs/2603.08571){.paper-link}
 -   **Seeing Eye to AI? Applying Deep-Feature-Based Similarity Metrics to Information Visualization**\
     *Sheng Long*, [Angelos Chatzimparmpas](https://www.angeloschatzimparmpas.com/){.author-link}, [Emma Alexamder](https://www.alexander.vision/emma){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, [Jessica Hullman](http://users.eecs.northwestern.edu/~jhullman/){.author-link}\
