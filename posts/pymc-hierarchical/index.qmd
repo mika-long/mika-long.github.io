@@ -2,11 +2,19 @@
 title: "Hierarchical modeling with PyMC and brms" 
 author: "Sheng Long" 
 date: "12/19/2025"
+<<<<<<< Updated upstream
 draft: false 
 html: 
     toc: true 
     toc-depth: 3
 cache: false 
+=======
+draft: true 
+knitr:
+  opts_chunk:
+    render:
+      python: ".venv/bin/python"
+>>>>>>> Stashed changes
 ---
 
 :::{.callout-note collapse="false"}
@@ -53,6 +61,8 @@ theme_set(theme_minimal())
 ```{r}
 df <- read.csv2(here("posts", "pymc-hierarchical", "reedfrogs.csv")) %>% as_tibble(.)
 df %>% head(5)
+
+reticulate::py_config()
 ```
 
 # Python 
@@ -95,18 +105,30 @@ $$
 \end{align}
 $$
 
+<<<<<<< Updated upstream
 The first step is to specify the model, specify the priors, and perform a **prior predictive check**: 
 
 :::{.panel-tabset group="language"}
+=======
+The following corresponds to `R code 13.2` from *Statistical Rethinking*: 
+
+:::{.panel-tabset}
+>>>>>>> Stashed changes
 # R 
 
 We use the `bf` function in `brms` to set up the model formula: 
 
 ```{r}
+<<<<<<< Updated upstream
 df <- df %>% mutate(tank = 1:nrow(.)) 
 
 # specify formula 
 formula <- bf(surv | trials(density) ~ 0 + factor(tank))
+=======
+# TODO -- specify BRMS model 
+
+reticulate::py_call_impl()
+>>>>>>> Stashed changes
 ```
 
 We can use `get_prior` to check the default prior that `brms` has given the model: 
@@ -140,11 +162,18 @@ The default type for `pp_check` in bayesplot is `dens_overlay`, which uses KDE t
 # Python 
 
 ```{python}
+<<<<<<< Updated upstream
 #| output: false 
 #| warning: false 
 #| label: python-prior-predictive 
 
 # define the model 
+=======
+#| eval: true 
+
+# TODO: for some reason, the following does not compile ... 
+
+>>>>>>> Stashed changes
 with pm.Model() as model_1:
     # prior 
     alpha = pm.Normal("alpha", 0, 1.5, shape = len(df))
@@ -223,12 +252,18 @@ summary(m1)
 
 # Python 
 ```{python}
+<<<<<<< Updated upstream
 #| label: python-reedfrog-summary 
+=======
+#| eval: false 
+# check output 
+>>>>>>> Stashed changes
 az.summary(model_1_trace)
 ```
 
 :::
 
+<<<<<<< Updated upstream
 We can also plot the posterior distribution as well as the trace plot: 
 
 :::{.panel-tabset group="language"}
@@ -305,6 +340,23 @@ m1 %>% spread_draws(`b_factortank.*`, regex = TRUE) %>%
 ```
 
 ## With Pooling 
+=======
+We can also do a posterior predictive check by plotting ... 
+
+:::{.panel-tabset}
+# R 
+```{r}
+# TODO 
+```
+
+# Python 
+```{python}
+# TODO 
+```
+:::
+
+## With pooling 
+>>>>>>> Stashed changes
 
 Math model: 
 $$
@@ -317,6 +369,7 @@ $$
 \end{align}
 $$
 
+<<<<<<< Updated upstream
 Here we will skip the prior predictive part and directly go into the model building part^[Note that the following corresponds to R code 13.3 in *Statistical Rethinking*]: 
 
 :::{.panel-tabset group="language"}
@@ -343,6 +396,21 @@ get_prior(bf(surv | trials(density) ~ 1 + (1 | tank)), family=binomial, data = d
 
 ```{python}
 #| output: false 
+=======
+The following corresponds to `R code 13.3` in *Statistical Rethinking*: 
+
+:::{.panel-tabset}
+# R 
+```{r}
+# TODO 
+```
+
+# Python 
+```{python}
+#| output: false 
+#| eval: false 
+
+>>>>>>> Stashed changes
 with pm.Model() as model_2:
     # hyperprior 
     sigma = pm.Exponential("sigma", 1)
@@ -354,6 +422,7 @@ with pm.Model() as model_2:
     # likelihood 
     survived = pm.Binomial("survived", n=df.density, p=p_survived, observed=df.surv)
 
+<<<<<<< Updated upstream
     model_2_trace = pm.sample(progressbar=False, nuts_sampler="numpyro")
     model_2_trace = pm.compute_log_likelihood(model_2_trace)
     # posterior predictive check 
@@ -601,3 +670,11 @@ azp.plot_ppc_dist(chimp_model_trace, group="posterior_predictive", num_samples=1
 ```
 
 :::
+=======
+    model_2_trace = pm.sample()
+    model_2_trace = pm.compute_log_likelihood(model_2_trace)
+    # posterior predictive check 
+    pm.sample_posterior_predictive(model_2_trace, extend_inferencedata=True)
+```
+:::
+>>>>>>> Stashed changes
