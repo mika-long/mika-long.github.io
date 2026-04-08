@@ -5,33 +5,36 @@
 
 /* New styles for links */
 a {
-    color: teal;
-    text-decoration: underline;
-    transition: color 0.3s ease;
+  color: teal;
+  text-decoration: underline;
+  transition: color 0.3s ease;
 }
 
-a:hover, a:focus {
-    color: #00b3b3; /* A lighter teal for hover and focus states */
-    text-decoration: underline;
+a:hover,
+a:focus {
+  color: #00b3b3;
+  /* A lighter teal for hover and focus states */
+  text-decoration: underline;
 }
 
 .paper-link {
-    text-decoration: none;
-    display: inline-block;
-    padding: 1px 4px;
-    text-align: center;
-    margin-right: 4px;
-    border-radius: 8px;
-    border: solid 2px;
-    font-weight: 600;
-    position: relative;
-    border-color: teal;
-    transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1px 4px;
+  text-align: center;
+  margin-right: 4px;
+  border-radius: 8px;
+  border: solid 2px;
+  font-weight: 600;
+  position: relative;
+  border-color: teal;
+  transition: all 0.3s ease;
 }
 
-.paper-link:hover, .paper-link:focus {
-    border: solid 2px;
-    text-decoration: none;
+.paper-link:hover,
+.paper-link:focus {
+  border: solid 2px;
+  text-decoration: none;
 }
 
 .author-link {
@@ -40,14 +43,56 @@ a:hover, a:focus {
   transition: color 0.1s ease;
 }
 
-.author-link:hover, .author-link:focus {
+.author-link:hover,
+.author-link:focus {
   color: teal;
   text-decoration: underline;
 }
 
+/* Dark mode overrides — Quarto adds class "quarto-dark" to <body> */
+body.quarto-dark .author-link {
+  color: #ffffff;
+}
+
+body.quarto-dark .author-link:hover,
+body.quarto-dark .author-link:focus {
+  color: #4dd0d0;
+}
+
+body.quarto-dark a {
+  color: #4dd0d0;
+}
+
+body.quarto-dark a:hover,
+body.quarto-dark a:focus {
+  color: #80e0e0;
+}
+
+/* Sun/moon toggle icon — hide the Bootstrap Icon character, show FA instead */
+.quarto-color-scheme-toggle .bi {
+  font-size: 0;
+  /* hide any character rendered by the "bi" font */
+}
+
+.quarto-color-scheme-toggle .bi::before {
+  content: "\f186";
+  /* fa-moon */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+body.quarto-dark .quarto-color-scheme-toggle .bi::before {
+  content: "\f185";
+  /* fa-sun */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 1rem;
+}
+
 .navbar {
-    background-color: teal;
-    color: #fdfefe;
+  background-color: teal;
+  color: #fdfefe;
 }
 
 /* animation for waving */
@@ -60,14 +105,37 @@ a:hover, a:focus {
 }
 
 @keyframes wave {
-  0% { transform: rotate(0deg); }
-  10% { transform: rotate(14deg); }
-  20% { transform: rotate(-8deg); }
-  30% { transform: rotate(14deg); }
-  40% { transform: rotate(-4deg); }
-  50% { transform: rotate(10deg); }
-  60% { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  10% {
+    transform: rotate(14deg);
+  }
+
+  20% {
+    transform: rotate(-8deg);
+  }
+
+  30% {
+    transform: rotate(14deg);
+  }
+
+  40% {
+    transform: rotate(-4deg);
+  }
+
+  50% {
+    transform: rotate(10deg);
+  }
+
+  60% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 /* custom icons from iconify.design */
