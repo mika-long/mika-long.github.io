@@ -2,19 +2,12 @@
 title: "Hierarchical modeling with PyMC and brms" 
 author: "Sheng Long" 
 date: "12/19/2025"
-<<<<<<< Updated upstream
 draft: false 
-html: 
-    toc: true 
-    toc-depth: 3
-cache: false 
-=======
-draft: true 
 knitr:
   opts_chunk:
     render:
       python: ".venv/bin/python"
->>>>>>> Stashed changes
+freeze: auto
 ---
 
 :::{.callout-note collapse="false"}
@@ -26,7 +19,7 @@ Certain things stood out to me:
 
 - `brms` abstracts away the "boilerplate" (e.g., dummy coding, index variables, non-centered parameterization) that one still needs to implement manually in `PyMC`.  
 - Nevertheless, `PyMC` forces users to explicitly define the data generating process starting from the hyperpriors, and shares a closer resemblance to the underlying mathematical equations of the model. `brms` on the other hand, folds a lot of writing intos its formula, which could take a while to get used to, and does not make the process of specifying priors easy. `PyMC` also makes specifying multilevel models easier. 
-- `arviz` introduces a more *sematic* way of handling data (via `xarray` and `InferenceData`), but the `R` ecosystem remains the superior option for visualizing data in tidy format. Grammar of Graphics makes the process of creating custom prior and posterior plots intuitive. 
+- `arviz` introduces a more *semantic* way of handling data (via `xarray` and `InferenceData`), but the `R` ecosystem remains the superior option for visualizing data in tidy format. Grammar of Graphics makes the process of creating custom prior and posterior plots intuitive. 
     - `arviz` is also currently undergoing some refactoring changes (per [this article](https://python.arviz.org/en/v0.22.0/user_guide/migration_guide.html)), and some of the plotting functions don't quite produce the results that those who are familiar with `bayesplot` would expect them to look like. So technically one also need to look into [`arviz-plots`](https://python.arviz.org/projects/plots/en/latest/) in addition to the base `arviz`. [`plotnine`](https://plotnine.org/), while powerful and uses grammar of graphics, does not support `tidybayes` geoms as of now. 
 
 All this is to say, for a researcher used to `R`’s high-level abstractions, the Python transition currently feels [very painful]{.mark} --- the potential for production integration is definitely there^[e.g., via [pymc.ModelBuilder](https://www.pymc.io/projects/examples/en/latest/howto/model_builder.html)], but the developer experience is significantly more high-friction. 
@@ -45,8 +38,8 @@ First we load the necessary libraries and data:
 # R 
 
 ```{r}
-#| warning: false 
-#| label: r-setup 
+#| warning: false
+#| label: r-setup
 
 set.seed(51)
 library(tidyverse)
@@ -59,7 +52,8 @@ theme_set(theme_minimal())
 ```
 
 ```{r}
-df <- read.csv2(here("posts", "pymc-hierarchical", "reedfrogs.csv")) %>% as_tibble(.)
+df <- read.csv2(here("posts", "pymc-hierarchical", "reedfrogs.csv")) %>%
+  as_tibble(.)
 df %>% head(5)
 
 reticulate::py_config()
@@ -105,55 +99,47 @@ $$
 \end{align}
 $$
 
-<<<<<<< Updated upstream
 The first step is to specify the model, specify the priors, and perform a **prior predictive check**: 
 
 :::{.panel-tabset group="language"}
-=======
-The following corresponds to `R code 13.2` from *Statistical Rethinking*: 
-
-:::{.panel-tabset}
->>>>>>> Stashed changes
 # R 
 
 We use the `bf` function in `brms` to set up the model formula: 
 
 ```{r}
-<<<<<<< Updated upstream
-df <- df %>% mutate(tank = 1:nrow(.)) 
+df <- df %>% mutate(tank = 1:nrow(.))
 
-# specify formula 
+# specify formula
 formula <- bf(surv | trials(density) ~ 0 + factor(tank))
-=======
-# TODO -- specify BRMS model 
-
-reticulate::py_call_impl()
->>>>>>> Stashed changes
 ```
 
 We can use `get_prior` to check the default prior that `brms` has given the model: 
 
 ```{r}
-get_prior(formula, family = binomial, data=df)
+get_prior(formula, family = binomial, data = df)
 ```
 
 Next let us specify the prior and do a **prior predictive check**: 
 
 ```{r}
-#| output: false 
-#| label: r-prior-predictive 
-m1_prior <- brm(formula, data = df, family = binomial, 
-            prior = prior(normal(0, 1.5)), 
-            cores = parallel::detectCores(), 
-            file = here("posts", "pymc-hierarchical", "m1_prior.rds"),
-            sample_prior = "only")
+#| output: false
+#| label: r-prior-predictive
+m1_prior <- brm(
+  formula,
+  data = df,
+  family = binomial,
+  prior = prior(normal(0, 1.5)),
+  cores = parallel::detectCores(),
+  file = here::here("posts", "pymc-hierarchical", "m1_prior.rds"),
+  sample_prior = "only"
+)
 ```
 
 ```{r}
-#| layout-ncol: 2 
+#| layout-ncol: 2
 
-pp_check(m1_prior, ndraws=100, type="dens_overlay")
-pp_check(m1_prior, ndraws=100, type="ecdf_overlay")
+pp_check(m1_prior, ndraws = 100, type = "dens_overlay")
+pp_check(m1_prior, ndraws = 100, type = "ecdf_overlay")
 ```
 
 In the above graphs, $y$ stands for observed data, while $y_{rep}$ stands for replicated data. 
@@ -162,18 +148,11 @@ The default type for `pp_check` in bayesplot is `dens_overlay`, which uses KDE t
 # Python 
 
 ```{python}
-<<<<<<< Updated upstream
 #| output: false 
 #| warning: false 
 #| label: python-prior-predictive 
 
 # define the model 
-=======
-#| eval: true 
-
-# TODO: for some reason, the following does not compile ... 
-
->>>>>>> Stashed changes
 with pm.Model() as model_1:
     # prior 
     alpha = pm.Normal("alpha", 0, 1.5, shape = len(df))
@@ -217,13 +196,15 @@ Next step is to fit the actual model^[Note that the following corresponds to `R 
 # R 
 
 ```{r}
-#| output: false 
-#| label: r-reedfrog-fit 
-m1 <- brm(formula, 
-    family = binomial, data = df, 
-    prior = prior(normal(0, 1.5), class = b), 
-    cores = parallel::detectCores(), 
-    file = here("posts", "pymc-hierarchical", "m1.rds") # prevents re-running the fitting process when quarto compiles  
+#| output: false
+#| label: r-reedfrog-fit
+m1 <- brm(
+  formula,
+  family = binomial,
+  data = df,
+  prior = prior(normal(0, 1.5), class = b),
+  cores = parallel::detectCores(),
+  file = here("posts", "pymc-hierarchical", "m1.rds") # prevents re-running the fitting process when quarto compiles
 )
 ```
 
@@ -246,24 +227,18 @@ We can check the fitted model's summary statistics:
 
 # R 
 ```{r}
-#| label: r-reedfrog-summary 
+#| label: r-reedfrog-summary
 summary(m1)
 ```
 
 # Python 
 ```{python}
-<<<<<<< Updated upstream
 #| label: python-reedfrog-summary 
-=======
-#| eval: false 
-# check output 
->>>>>>> Stashed changes
 az.summary(model_1_trace)
 ```
 
 :::
 
-<<<<<<< Updated upstream
 We can also plot the posterior distribution as well as the trace plot: 
 
 :::{.panel-tabset group="language"}
@@ -306,7 +281,7 @@ We can also perform a **posterior predictive check**:
 ```{r}
 #| layout-ncol: 2
 pp_check(m1, ndraws = 100)
-pp_check(m1, ndraws = 100, type="ecdf_overlay")
+pp_check(m1, ndraws = 100, type = "ecdf_overlay")
 ```
 
 # Python 
@@ -330,33 +305,17 @@ m1 %>% as_tibble(.)
 `spread_draws`, on the other hand, does provide this information: 
 
 ```{r}
-#| cache: true 
-m1 %>% spread_draws(`b_factortank.*`, regex = TRUE) %>% 
-    # plot the top 5 for now 
-    select(1:8) %>% 
-    pivot_longer(4:8) %>% 
-    ggplot(aes(y = name, x = value)) + 
-    stat_halfeye()
+#| cache: true
+m1 %>%
+  spread_draws(`b_factortank.*`, regex = TRUE) %>%
+  # plot the top 5 for now
+  select(1:8) %>%
+  pivot_longer(4:8) %>%
+  ggplot(aes(y = name, x = value)) +
+  stat_halfeye()
 ```
 
 ## With Pooling 
-=======
-We can also do a posterior predictive check by plotting ... 
-
-:::{.panel-tabset}
-# R 
-```{r}
-# TODO 
-```
-
-# Python 
-```{python}
-# TODO 
-```
-:::
-
-## With pooling 
->>>>>>> Stashed changes
 
 Math model: 
 $$
@@ -369,48 +328,40 @@ $$
 \end{align}
 $$
 
-<<<<<<< Updated upstream
 Here we will skip the prior predictive part and directly go into the model building part^[Note that the following corresponds to R code 13.3 in *Statistical Rethinking*]: 
 
 :::{.panel-tabset group="language"}
 # R 
 
 ```{r}
-#| output: false 
-m2 <- brm(data = df, family = binomial, 
-    formula =  bf(surv | trials(density) ~ 1 + (1 | tank)), 
-    prior = c(prior(normal(0, 1.5), class = Intercept), 
-              prior(exponential(1), class = sd)), 
-    cores = parallel::detectCores(), 
-    seed = 51, 
-    file=here("posts", "pymc-hierarchical", "m2.rds")
+#| output: false
+m2 <- brm(
+  data = df,
+  family = binomial,
+  formula = bf(surv | trials(density) ~ 1 + (1 | tank)),
+  prior = c(
+    prior(normal(0, 1.5), class = Intercept),
+    prior(exponential(1), class = sd)
+  ),
+  cores = parallel::detectCores(),
+  seed = 51,
+  file = here("posts", "pymc-hierarchical", "m2.rds")
 )
 ```
 
 To get a sense of the default priors that `brms` gave us: 
 ```{r}
-get_prior(bf(surv | trials(density) ~ 1 + (1 | tank)), family=binomial, data = df)
+get_prior(
+  bf(surv | trials(density) ~ 1 + (1 | tank)),
+  family = binomial,
+  data = df
+)
 ```
 
 # Python 
 
 ```{python}
 #| output: false 
-=======
-The following corresponds to `R code 13.3` in *Statistical Rethinking*: 
-
-:::{.panel-tabset}
-# R 
-```{r}
-# TODO 
-```
-
-# Python 
-```{python}
-#| output: false 
-#| eval: false 
-
->>>>>>> Stashed changes
 with pm.Model() as model_2:
     # hyperprior 
     sigma = pm.Exponential("sigma", 1)
@@ -422,7 +373,6 @@ with pm.Model() as model_2:
     # likelihood 
     survived = pm.Binomial("survived", n=df.density, p=p_survived, observed=df.surv)
 
-<<<<<<< Updated upstream
     model_2_trace = pm.sample(progressbar=False, nuts_sampler="numpyro")
     model_2_trace = pm.compute_log_likelihood(model_2_trace)
     # posterior predictive check 
@@ -459,7 +409,7 @@ Now that we have two models for the tadpole dataset, we can compare them using .
 ... the `loo` package in `R`: 
 
 ```{r} 
-#| warning: false 
+#| warning: false
 loo(m1, m2)
 ```
 
@@ -493,8 +443,14 @@ $$
 # R 
 
 ```{r}
-df <- read.csv2(here("posts", "pymc-hierarchical", "chimpanzees.csv"), sep = ";") %>% as_tibble(.) %>% 
-    mutate(treatment = paste0(as.character(condition), "_", as.character(prosoc_left)))
+df <- read.csv2(
+  here("posts", "pymc-hierarchical", "chimpanzees.csv"),
+  sep = ";"
+) %>%
+  as_tibble(.) %>%
+  mutate(
+    treatment = paste0(as.character(condition), "_", as.character(prosoc_left))
+  )
 
 df %>% head(5)
 ```
@@ -518,30 +474,41 @@ Define and fit the model:
 # R 
 
 ```{r}
-#| output: false 
-m3 <- brm(data = df, 
-      family = binomial,
-      bf(pulled_left | trials(1) ~ a + b,
-         a ~ 1 + (1 | actor) + (1 | block), 
-         b ~ 0 + treatment,
-         nl = TRUE),
-      prior = c(prior(normal(0, 0.5), nlpar = b),
-                prior(normal(0, 1.5), class = b, coef = Intercept, nlpar = a),
-                prior(exponential(1), class = sd, group = actor, nlpar = a),
-                prior(exponential(1), class = sd, group = block, nlpar = a)),
-      cores = parallel::detectCores(), 
-      seed = 51,
-      file = here("posts", "pymc-hierarchical", "m3.rds")
-      )
+#| output: false
+m3 <- brm(
+  data = df,
+  family = binomial,
+  bf(
+    pulled_left | trials(1) ~ a + b,
+    a ~ 1 + (1 | actor) + (1 | block),
+    b ~ 0 + treatment,
+    nl = TRUE
+  ),
+  prior = c(
+    prior(normal(0, 0.5), nlpar = b),
+    prior(normal(0, 1.5), class = b, coef = Intercept, nlpar = a),
+    prior(exponential(1), class = sd, group = actor, nlpar = a),
+    prior(exponential(1), class = sd, group = block, nlpar = a)
+  ),
+  cores = parallel::detectCores(),
+  seed = 51,
+  file = here("posts", "pymc-hierarchical", "m3.rds")
+)
 ```
 
 Note here that we are using the *non-linear* way of specifying the formula^[See [this vignette](https://cran.r-project.org/web/packages/brms/vignettes/brms_nonlinear.html) for more on fitting non-linear models with `brms`], and again we can use `get_prior` to get a sense of how to specify the priors: 
 
 ```{r}
-get_prior(bf(pulled_left | trials(1) ~ a + b,
-         a ~ 1 + (1 | actor) + (1 | block), 
-         b ~ 0 + treatment,
-         nl = TRUE), family = binomial, data = df)
+get_prior(
+  bf(
+    pulled_left | trials(1) ~ a + b,
+    a ~ 1 + (1 | actor) + (1 | block),
+    b ~ 0 + treatment,
+    nl = TRUE
+  ),
+  family = binomial,
+  data = df
+)
 ```
 
 # Python 
@@ -659,8 +626,8 @@ Perform a posterior predictive check:
 ```{r}
 #| layout-ncol: 3
 pp_check(m3, ndraws = 100)
-pp_check(m3, ndraws = 100, type="ecdf_overlay")
-pp_check(m3, ndraws = 100, type="pit_ecdf")
+pp_check(m3, ndraws = 100, type = "ecdf_overlay")
+pp_check(m3, ndraws = 100, type = "pit_ecdf")
 ```
 
 # Python 
@@ -670,11 +637,3 @@ azp.plot_ppc_dist(chimp_model_trace, group="posterior_predictive", num_samples=1
 ```
 
 :::
-=======
-    model_2_trace = pm.sample()
-    model_2_trace = pm.compute_log_likelihood(model_2_trace)
-    # posterior predictive check 
-    pm.sample_posterior_predictive(model_2_trace, extend_inferencedata=True)
-```
-:::
->>>>>>> Stashed changes
