@@ -6,6 +6,8 @@ search: false
 
 # Sheng Long 🍊 龙晟
 
+[ []{.fa7-brands--google-scholar} ](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.button-link} [ []{.mdi--linkedin} ](https://www.linkedin.com/in/sheng-long/){.button-link}
+
 ### Hello! [👋]{.wave-emoji}
 
 ::: column-margin
@@ -24,7 +26,7 @@ search: false
 <!-- **01/20/25**     Our paper, *Seeing Eye to AI ?*, is accepted to CHI 2025 at 🎡! -->
 :::
 
-<!-- [{{<fa graduation-cap >}} Google Scholar](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.paper-link} -->
+
 
 I am a final-year Ph.D. candidate at [Northwestern University](https://www.northwestern/edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) at [Mu Collective](https://mucollective.northwestern.edu/).
 
