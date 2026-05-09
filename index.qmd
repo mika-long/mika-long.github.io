@@ -15,13 +15,15 @@ search: false
 
 ### News
 
+**04/03/25**     I am co-organizing the [VisXVision workshop](https://ieeevis.org/year/2026/info/program/workshops/#vis-x-vision) with [Arran Zeyu Wang](https://www.linkedin.com/in/arranwang/), which got approved to be an official workshop at VIS'26.   
+
 **10/27/25**     I contributed a [virtual chinrest plugin](https://revisit.dev/study/library-virtual-chinrest/) to [`reVISit`](https://revisit.dev/), an open-source framework for reproducible visualization studies. 
 
 **10/22/25**     Our CS+LAW paper was mentioned in [this Quanta magazine](https://www.quantamagazine.org/the-game-theory-of-how-algorithms-can-drive-up-prices-20251022/) post. 
 
-**04/28/25**     I presented *Seeing Eye to AI* at CHI'25 🎡
+<!-- **04/28/25**     I presented *Seeing Eye to AI* at CHI'25 🎡 -->
 
-**02/14/25**     I got a summer internship offer from Sony Japan 🗼!
+<!-- **02/14/25**     I got a summer internship offer from Sony Japan 🗼! -->
 
 <!-- **01/20/25**     Our paper, *Seeing Eye to AI ?*, is accepted to CHI 2025 at 🎡! -->
 :::
@@ -38,7 +40,7 @@ My research focuses on developing theoretical frameworks and empirical tools to 
 
 ## Publications & Preprints 
 
-[\* indicates equal contribution]{.aside style="color: #D3D3D3"}
+<!-- [\* indicates equal contribution]{.aside style="color: #D3D3D3"} -->
 
 - **Visual Decoding Operators: Towards a Compositional Theory of Visualization Perception**\
    *Sheng Long*, [Remco Chang](https://www.cs.tufts.edu/~remco/){.author-link}, [Eugene Wu](https://www.eugenewu.net/){.author-link}, [Alex Kale](https://people.cs.uchicago.edu/~kalea/){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}\
