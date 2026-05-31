@@ -14,7 +14,7 @@ search: false
 ![Photo taken by Wei Sun.](profile_2.jpg)
 
 ### News
-**05/07/26**     I successfully defended my dissertation, _Computational Models of Visualization Perception_. 
+**05/27/26**     I successfully defended my dissertation, _Computational Models of Visualization Perception_. 
 
 **04/03/26**     I am co-organizing the [VisXVision workshop](https://ieeevis.org/year/2026/info/program/workshops/#vis-x-vision) with [Arran Zeyu Wang](https://www.linkedin.com/in/arranwang/), which got approved to be an official workshop at VIS'26.   
 
