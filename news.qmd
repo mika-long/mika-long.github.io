@@ -1,0 +1,13 @@
+---
+title: "Older News"
+---
+
+- **10/27/25**     I contributed a [virtual chinrest plugin](https://revisit.dev/study/library-virtual-chinrest/) to [`reVISit`](https://revisit.dev/), an open-source framework for reproducible visualization studies. 
+
+- **10/22/25**     Our CS+LAW paper was mentioned in [this Quanta magazine](https://www.quantamagazine.org/the-game-theory-of-how-algorithms-can-drive-up-prices-20251022/) post. 
+
+- **04/28/25**     I presented *Seeing Eye to AI* at CHI'25 🎡 -->
+
+- **02/14/25**     I got a summer internship offer from Sony Japan 🗼!
+
+- **01/20/25**     Our paper, *Seeing Eye to AI ?*, is accepted to CHI 2025 at 🎡! 

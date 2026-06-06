@@ -85,5 +85,8 @@
   },
   "posts/paper_pairing/index.qmd": {
     "index.html": "92ded6e4"
+  },
+  "news.qmd": {
+    "news.html": "3edc514e"
   }
 }

@@ -250,5 +250,12 @@
     "title": "Hierarchical modeling with PyMC and brms",
     "section": "Model comparison",
     "text": "Model comparison\nNow that we have two models for the tadpole dataset, we can compare them using …\n\nRPython\n\n\n… the loo package in R:\n\nloo(m1, m2)\n\nOutput of model 'm1':\n\nComputed from 4000 by 48 log-likelihood matrix.\n\n         Estimate  SE\nelpd_loo   -121.5 2.4\np_loo        39.8 2.0\nlooic       243.0 4.9\n------\nMCSE of elpd_loo is NA.\nMCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 1.5]).\n\nPareto k diagnostic values:\n                         Count Pct.    Min. ESS\n(-Inf, 0.7]   (good)      7    14.6%   186     \n   (0.7, 1]   (bad)      34    70.8%   &lt;NA&gt;    \n   (1, Inf)   (very bad)  7    14.6%   &lt;NA&gt;    \nSee help('pareto-k-diagnostic') for details.\n\nOutput of model 'm2':\n\nComputed from 4000 by 48 log-likelihood matrix.\n\n         Estimate  SE\nelpd_loo   -110.6 4.1\np_loo        31.5 1.5\nlooic       221.2 8.3\n------\nMCSE of elpd_loo is NA.\nMCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 1.5]).\n\nPareto k diagnostic values:\n                         Count Pct.    Min. ESS\n(-Inf, 0.7]   (good)      6    12.5%   197     \n   (0.7, 1]   (bad)      39    81.2%   &lt;NA&gt;    \n   (1, Inf)   (very bad)  3     6.2%   &lt;NA&gt;    \nSee help('pareto-k-diagnostic') for details.\n\nModel comparisons:\n   elpd_diff se_diff\nm2   0.0       0.0  \nm1 -10.9       2.9  \n\n\n\n\n\naz.compare({'unpooled': model_1_trace, 'pooled': model_2_trace})\n\n          rank    elpd_loo      p_loo  ...       dse  warning  scale\npooled       0 -111.924512  32.775933  ...  0.000000     True    log\nunpooled     1 -120.078198  38.335198  ...  2.897545     True    log\n\n[2 rows x 9 columns]"
+  },
+  {
+    "objectID": "news.html",
+    "href": "news.html",
+    "title": "Older News",
+    "section": "",
+    "text": "10/27/25     I contributed a virtual chinrest plugin to reVISit, an open-source framework for reproducible visualization studies.\n10/22/25     Our CS+LAW paper was mentioned in this Quanta magazine post.\n04/28/25     I presented Seeing Eye to AI at CHI’25 🎡 –&gt;\n02/14/25     I got a summer internship offer from Sony Japan 🗼!\n01/20/25     Our paper, Seeing Eye to AI ?, is accepted to CHI 2025 at 🎡!"
   }
 ]

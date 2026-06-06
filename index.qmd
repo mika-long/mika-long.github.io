@@ -6,7 +6,7 @@ search: false
 
 # Sheng Long 🍊 龙晟
 
-[ []{.fa7-brands--google-scholar} ](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.button-link} [ []{.mdi--linkedin} ](https://www.linkedin.com/in/sheng-long/){.button-link}
+[ []{.fa7-brands--google-scholar} ](https://scholar.google.com/citations?user=hO1RX1sAAAAJ&hl=en){.button-link} [ []{.mdi--linkedin} ](https://www.linkedin.com/in/sheng-long/){.button-link} [ []{.simple-icons--orcid} ](https://orcid.org/0009-0000-9752-5898){.button-link}
 
 ### Hello! [👋]{.wave-emoji}
 
@@ -14,21 +14,19 @@ search: false
 ![Photo taken by Wei Sun.](profile_2.jpg)
 
 ### News
+**06/06/26**     Our paper, [_Visual Decoding Operators_](https://arxiv.org/abs/2604.02220), got conditionally accepted at [IEEE VIS 2026](https://ieeevis.org/year/2026/welcome/)! Time to work on those feedback 🔧
+
 **05/27/26**     I successfully defended my dissertation, _Computational Models of Visualization Perception_. 
 
 **04/03/26**     I am co-organizing the [VisXVision workshop](https://ieeevis.org/year/2026/info/program/workshops/#vis-x-vision) with [Arran Zeyu Wang](https://www.linkedin.com/in/arranwang/), which got approved to be an official workshop at VIS'26.   
 
-**10/27/25**     I contributed a [virtual chinrest plugin](https://revisit.dev/study/library-virtual-chinrest/) to [`reVISit`](https://revisit.dev/), an open-source framework for reproducible visualization studies. 
+<br></br>
 
-**10/22/25**     Our CS+LAW paper was mentioned in [this Quanta magazine](https://www.quantamagazine.org/the-game-theory-of-how-algorithms-can-drive-up-prices-20251022/) post. 
+[**Older News**](http://mika-long.github.io/news)
 
-<!-- **04/28/25**     I presented *Seeing Eye to AI* at CHI'25 🎡 -->
+---
 
-<!-- **02/14/25**     I got a summer internship offer from Sony Japan 🗼! -->
-
-<!-- **01/20/25**     Our paper, *Seeing Eye to AI ?*, is accepted to CHI 2025 at 🎡! -->
 :::
-
 
 
 I am a final-year Ph.D. candidate at [Northwestern University](https://www.northwestern/edu/), fortunate to be advised by Professor [Matthew Kay](https://www.mjskay.com/) at [Mu Collective](https://mucollective.northwestern.edu/).
