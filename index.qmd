@@ -14,19 +14,17 @@ search: false
 ![Photo taken by Wei Sun.](profile_2.jpg)
 
 ### News
-**11/11/26**     I presented 📄 [_Visual Decoding Operators_](https://ieeevis.org/year/2026/program/content/da67f039-42de-4964-b86a-34c969685d94/) and 📄 [_Are Average Estimates in Line Graphs Biased Toward Areas of Higher Variability?_](https://ieeevis.org/year/2026/program/content/b55f4b1f-8573-4520-bac8-860e40cc1b01/) at [IEEE VIS 2026](https://ieeevis.org/year/2026/welcome/).
+**11/11/26**     I presented [{{<fa scroll>}} _Visual Decoding Operators_](https://ieeevis.org/year/2026/program/content/da67f039-42de-4964-b86a-34c969685d94/) and [{{<fa scroll>}} _Are Average Estimates in Line Graphs Biased Toward Areas of Higher Variability?_](https://ieeevis.org/year/2026/program/content/b55f4b1f-8573-4520-bac8-860e40cc1b01/) at [IEEE VIS 2026](https://ieeevis.org/year/2026/welcome/).
 
-**06/15/26**     I graduated 🎓 
+**06/15/26**     I graduated {{<fa graduation-cap>}} 
 
-**06/06/26**     Our paper, [_Visual Decoding Operators_](https://arxiv.org/abs/2604.02220), got conditionally accepted at [IEEE VIS 2026](https://ieeevis.org/year/2026/welcome/)! Time to work on those feedback 🔧
+**06/06/26**     Our paper, [_Visual Decoding Operators_](https://arxiv.org/abs/2604.02220), got conditionally accepted at [IEEE VIS 2026](https://ieeevis.org/year/2026/welcome/)! Time to work on those feedback {{<fa screwdriver-wrench>}}
 
 **05/27/26**     I successfully defended my dissertation, _Computational Models of Visualization Perception_. 
 
-  
-
 <br></br>
 
-[**Older News**](http://mika-long.github.io/news)
+[{{<fa clock-rotate-left>}} **Older News**](http://mika-long.github.io/news)
 
 ---
 
@@ -45,10 +43,20 @@ My research focuses on developing theoretical frameworks and empirical tools to 
 
 <!-- [\* indicates equal contribution]{.aside style="color: #D3D3D3"} -->
 
+- **Are Average Estimates in Line Graphs Biased Toward Areas of Higher Variability?**\
+  _Sheng Long_\
+  [VISXVISION '26]{style="color: #D3D3D3"}\
+  [{{<fa file-powerpoint>}} Slides](){.paper-link}
+
+- **Should We Dangle a Carrot? The Effect of Performance-based Incentives in Visualization Experiments**\
+  [Abhraneel Sarma](https://abhsarma.github.io/){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, _Sheng Long_, [Michael Correll](https://correll.io/){.author-link}, [Alexander Lex](https://www.visdesignlab.net/team/lex/){.author-link}.\
+  [VIS '26: Evaluation and Beyond --- Methodological Approaches for Visualization]{style="color: #D3D3D3"}\
+  [{{<fa carrot>}} Paper](https://arxiv.org/abs/2607.07463){.paper-link}
+
 - **Visual Decoding Operators: Towards a Compositional Theory of Visualization Perception**\
    *Sheng Long*, [Remco Chang](https://www.cs.tufts.edu/~remco/){.author-link}, [Eugene Wu](https://www.eugenewu.net/){.author-link}, [Alex Kale](https://people.cs.uchicago.edu/~kalea/){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}\
-   [{{<fa scroll>}} Paper](https://arxiv.org/abs/2604.02220){.paper-link} 
-
+   [VIS '26: Evaluation and Beyond --- Methodological Approaches for Visualization]{style="color: #D3D3D3"}\
+   [{{<fa object-ungroup>}} Paper](https://arxiv.org/abs/2604.02220){.paper-link} [{{<fa file-powerpoint>}} Slides](){.paper-link}
 -   **LoopLens: Supporting Search as Creation in Loop-Based Music Composition**\
     *Sheng Long*, [Atsuya Kobayashi](https://atsukoba.com/){.author-link}, Kei Tateno\
     [{{<fa music>}} Paper](https://arxiv.org/abs/2603.08571){.paper-link}
