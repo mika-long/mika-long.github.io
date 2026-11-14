@@ -1,0 +1,24 @@
+---
+title: "VDO"
+title-slide-attributes:
+  data-visibility: hidden
+format:
+  revealjs:
+    transition: none
+    background-transition: none
+    slide-number: true
+    controls: true
+    hash-type: number
+resources:
+  - slides/
+---
+
+```{python}
+#| echo: false
+#| output: asis
+
+from pathlib import Path
+
+for p in sorted(Path("slides").glob("*.png")):
+    print(f'## {{background-image="{p}" background-size="contain"}}\n')
+```

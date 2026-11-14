@@ -88,5 +88,8 @@
   },
   "news.qmd": {
     "news.html": "3edc514e"
+  },
+  "talks/vis26_visxvision_talk/index.qmd": {
+    "index.html": "27dfd4f9"
   }
 }

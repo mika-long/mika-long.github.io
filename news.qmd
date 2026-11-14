@@ -1,6 +1,7 @@
 ---
 title: "Older News"
 ---
+- **04/03/26**     I am co-organizing the [VisXVision workshop](https://ieeevis.org/year/2026/info/program/workshops/#vis-x-vision) with [Arran Zeyu Wang](https://www.linkedin.com/in/arranwang/), which got approved to be an official workshop at VIS'26. 
 
 - **10/27/25**     I contributed a [virtual chinrest plugin](https://revisit.dev/study/library-virtual-chinrest/) to [`reVISit`](https://revisit.dev/), an open-source framework for reproducible visualization studies. 
 
