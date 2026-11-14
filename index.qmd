@@ -14,6 +14,8 @@ search: false
 ![Photo taken by Wei Sun.](profile_2.jpg)
 
 ### News
+**11/11/26**     I presented 📄 [_Visual Decoding Operators_](https://ieeevis.org/year/2026/program/content/da67f039-42de-4964-b86a-34c969685d94/) and 📄 [_Are Average Estimates in Line Graphs Biased Toward Areas of Higher Variability?_](https://ieeevis.org/year/2026/program/content/b55f4b1f-8573-4520-bac8-860e40cc1b01/) at [IEEE VIS 2026](https://ieeevis.org/year/2026/welcome/).
+
 **06/15/26**     I graduated 🎓 
 
 **06/06/26**     Our paper, [_Visual Decoding Operators_](https://arxiv.org/abs/2604.02220), got conditionally accepted at [IEEE VIS 2026](https://ieeevis.org/year/2026/welcome/)! Time to work on those feedback 🔧
