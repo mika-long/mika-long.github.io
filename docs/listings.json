@@ -2,28 +2,14 @@
   {
     "listing": "/posts.html",
     "items": [
-      "/posts/pymc-custom-dist/index.html",
-      "/posts/ddm/index_2.html",
-      "/posts/paper_pairing/index.html",
       "/posts/national_park_vists/index.html",
-      "/posts/ABtesting/index.html",
       "/posts/stat_pdfs/index.html",
       "/posts/pymc-hierarchical/index.html",
-      "/posts/pymc-plot/index.html",
       "/posts/sdt/index.html",
-      "/posts/diff_in_diff/index.html",
-      "/posts/multi-level models/index.html",
       "/posts/poisson-disk/index.html",
-      "/posts/typst_layout/index.html",
       "/posts/wiener/index.html",
       "/posts/job-stat-track/index.html",
-      "/posts/ddm/index.html",
-      "/posts/explore vs exploit/index.html",
-      "/posts/color palettes/index.html",
       "/posts/sgt and st/index.html",
-      "/posts/creativity/index.html",
-      "/posts/jnd/index.html",
-      "/posts/roc curve/index.html",
       "/posts/mixture model 1/index.html",
       "/posts/gm_music/index.html"
     ]
