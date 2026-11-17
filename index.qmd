@@ -46,7 +46,7 @@ My research focuses on developing theoretical frameworks and empirical tools to 
 - **Are Average Estimates in Line Graphs Biased Toward Areas of Higher Variability?**\
   _Sheng Long_\
   [VISXVISION '26]{style="color: #D3D3D3"}\
-  [{{<fa file-powerpoint>}} Slides](talks/vis26_visxvision_talk/index.qmd){.paper-link}
+  [{{<fa file-powerpoint>}} Slides](talks/vis26_visxvision_talk/index.qmd){.paper-link} [{{<fa scroll>}} Paper](https://arxiv.org/abs/2611.19601){.paper-link}
 
 - **Should We Dangle a Carrot? The Effect of Performance-based Incentives in Visualization Experiments**\
   [Abhraneel Sarma](https://abhsarma.github.io/){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}, _Sheng Long_, [Michael Correll](https://correll.io/){.author-link}, [Alexander Lex](https://www.visdesignlab.net/team/lex/){.author-link}.\
@@ -56,7 +56,7 @@ My research focuses on developing theoretical frameworks and empirical tools to 
 - **Visual Decoding Operators: Towards a Compositional Theory of Visualization Perception**\
    *Sheng Long*, [Remco Chang](https://www.cs.tufts.edu/~remco/){.author-link}, [Eugene Wu](https://www.eugenewu.net/){.author-link}, [Alex Kale](https://people.cs.uchicago.edu/~kalea/){.author-link}, [Matthew Kay](https://www.mjskay.com/){.author-link}\
    [VIS '26: IEEE TVCG (Proc. VIS 2026)]{style="color: #D3D3D3"}\
-   [{{<fa object-ungroup>}} Paper](https://arxiv.org/abs/2604.02220){.paper-link} [{{<fa file-powerpoint>}} Slides](talks/vis26_vdo_talk/index.qmd){.paper-link}
+   [{{<fa object-ungroup>}} Paper](https://arxiv.org/abs/2604.02220){.paper-link} [{{<fa file-powerpoint>}} Slides](talks/vis26_vdo_talk/index.qmd){.paper-link} [ []{.simple-icons--osf} OSF](https://osf.io/prtfq/){.paper-link}
 -   **LoopLens: Supporting Search as Creation in Loop-Based Music Composition**\
     *Sheng Long*, [Atsuya Kobayashi](https://atsukoba.com/){.author-link}, Kei Tateno\
     [{{<fa music>}} Paper](https://arxiv.org/abs/2603.08571){.paper-link}
